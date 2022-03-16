@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Item } from "../../types/Item";
 import * as C from "./styles";
-import { items } from "../../data/items";
 
 import { Product } from "../../types/Product";
 import OrderList from "../OrderList";
@@ -13,15 +12,28 @@ type Props = {
   onAdd: (item: Item[]) => void;
   databaseProducts: Product[];
   categoryList: string[];
-  itemId: number;
+  itemIdAllList: number;
   addNewClient: () => void;
-  removeClient: (itemId: number)=> void;
-  amontClient: number;
+  removeClient: (itemId: number) => void;
+  productAllClient: any;
+  clientProducts: Item[];
+  insertNewListToTotal: (itemid: number, list: any) => void;
+  deletLastClientProducts: () => void;
 };
-let valueOfOneUnit: number;
 
 function SalesArea(props: Props) {
-  const { onAdd, databaseProducts, categoryList, itemId, addNewClient, removeClient, amontClient } = props;
+  const {
+    onAdd,
+    databaseProducts,
+    categoryList,
+    itemIdAllList,
+    addNewClient,
+    removeClient,
+    productAllClient,
+    clientProducts,
+    insertNewListToTotal,
+    deletLastClientProducts,
+  } = props;
 
   const [dateField, setDateField] = useState(getDate);
   const [categoryField, setCategoryField] = useState("");
@@ -30,10 +42,16 @@ function SalesArea(props: Props) {
   const [unityFied, setUnityFild] = useState(true);
   const [amontField, setAmontField] = useState(1);
   const [expenseField, setExpenseField] = useState(false);
-  //const [categoryList, setCategoryList] = useState<string[]>([]);
   const [productList, setProductList] = useState<string[]>([]);
   const [valueOfOneUnit, setValueOfOneUnit] = useState(0);
-  const [orderList, setOrderList] = useState<Item[]>([]);
+  const [orderList, setOrderList] = useState<Item[]>(clientProducts);
+  const [title, setTitle] = useState<string | null>("Área de vendas");
+
+  useEffect(() => {
+    
+    setOrderList(clientProducts);
+  
+  }, [productAllClient]);
 
   //concertar any
 
@@ -50,8 +68,6 @@ function SalesArea(props: Props) {
   }, [categoryField]);
 
   useEffect(() => {
-    //if(valueField === 0){
-
     const price: Product[] = databaseProducts.filter(
       (product) => product.name === productField
     );
@@ -60,8 +76,6 @@ function SalesArea(props: Props) {
       setValueField(price[0].price);
       setValueOfOneUnit(price[0].price);
     }
-
-    //}
   }, [productField]);
 
   const handleAddEvent = () => {
@@ -98,9 +112,12 @@ function SalesArea(props: Props) {
 
       const newOrderList = [...orderList];
       newOrderList.push(list);
-      setOrderList(newOrderList);
 
-      //onAdd(list);
+      const totalList = productAllClient;
+
+      totalList[itemIdAllList] = newOrderList;
+
+      insertNewListToTotal(itemIdAllList, newOrderList);
 
       clearFields();
     }
@@ -116,18 +133,23 @@ function SalesArea(props: Props) {
 
   const addSaleToDatabase = () => {
     onAdd(orderList);
-    setOrderList([]);
 
-    /*     console.log(orderList);
-    orderList.forEach((list)=> {
-      console.log(list);
-      onAdd(list)
-    })
- */
+    if (productAllClient.length > 1) {
+      removeClient(itemIdAllList);
+    } else {
+      deletLastClientProducts();
+    }
   };
 
   const handleCancelSale = () => {
-    setOrderList([]);
+    let newList = [...orderList];
+
+    newList.splice(0);
+
+    const totalList = productAllClient;
+    totalList[itemIdAllList] = newList;
+
+    insertNewListToTotal(itemIdAllList, newList);
   };
 
   const formOfSale = (product: string) => {
@@ -144,20 +166,38 @@ function SalesArea(props: Props) {
 
     newList.splice(itemId, 1);
 
-    setOrderList(newList);
+    const totalList = productAllClient;
+    totalList[itemIdAllList] = newList;
+
+    insertNewListToTotal(itemIdAllList, newList);
+  };
+
+  const handleSetTitle = () => {
+    setTitle("Área de vendas");
   };
 
   return (
     <C.Container>
-      <C.Title contentEditable suppressContentEditableWarning={true}>
-        Área de vendas{" "}
+      <C.Title
+        onBlur={(e) => setTitle(e.target.textContent)}
+        contentEditable
+        suppressContentEditableWarning={true}
+      >
+        {title}
       </C.Title>
       <C.AddMoreOne onClick={addNewClient}>
         <FaUserPlus />
       </C.AddMoreOne>
-      { amontClient > 1 && <C.Closed onClick={()=> removeClient(itemId)} >
-        <IoMdClose />
-      </C.Closed>}
+      {productAllClient.length > 1 && (
+        <C.Closed
+          onClick={() => {
+            removeClient(itemIdAllList);
+            setTitle("Área de vendas");
+          }}
+        >
+          <IoMdClose />
+        </C.Closed>
+      )}
       <C.ContainerInput>
         <C.InputLabel className="date">
           <C.InputTitle>Data</C.InputTitle>
@@ -238,6 +278,7 @@ function SalesArea(props: Props) {
           addSaleToDatabase={addSaleToDatabase}
           handleCancelSale={handleCancelSale}
           removeItem={removeItem}
+          handleSetTitle={handleSetTitle}
         />
       )}
     </C.Container>

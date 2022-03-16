@@ -127,16 +127,6 @@ function Home(props: Props) {
     setDatabaseProducts(data);
   };
 
-  const logout = async () => {
-    await signOut(auth);
-    dispatch({ type: FormActions.setUser, payload: "" });
-    dispatch({ type: FormActions.setToken, payload: "" });
-    dispatch({ type: FormActions.setAuthenticated, payload: false });
-    navigate("/login");
-  };
-
-  const [salesField, setSalesField] = useState([0]);
-
   const handleShowRegisterProduct = () => {
     setShowRegisterProduct(!showRegisterProduct);
   };
@@ -145,26 +135,43 @@ function Home(props: Props) {
     setShowRegisterExpense(!showRegisterExpense);
   };
 
-  const addNewClient = () => {
-    const numClient = salesField.length;
+  const logout = async () => {
+    await signOut(auth);
+    dispatch({ type: FormActions.setUser, payload: "" });
+    dispatch({ type: FormActions.setToken, payload: "" });
+    dispatch({ type: FormActions.setAuthenticated, payload: false });
+    navigate("/login");
+  };
 
+  const [salesField, setSalesField] = useState([[]]);
+
+  const addNewClient = () => {
     const listClient = [...salesField];
 
-    listClient.push(numClient);
+    listClient.push([]);
 
     setSalesField(listClient);
-
-    console.log(numClient);
   };
 
   const removeClient = (clientId: number) => {
     const listClient = [...salesField];
-    console.log(listClient);
 
     listClient.splice(clientId, 1);
-    console.log(listClient);
 
     setSalesField(listClient);
+  };
+
+  const insertNewListToTotal = (itemId: number, list: any) => {
+    console.log(list);
+    const totalList = [...salesField];
+
+    totalList[itemId] = list;
+
+    setSalesField(totalList);
+  };
+
+  const deletLastClientProducts = () => {
+    setSalesField([[]]);
   };
 
   return (
@@ -193,13 +200,16 @@ function Home(props: Props) {
         {salesField.map((field, index) => (
           <SalesArea
             key={index}
-            itemId={index}
+            itemIdAllList={index}
             onAdd={handleAddItem}
             databaseProducts={databaseProducts}
             categoryList={productCategoryList}
             addNewClient={addNewClient}
             removeClient={removeClient}
-            amontClient={salesField.length}
+            productAllClient={salesField}
+            clientProducts={field}
+            insertNewListToTotal={insertNewListToTotal}
+            deletLastClientProducts={deletLastClientProducts}
           />
         ))}
 

@@ -13,8 +13,6 @@ type Props = {
 function TableItemSale(props: Props) {
   const { item, itemId, removeItem } = props;
 
-  console.log(itemId);
-
   return (
     <C.TableLine>
       <C.TableColumn>{fromatDate(item.date)}</C.TableColumn>

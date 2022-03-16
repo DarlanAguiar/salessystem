@@ -185,6 +185,7 @@ function RegisterProduct(props: Props) {
               onClick={() => {
                 setFormValues(initialState);
                 handleShowRegisterProduct();
+                setNewCategory(false);
               }}
             >
               Cancelar
@@ -193,8 +194,16 @@ function RegisterProduct(props: Props) {
         </C.FormField>
       </C.ContainerForm>
 
-      <C.CloseRegisterProductButton onClick={handleShowRegisterProduct} showRegisterProduct={showRegisterProduct} ><FaWineBottle /> Produto</C.CloseRegisterProductButton>
-
+      <C.CloseRegisterProductButton
+        onClick={() => {
+          handleShowRegisterProduct();
+          setFormValues(initialState);
+          setNewCategory(false)
+        }}
+        showRegisterProduct={showRegisterProduct}
+      >
+        <FaWineBottle /> Produto
+      </C.CloseRegisterProductButton>
     </C.Container>
   );
 }

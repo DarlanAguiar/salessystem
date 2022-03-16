@@ -92,7 +92,7 @@ function RegisterExpense(props: Props) {
           </C.InputDiv>
           {newCategory && (
             <C.InputDiv width={100}>
-              <C.InputLabel>Nome da categoria:</C.InputLabel>
+              <C.InputLabel>Nova categoria:</C.InputLabel>
               <C.InputText
                 type={"text"}
                 name={"category"}

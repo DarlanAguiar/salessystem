@@ -8,11 +8,17 @@ type Props = {
   addSaleToDatabase: () => void;
   handleCancelSale: () => void;
   removeItem: (itenId: number) => void;
-  
+  handleSetTitle: () => void;
 };
 
 function OrderList(props: Props) {
-  const { orderList, addSaleToDatabase, handleCancelSale, removeItem } = props;
+  const {
+    orderList,
+    addSaleToDatabase,
+    handleCancelSale,
+    removeItem,
+    handleSetTitle,
+  } = props;
 
   const [amount, setAmount] = useState(0);
   const [amountPaid, setAmountPaid] = useState(0);
@@ -98,7 +104,13 @@ function OrderList(props: Props) {
           <button className="cancelSale" onClick={handleCancelSale}>
             Cancelar
           </button>
-          <button className="completeSaleButton" onClick={addSaleToDatabase}>
+          <button
+            className="completeSaleButton"
+            onClick={() => {
+              addSaleToDatabase();
+              handleSetTitle();
+            }}
+          >
             Fechar venda
           </button>
         </C.CloseSale>
