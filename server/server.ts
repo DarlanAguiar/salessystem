@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use("/", express.static(resolve(__dirname, "../build")));
 
-app.use("/home", routes);
+app.use("/", routes);
 
 app.listen(process.env.PORT || 3000, (err) => {
   if (err) {

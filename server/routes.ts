@@ -52,7 +52,7 @@ const validateToken = async (userDB, token) => {
   return validToken;
 };
 
-router.post("/modeltransaction", async (req, res) => {
+router.post("/home/modeltransaction", async (req, res) => {
   const { data, user, token } = req.body;
   const validated = await validateToken(user, token);
 
@@ -70,7 +70,7 @@ router.post("/modeltransaction", async (req, res) => {
   }
 });
 
-router.post("/transaction", async (req, res) => {
+router.post("/home/transaction", async (req, res) => {
   const { data, user, token } = req.body;
   const validated = await validateToken(user, token);
 
@@ -88,7 +88,7 @@ router.post("/transaction", async (req, res) => {
   }
 });
 
-router.get("/transaction/:user/:token", async (req, res) => {
+router.get("/home/transaction/:user/:token", async (req, res) => {
   const user = req.params.user;
   const token = req.params.token;
   const validated = await validateToken(user, token);
@@ -121,7 +121,7 @@ router.get("/transaction/:user/:token", async (req, res) => {
   }
 });
 
-router.get("/modeltransaction/:user/:token", async (req, res) => {
+router.get("/home/modeltransaction/:user/:token", async (req, res) => {
   const user = req.params.user;
   const token = req.params.token;
   const validated = await validateToken(user, token);
@@ -154,7 +154,7 @@ router.get("/modeltransaction/:user/:token", async (req, res) => {
   }
 });
 
-router.delete("/transaction", async (req, res) => {
+router.delete("/home/transaction", async (req, res) => {
   const { id, user, token } = req.body;
   const validated = await validateToken(user, token);
 
@@ -171,7 +171,7 @@ router.delete("/transaction", async (req, res) => {
   }
 });
 
-router.delete("/modeltransaction", async (req, res) => {
+router.delete("/home/modeltransaction", async (req, res) => {
   const { id, user, token } = req.body;
   const validated = await validateToken(user, token);
 
