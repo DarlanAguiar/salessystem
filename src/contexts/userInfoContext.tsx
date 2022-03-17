@@ -1,5 +1,6 @@
 // Context , Reducer, Provider , Hook
 
+import { UserCredential } from "firebase/auth";
 import { createContext, ReactNode, useContext, useReducer } from "react";
 
 //criando types
@@ -9,6 +10,7 @@ type State = {
   authenticated: boolean;
   theme: string;
   idConfiguration: string;
+  infoUser: UserCredential["user"] | null;
 };
 
 type Action = {
@@ -33,6 +35,7 @@ const initialData: State = {
   authenticated: false,
   theme: "",
   idConfiguration: "",
+  infoUser: null,
 };
 
 //criando um Reducer
@@ -43,6 +46,7 @@ export enum FormActions {
   setAuthenticated,
   setTheme,
   setIdConfiguration,
+  setInfoUser,
 }
 
 const formReducer = (state: State, action: Action) => {
@@ -56,8 +60,9 @@ const formReducer = (state: State, action: Action) => {
     case FormActions.setTheme:
       return { ...state, theme: action.payload };
     case FormActions.setIdConfiguration:
-      console.log(action.payload);
       return { ...state, idConfiguration: action.payload };
+    case FormActions.setInfoUser:
+      return { ...state, infoUser: action.payload };
     default:
       return state;
   }
@@ -87,7 +92,6 @@ export const useInfoContext = () => {
   return context;
 };
 
-
 enum VendaPor {
   Kg,
   Unidade,
@@ -95,12 +99,10 @@ enum VendaPor {
 
 type teste = {
   name: VendaPor;
-  age: VendaPor
-}
+  age: VendaPor;
+};
 
 const teste: teste = {
-
   name: VendaPor.Kg,
-  age: 45
-
-}
+  age: 45,
+};

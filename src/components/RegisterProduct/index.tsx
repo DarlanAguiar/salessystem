@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { FaWineBottle, FaRegMoneyBillAlt } from "react-icons/fa";
+import { FaWineBottle } from "react-icons/fa";
 
 import * as C from "./styles";
+import { IoMdClose } from "react-icons/io";
 
-import { Product } from "../../types/Product";
+
+import { useInfoContext } from "../../contexts/userInfoContext";
+
+import { insertTransactionModelIntoDatabase } from "../../database/firebase";
 
 type Props = {
-  databaseProducts: Product[];
-  setDatabaseProducts: (data: Product[]) => void;
+  //databaseProducts: Product[];
+  //setDatabaseProducts: (data: Product[]) => void;
   handleShowRegisterProduct: () => void;
   showRegisterProduct: boolean;
-  productCategoryList: string[]; //recebi alista de categoria
+  productCategoryList: string[];
+  getProducts: ()=> void;
 };
 
 type FormType = {
@@ -30,12 +35,15 @@ const initialState = {
 
 function RegisterProduct(props: Props) {
   const {
-    setDatabaseProducts,
-    databaseProducts,
+    //setDatabaseProducts,
+    //databaseProducts,
     handleShowRegisterProduct,
     showRegisterProduct,
     productCategoryList,
+    getProducts,
   } = props;
+
+  const { state } = useInfoContext();
 
   const [formValues, setFormValues] = useState<FormType>(initialState);
   const [newCategory, setNewCategory] = useState(false);
@@ -47,15 +55,15 @@ function RegisterProduct(props: Props) {
     setFormValues({ ...formValues, [campo]: value });
   };
 
-  const insertItemIntoDatabase = (newProduct: Product) => {
+ /*  const insertItemIntoDatabase = (newProduct: Product) => {
     let databaseProductList = [...databaseProducts];
 
     databaseProductList.push(newProduct);
 
     setDatabaseProducts(databaseProductList);
   };
-
-  const handleSubmit = (e: any) => {
+ */
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (
@@ -76,11 +84,18 @@ function RegisterProduct(props: Props) {
       price: Number(product.price),
       expense: false,
     };
-    insertItemIntoDatabase(newProduct);
-
-    setFormValues(initialState);
 
     handleShowRegisterProduct();
+
+    const token = await state.infoUser?.getIdToken();
+    const user = state.infoUser?.email;
+    await insertTransactionModelIntoDatabase(newProduct, user, token);
+
+    getProducts()
+
+    //insertItemIntoDatabase(newProduct);
+
+    setFormValues(initialState);
   };
 
   return (
@@ -185,7 +200,7 @@ function RegisterProduct(props: Props) {
               onClick={() => {
                 setFormValues(initialState);
                 handleShowRegisterProduct();
-                setNewCategory(false);
+                setNewCategory(true);
               }}
             >
               Cancelar
@@ -198,7 +213,7 @@ function RegisterProduct(props: Props) {
         onClick={() => {
           handleShowRegisterProduct();
           setFormValues(initialState);
-          setNewCategory(false)
+          setNewCategory(false);
         }}
         showRegisterProduct={showRegisterProduct}
       >

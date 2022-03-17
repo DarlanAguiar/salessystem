@@ -16,4 +16,30 @@ export const Category = styled.div<{ color: string }>`
 
 export const Value = styled.div<{ color: string }>`
   color: ${(props) => props.color};
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  
 `;
+
+export const ButtonDeleteItem = styled.button`
+
+position: absolute;
+top: -5px;
+right: 20px;
+font-size: 20px;
+color: red;
+background-color: transparent;
+border: 0;
+cursor: pointer;
+transition: .5s;
+padding:2px;
+display:flex;
+align-items: center;
+border-radius: 3px;
+
+&:hover{
+  background-color: red;
+  color: white;
+}
+`

@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   margin: 50px auto;
   transition: all ease 0.8s;
+  box-shadow: 0px 0px 10px black;
 `;
 
 export const HeaderText = styled.div`
@@ -43,7 +44,7 @@ export const Form = styled.div`
     font-size: 18px;
     border-radius: 5px;
     background-color: var(--colorBackground2);
-    color: white;
+    color: black;
   }
 
   p {
@@ -56,6 +57,11 @@ export const Form = styled.div`
 
 export const FormInput = styled.div`
   color: var(--colorFontSecondary);
+
+  p{
+    font-size: 14px;
+    margin: -5px 5px 5px 5px;
+  }
 
   label {
     display: block;
@@ -77,5 +83,6 @@ export const FormInput = styled.div`
     font-weight: bold;
     border-radius: 5px;
     background-color: var(--colorFontPrimary);
+    
   }
 `;

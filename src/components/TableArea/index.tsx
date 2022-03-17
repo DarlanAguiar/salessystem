@@ -1,15 +1,16 @@
 import React from "react";
-import { Item } from "../../types/Item";
+import { ItemDataBase } from "../../types/Item";
 import TableItem from "../TableItem";
 import * as C from "./styles";
 
 type Props = {
-  filteredList: Item[];
+  filteredList: ItemDataBase[];
   titleTable: string;
+  getList: ()=> void;
 };
 
 function TableArea(props: Props) {
-  const { filteredList, titleTable } = props;
+  const { filteredList, titleTable, getList } = props;
 
   return (
     <C.ContainerTable>
@@ -27,7 +28,7 @@ function TableArea(props: Props) {
 
         <tbody>
           {filteredList.map((item, index) => (
-            <TableItem key={index} item={item} />
+            <TableItem key={index} item={item} getList={getList} />
           ))}
         </tbody>
       </C.Table>

@@ -19,23 +19,18 @@ import { useNavigate } from "react-router-dom";
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
-interface Props {}
-
-function Login(props: Props) {
-  const {} = props;
-
+function Login() {
   const { state, dispatch } = useInfoContext();
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>("");
 
   const navigate = useNavigate();
 
-  //concertar o type de any
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
 
-    console.log(email, password);
+   
 
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
@@ -46,11 +41,11 @@ function Login(props: Props) {
       dispatch({ type: FormActions.setUser, payload: userEmail });
       dispatch({ type: FormActions.setToken, payload: token });
       dispatch({ type: FormActions.setAuthenticated, payload: true });
+      dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
       navigate("/");
     } catch (error) {
-      console.log("Erro do catch:", JSON.stringify(error));
-      //setErrorMessage(error);
+      showError(error);
     }
   };
 
@@ -67,12 +62,12 @@ function Login(props: Props) {
         dispatch({ type: FormActions.setUser, payload: userEmail });
         dispatch({ type: FormActions.setToken, payload: token });
         dispatch({ type: FormActions.setAuthenticated, payload: true });
+        dispatch({ type: FormActions.setInfoUser, payload: result.user });
 
         navigate("/");
       });
-    } catch (error) {
-      console.log(error);
-      //setErrorMessage(error);
+    } catch (error: any) {
+      showError(error);
     }
   };
 
@@ -87,13 +82,54 @@ function Login(props: Props) {
       dispatch({ type: FormActions.setUser, payload: userEmail });
       dispatch({ type: FormActions.setToken, payload: token });
       dispatch({ type: FormActions.setAuthenticated, payload: true });
+      dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
       navigate("/");
 
-      console.log(state.user, state.authenticated, state.token);
-    } catch (error) {
-      console.log(error);
+      
+    } catch (error: any) {
+      showError(error);
+      
     }
+  };
+
+  const showError = (error: any) => {
+   
+    let errorMessage = null;
+    switch (error?.message) {
+      case null:
+      case undefined:
+        break;
+      case "Firebase: Error (auth/internal-error).":
+        errorMessage = "Dados incompleto";
+        break;
+      case "Firebase: Error (auth/missing-email).":
+        errorMessage = "Adicione o Email";
+        break;
+      case "Firebase: Error (auth/invalid-email).":
+        errorMessage = "Email inválido";
+        break;
+      case "Firebase: Password should be at least 6 characters (auth/weak-password).":
+        errorMessage = "A senha deve conter no mínimo 6 caracteres";
+        break;
+      case "Firebase: Error (auth/email-already-in-use).":
+        errorMessage = "Email utilizado por outro usuáro";
+        break;
+      case "Firebase: Error (auth/wrong-password).":
+        errorMessage = "Senha inválida";
+        break;
+      case "Firebase: Error (auth/user-not-found).":
+        errorMessage = "Usuário não existe";
+        break;
+      case "Senhas não conferem":
+        errorMessage = "Senhas não conferem";
+        break;
+      default:
+        errorMessage =
+          "cadastro não efetivado, confira os dados e tente novamente";
+    }
+
+    return setErrorMessage(errorMessage);
   };
 
   return (
@@ -125,6 +161,7 @@ function Login(props: Props) {
             }}
             value={password}
           />
+          <p>{errorMessage}</p>
 
           <button onClick={handleSubmit}>Entrar</button>
         </C.FormInput>

@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Item } from "../../types/Item";
 import * as C from "./styles";
 
 import { getDate } from "../../helpers/dateFilter";
-import { items } from "../../data/items";
+import { useInfoContext } from "../../contexts/userInfoContext";
 
 import { Product } from "../../types/Product";
-import OrderList from "../OrderList";
+import { insertTransactionIntoDatabase } from "../../database/firebase";
 
 type Props = {
   onAdd: (item: Item[]) => void;
@@ -14,9 +14,10 @@ type Props = {
   categoryList: string[];
 };
 
-
 function ExpenseArea(props: Props) {
   const { onAdd, databaseProducts, categoryList } = props;
+
+  const { state } = useInfoContext();
 
   const [dateField, setDateField] = useState(getDate());
   const [categoryExpenseField, setCategoryExpenseField] = useState("");
@@ -39,7 +40,7 @@ function ExpenseArea(props: Props) {
     setProductList(newProductsList.sort());
   }, [categoryExpenseField]);
 
-  const handleAddEvent = () => {
+  const handleAddExpenseToDatabase = async () => {
     let errors: string[] = [];
 
     if (categoryExpenseField === "") {
@@ -70,15 +71,22 @@ function ExpenseArea(props: Props) {
         expense: true,
       };
 
+      setShowExpenseField(false)
+
+      //const user = state.infoUser?.email;
+      //const token = await state.infoUser?.getIdToken();
+
+      //await insertTransactionIntoDatabase(itemExpense, user, token);
+
       onAdd([itemExpense]);
-      console.log(itemExpense);
+     
 
       clearFields();
     }
   };
 
   const clearFields = () => {
-    setDateField("");
+    setDateField(getDate());
     setCategoryExpenseField("");
     setExpenseField("");
     setValueField(0);
@@ -148,7 +156,7 @@ function ExpenseArea(props: Props) {
           </C.InputLabel>
           <C.InputLabel className="button">
             <C.InputTitle>&nbsp;</C.InputTitle>
-            <C.Button className="buttonRegister" onClick={handleAddEvent}>
+            <C.Button className="buttonRegister" onClick={handleAddExpenseToDatabase}>
               Registrar despesa
             </C.Button>
             <C.Button

@@ -1,17 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { fromatDate } from "../../helpers/dateFilter";
-import { Item } from "../../types/Item";
+import { ItemDataBase } from "../../types/Item";
 import * as C from "./styles";
 
+import {useInfoContext} from "../../contexts/userInfoContext"
+
+import { IoMdClose } from "react-icons/io";
+import { deleteTransactionDatabase } from "../../database/firebase";
+
 type Props = {
-  item: Item;
+  item: ItemDataBase;
+  getList: ()=> void;
 };
 
 function TableItem(props: Props) {
-  const { item } = props;
+  const { item, getList } = props;
+
+  const {state} = useInfoContext()
+
+  const [showButtonRemove, setShowButtonRemove] = useState(false);
+
+  const removeItemDatabase = async() => {
+
+
+    const itemId = item.id;
+    
+
+    const user = state.infoUser?.email
+    const token = await state.infoUser?.getIdToken()
+
+    await deleteTransactionDatabase(itemId, user, token)
+
+    getList()
+
+    
+
+  }
 
   return (
-    <C.TableLine>
+    <C.TableLine onMouseEnter={() => setShowButtonRemove(true)} onMouseLeave={()=> setShowButtonRemove(false)}>
       <C.TableColumn>{fromatDate(item.date)}</C.TableColumn>
 
       <C.TableColumn>
@@ -33,6 +60,11 @@ function TableItem(props: Props) {
             style: "currency",
             currency: "BRL",
           })}
+          {showButtonRemove && (
+            <C.ButtonDeleteItem onClick={removeItemDatabase}>
+              <IoMdClose />
+            </C.ButtonDeleteItem>
+          )}
         </C.Value>
       </C.TableColumn>
     </C.TableLine>

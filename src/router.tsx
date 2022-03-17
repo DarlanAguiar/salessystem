@@ -1,25 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseApp } from "./database/firebase";
-
 import { useNavigate } from "react-router-dom";
 
 import Home from "./components/Home";
 import Login from "./components/Login";
-import { ReactNode } from "react";
 import { useInfoContext, FormActions } from "./contexts/userInfoContext";
 
 const auth = getAuth(firebaseApp);
 
-interface Props {}
-
-function Router(props: Props) {
-  const {} = props;
-
+function Router() {
   const { state, dispatch } = useInfoContext();
 
-  // concertar tyles any
+  // concertar type any
   const Private = ({ children }: any) => {
     const navigate = useNavigate();
 
@@ -35,6 +28,7 @@ function Router(props: Props) {
             payload: usuarioFirebase.email,
           });
           dispatch({ type: FormActions.setToken, payload: token });
+          dispatch({type:FormActions.setInfoUser, payload: usuarioFirebase })
         } else {
           navigate("/login");
         }

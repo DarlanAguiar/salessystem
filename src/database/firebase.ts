@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import { Item, ItemDataBase } from "../types/Item";
+import { Product, ProductDatabase } from "../types/Product";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
@@ -10,3 +12,161 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
+
+//const URL = "/home";
+const URL = "http://localhost:3000/home/";
+
+export const insertTransactionModelIntoDatabase = async (
+  data: Product,
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let message = {};
+
+  await fetch(`${URL}modeltransaction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({ data, user, token }),
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.error) {
+        message = { error: resp.error };
+      }
+    });
+  return message;
+};
+
+export const insertTransactionIntoDatabase = async (
+  data: Item,
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let message = {};
+
+  console.log("passou aqui");
+
+  await fetch(`${URL}transaction`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({ data, user, token }),
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.error) {
+        message = { error: resp.error };
+      }
+    });
+  return message;
+};
+
+export const getTransactionList = async (
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let data: ItemDataBase[] = [];
+
+  await fetch(`${URL}transaction/${user}/${token}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
+    .then((resp) => {
+      const parsedResp = resp.json();
+
+      return parsedResp;
+    })
+    .then((resp) => (data = resp))
+    .catch((err) => {
+      console.log("Inicio do catch");
+
+      throw new Error("Problemas no servidor GET");
+    });
+
+  return data;
+};
+
+
+export const getModelTransactionList = async (
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let data: ProductDatabase[] = [];
+
+  await fetch(`${URL}modeltransaction/${user}/${token}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
+    .then((resp) => {
+      const parsedResp = resp.json();
+
+      return parsedResp;
+    })
+    .then((resp) => (data = resp))
+    .catch((err) => {
+      console.log("Inicio do catch");
+
+      throw new Error("Problemas no servidor GET");
+    });
+
+  return data;
+};
+
+
+export const deleteTransactionDatabase = async (id:string , user: string | null | undefined,
+  token: string | undefined) => {
+  let message = {};
+
+  await fetch(`${URL}transaction`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({ id, user, token}),
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      console.log(resp);
+      if (resp.error) {
+        message = { error: resp.error };
+      }
+    });
+  return message;
+};
+
+export const deleteModelDatabase = async (id:string , user: string | null | undefined,
+  token: string | undefined) => {
+  let message = {};
+
+  await fetch(`${URL}modeltransaction`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({ id, user, token}),
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      console.log(resp);
+      if (resp.error) {
+        message = { error: resp.error };
+      }
+    });
+  return message;
+};
+
+
+

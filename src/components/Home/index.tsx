@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
+
 import { FormActions, useInfoContext } from "../../contexts/userInfoContext";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoIosTrain } from "react-icons/io";
-import { FaWineBottle, FaRegMoneyBillAlt } from "react-icons/fa";
-import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
-import { Item } from "../../types/Item";
-import { items } from "../../data/items";
+import { Item, ItemDataBase } from "../../types/Item";
 
 import {
   getCurrentMonth,
@@ -25,23 +24,27 @@ import SalesArea from "../SalesArea";
 import RegisterProduct from "../RegisterProduct";
 
 import { products } from "../../data/products";
-import { Product } from "../../types/Product";
+
 import RegisterExpense from "../RegisterExpense";
 import ExpenseArea from "../ExpenseArea";
+import {
+  getModelTransactionList,
+  getTransactionList,
+  insertTransactionIntoDatabase,
+} from "../../database/firebase";
+import TableRemoveModel from "../TableRemoveModel";
+import { Product, ProductDatabase } from "../../types/Product";
 
 const auth = getAuth();
-interface Props {}
 
-function Home(props: Props) {
-  const {} = props;
-
+function Home() {
   const { state, dispatch } = useInfoContext();
   const navigate = useNavigate();
 
-  const [databaseProducts, setDatabaseProducts] = useState(products);
+  const [databaseProducts, setDatabaseProducts] = useState<ProductDatabase[]>([]);
 
-  const [list, setList] = useState(items);
-  const [filteredList, setFilteredList] = useState<Item[]>([]);
+  const [list, setList] = useState<ItemDataBase[]>([]);
+  const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
   //pegando o mês atual
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
   const [currentDay, setCurrentDay] = useState(getCurrentDay());
@@ -49,9 +52,36 @@ function Home(props: Props) {
   const [expense, setExpense] = useState(0);
   const [showRegisterProduct, setShowRegisterProduct] = useState(false);
   const [showRegisterExpense, setShowRegisterExpense] = useState(false);
+  const [showRemoveModel, setShowRemoveModel] = useState(false);
   const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
   const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
   const [titleTable, setTitleTable] = useState("");
+
+  const getList = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    if (token !== undefined) {
+      const listDataBase = await getTransactionList(user, token);
+
+      setList(listDataBase);
+    }
+  };
+
+  const getProducts = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    if (token !== undefined) {
+      const listDataBaseProducts = await getModelTransactionList(user, token);
+
+     
+      setDatabaseProducts(listDataBaseProducts);
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+    getList();
+  }, []);
 
   useEffect(() => {
     setFilteredList(filterListByMonth(list, currentMonth));
@@ -116,16 +146,23 @@ function Home(props: Props) {
     newList.push(item)
     setList(newList) */
 
-    let newList = [...list];
-    items.forEach((item) => {
-      newList.push(item);
+    //let newList = [...list];
+    items.forEach(async (item) => {
+      const user = state.infoUser?.email;
+
+      const token = await state.infoUser?.getIdToken();
+
+      await insertTransactionIntoDatabase(item, user, token);
+
+      //newList.push(item);
     });
-    setList(newList);
+    ///setList(newList);
+    getList();
   };
 
-  const handleSetDatabaseProducts = (data: Product[]) => {
+ /*  const handleSetDatabaseProducts = (data: Product[]) => {
     setDatabaseProducts(data);
-  };
+  }; */
 
   const handleShowRegisterProduct = () => {
     setShowRegisterProduct(!showRegisterProduct);
@@ -135,11 +172,16 @@ function Home(props: Props) {
     setShowRegisterExpense(!showRegisterExpense);
   };
 
+  const handleSetShowRemoveModel = ()=> {
+    setShowRemoveModel(!showRemoveModel)
+
+  }
   const logout = async () => {
     await signOut(auth);
     dispatch({ type: FormActions.setUser, payload: "" });
     dispatch({ type: FormActions.setToken, payload: "" });
     dispatch({ type: FormActions.setAuthenticated, payload: false });
+    dispatch({ type: FormActions.setInfoUser, payload: null });
     navigate("/login");
   };
 
@@ -209,33 +251,36 @@ function Home(props: Props) {
             productAllClient={salesField}
             clientProducts={field}
             insertNewListToTotal={insertNewListToTotal}
-            deletLastClientProducts={deletLastClientProducts}
+            deleteLastClientProducts={deletLastClientProducts}
           />
         ))}
 
-        <TableArea filteredList={filteredList} titleTable={titleTable} />
+        <TableArea filteredList={filteredList} titleTable={titleTable} getList={getList}/>
       </C.Body>
 
       <RegisterExpense
-        databaseProducts={databaseProducts}
-        setDatabaseProducts={handleSetDatabaseProducts}
+        //databaseProducts={databaseProducts}
+        //setDatabaseProducts={handleSetDatabaseProducts}
         handleShowRegisterExpense={handleShowRegisterExpense}
         showRegisterExpense={showRegisterExpense}
         expenseListCategory={expenseListCategory}
+        getProducts={getProducts}
       />
       <RegisterProduct
-        databaseProducts={databaseProducts}
-        setDatabaseProducts={handleSetDatabaseProducts}
+        //databaseProducts={databaseProducts}
+        //setDatabaseProducts={handleSetDatabaseProducts}
         handleShowRegisterProduct={handleShowRegisterProduct}
         showRegisterProduct={showRegisterProduct}
         productCategoryList={productCategoryList}
+        getProducts={getProducts}
       />
       <ExpenseArea
         onAdd={handleAddItem}
         databaseProducts={databaseProducts}
         categoryList={expenseListCategory}
       />
-      {`${state.user} - ${state.authenticated} - ${state.token}`}
+
+      <TableRemoveModel databaseProduct={databaseProducts} getProducts={getProducts} handleSetShowRemoveModel={handleSetShowRemoveModel} />
     </C.Container>
   );
 }

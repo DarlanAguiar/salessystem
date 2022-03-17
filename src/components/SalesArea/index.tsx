@@ -18,7 +18,7 @@ type Props = {
   productAllClient: any;
   clientProducts: Item[];
   insertNewListToTotal: (itemid: number, list: any) => void;
-  deletLastClientProducts: () => void;
+  deleteLastClientProducts: () => void;
 };
 
 function SalesArea(props: Props) {
@@ -32,25 +32,25 @@ function SalesArea(props: Props) {
     productAllClient,
     clientProducts,
     insertNewListToTotal,
-    deletLastClientProducts,
+    deleteLastClientProducts,
   } = props;
 
-  const [dateField, setDateField] = useState(getDate);
+  const [dateField, setDateField] = useState(getDate());
+  //const [dateField, setDateField] = useState(getDate);
   const [categoryField, setCategoryField] = useState("");
   const [productField, setProductField] = useState("");
   const [valueField, setValueField] = useState(0);
   const [unityFied, setUnityFild] = useState(true);
   const [amontField, setAmontField] = useState(1);
   const [expenseField, setExpenseField] = useState(false);
+  //const [categoryList, setCategoryList] = useState<string[]>([]);
   const [productList, setProductList] = useState<string[]>([]);
   const [valueOfOneUnit, setValueOfOneUnit] = useState(0);
   const [orderList, setOrderList] = useState<Item[]>(clientProducts);
   const [title, setTitle] = useState<string | null>("Área de vendas");
 
   useEffect(() => {
-    
     setOrderList(clientProducts);
-  
   }, [productAllClient]);
 
   //concertar any
@@ -100,6 +100,16 @@ function SalesArea(props: Props) {
     } else {
       const tempDate = dateField ? new Date(dateField) : new Date();
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
+
+      console.log(new Date().getHours()+4)
+      if(tempDate.getHours() === 0 && tempDate.getMinutes() === 0&& tempDate.getSeconds() === 0){
+        const now = new Date();
+        tempDate.setHours(now.getHours()+4)
+        tempDate.setMinutes(now.getMinutes())
+        tempDate.setSeconds(now.getSeconds())
+      };
+      
+
       const list: Item = {
         date: tempDate,
         category: categoryField,
@@ -112,12 +122,15 @@ function SalesArea(props: Props) {
 
       const newOrderList = [...orderList];
       newOrderList.push(list);
-
+/* 
       const totalList = productAllClient;
 
-      totalList[itemIdAllList] = newOrderList;
+      totalList[itemIdAllList] = newOrderList; */
 
       insertNewListToTotal(itemIdAllList, newOrderList);
+
+     
+    
 
       clearFields();
     }
@@ -137,7 +150,7 @@ function SalesArea(props: Props) {
     if (productAllClient.length > 1) {
       removeClient(itemIdAllList);
     } else {
-      deletLastClientProducts();
+      deleteLastClientProducts();
     }
   };
 
@@ -173,7 +186,10 @@ function SalesArea(props: Props) {
   };
 
   const handleSetTitle = () => {
-    setTitle("Área de vendas");
+    if (productAllClient.length === 1) {
+      
+      setTitle("Área de vendas");
+    }
   };
 
   return (
@@ -203,7 +219,7 @@ function SalesArea(props: Props) {
           <C.InputTitle>Data</C.InputTitle>
           <C.Input
             type="date"
-            value={dateField}
+            value={dateField} 
             onChange={(e) => setDateField(e.target.value)}
           />
         </C.InputLabel>

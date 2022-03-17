@@ -355,6 +355,4 @@ export const products: Product[] = [
   expense: boolean;
 */
 
-//unity measure
-
 

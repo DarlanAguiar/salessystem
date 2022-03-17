@@ -1,40 +1,48 @@
 import React, { useState } from "react";
 import {FaRegMoneyBillAlt} from  "react-icons/fa"
 
+import { insertTransactionModelIntoDatabase } from "../../database/firebase";
+
+import {useInfoContext} from "../../contexts/userInfoContext"
+
 import * as C from "./styles";
 
 import { Product } from "../../types/Product";
 
 type Props = {
-  databaseProducts: Product[];
-  setDatabaseProducts: (data: Product[]) => void;
+  //databaseProducts: Product[];
+  //setDatabaseProducts: (data: Product[]) => void;
   handleShowRegisterExpense: () => void;
   showRegisterExpense: boolean;
   expenseListCategory: string[];
+  getProducts: ()=> void;
 };
 
 function RegisterExpense(props: Props) {
   const {
-    setDatabaseProducts,
-    databaseProducts,
+    //setDatabaseProducts,
+    //databaseProducts,
     handleShowRegisterExpense,
     showRegisterExpense,
     expenseListCategory,
+    getProducts
   } = props;
+
+  const {state, dispatch} = useInfoContext();
 
   const [inputCategory, setInputCategory] = useState("");
   const [inputNameExpense, setinputNameExpense] = useState("");
   const [newCategory, setNewCategory] = useState(false);
 
-  const insertItemIntoDatabase = (newProduct: Product) => {
+ /*  const insertItemIntoDatabase = (newProduct: Product) => {
     let databaseProductList = [...databaseProducts];
 
     databaseProductList.push(newProduct);
 
     setDatabaseProducts(databaseProductList);
-  };
+  }; */
   // concertar any
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async(e) => {
     e.preventDefault();
 
     //forcar a barra no type de e
@@ -54,9 +62,14 @@ function RegisterExpense(props: Props) {
       expense: true,
     };
 
-    insertItemIntoDatabase(newExpense);
-
     handleShowRegisterExpense();
+    const user = state.infoUser?.email
+    const token = await state.infoUser?.getIdToken();
+
+    await insertTransactionModelIntoDatabase(newExpense, user, token)
+    getProducts()
+
+    //insertItemIntoDatabase(newExpense);
 
     setInputCategory("");
     setinputNameExpense("");
