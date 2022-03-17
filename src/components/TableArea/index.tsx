@@ -6,7 +6,7 @@ import * as C from "./styles";
 type Props = {
   filteredList: ItemDataBase[];
   titleTable: string;
-  getList: ()=> void;
+  getList: () => void;
 };
 
 function TableArea(props: Props) {

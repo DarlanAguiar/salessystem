@@ -18,51 +18,45 @@ export const Title = styled.div`
 `;
 
 export const AddMoreOne = styled.button`
-position: absolute;
-top: 7px;
-right: 60px;
-font-size: 20px;
-color: darkblue;
-background-color: transparent;
-border: 0;
-cursor: pointer;
-transition: .5s;
-padding:2px;
-display:flex;
-align-items: center;
-border-radius: 3px;
+  position: absolute;
+  top: 7px;
+  right: 60px;
+  font-size: 20px;
+  color: darkblue;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: 0.5s;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
 
-&:hover{
-  background-color: lightblue;
-}
-
-
-`
+  &:hover {
+    background-color: lightblue;
+  }
+`;
 
 export const Closed = styled.button`
+  position: absolute;
+  top: 7px;
+  right: 20px;
+  font-size: 20px;
+  color: red;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: 0.5s;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
 
-position: absolute;
-top: 7px;
-right: 20px;
-font-size: 20px;
-color: red;
-background-color: transparent;
-border: 0;
-cursor: pointer;
-transition: .5s;
-padding:2px;
-display:flex;
-align-items: center;
-border-radius: 3px;
-
-&:hover{
-  background-color: red;
-  color: white;
-}
-
-
-
-`
+  &:hover {
+    background-color: red;
+    color: white;
+  }
+`;
 
 export const ContainerInput = styled.div`
   display: flex;

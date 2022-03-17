@@ -3,42 +3,39 @@ import { fromatDate } from "../../helpers/dateFilter";
 import { ItemDataBase } from "../../types/Item";
 import * as C from "./styles";
 
-import {useInfoContext} from "../../contexts/userInfoContext"
+import { useInfoContext } from "../../contexts/userInfoContext";
 
 import { IoMdClose } from "react-icons/io";
 import { deleteTransactionDatabase } from "../../database/firebase";
 
 type Props = {
   item: ItemDataBase;
-  getList: ()=> void;
+  getList: () => void;
 };
 
 function TableItem(props: Props) {
   const { item, getList } = props;
 
-  const {state} = useInfoContext()
+  const { state } = useInfoContext();
 
   const [showButtonRemove, setShowButtonRemove] = useState(false);
 
-  const removeItemDatabase = async() => {
-
-
+  const removeItemDatabase = async () => {
     const itemId = item.id;
-    
 
-    const user = state.infoUser?.email
-    const token = await state.infoUser?.getIdToken()
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
 
-    await deleteTransactionDatabase(itemId, user, token)
+    await deleteTransactionDatabase(itemId, user, token);
 
-    getList()
-
-    
-
-  }
+    getList();
+  };
 
   return (
-    <C.TableLine onMouseEnter={() => setShowButtonRemove(true)} onMouseLeave={()=> setShowButtonRemove(false)}>
+    <C.TableLine
+      onMouseEnter={() => setShowButtonRemove(true)}
+      onMouseLeave={() => setShowButtonRemove(false)}
+    >
       <C.TableColumn>{fromatDate(item.date)}</C.TableColumn>
 
       <C.TableColumn>

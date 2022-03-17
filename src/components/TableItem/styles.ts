@@ -19,27 +19,25 @@ export const Value = styled.div<{ color: string }>`
   display: flex;
   justify-content: space-between;
   position: relative;
-  
 `;
 
 export const ButtonDeleteItem = styled.button`
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  font-size: 20px;
+  color: red;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: 0.5s;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
 
-position: absolute;
-top: -5px;
-right: 20px;
-font-size: 20px;
-color: red;
-background-color: transparent;
-border: 0;
-cursor: pointer;
-transition: .5s;
-padding:2px;
-display:flex;
-align-items: center;
-border-radius: 3px;
-
-&:hover{
-  background-color: red;
-  color: white;
-}
-`
+  &:hover {
+    background-color: red;
+    color: white;
+  }
+`;

@@ -30,8 +30,6 @@ function Login() {
   const handleSubmit: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
 
-   
-
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
 
@@ -54,9 +52,6 @@ function Login() {
       await signInWithPopup(auth, googleProvider).then(async (result) => {
         GoogleAuthProvider.credentialFromResult(result);
 
-        // console.log((result.user as any).accessToken);
-
-        // informaçoes do usuario.
         const token = await result.user.getIdToken();
         const userEmail = result.user.email;
         dispatch({ type: FormActions.setUser, payload: userEmail });
@@ -85,16 +80,12 @@ function Login() {
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
       navigate("/");
-
-      
     } catch (error: any) {
       showError(error);
-      
     }
   };
 
   const showError = (error: any) => {
-   
     let errorMessage = null;
     switch (error?.message) {
       case null:

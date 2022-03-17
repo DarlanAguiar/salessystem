@@ -13,8 +13,8 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-//const URL = "/home";
-const URL = "http://localhost:3000/home/";
+const URL = "/home";
+//const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
@@ -94,7 +94,6 @@ export const getTransactionList = async (
   return data;
 };
 
-
 export const getModelTransactionList = async (
   user: string | null | undefined,
   token: string | undefined
@@ -123,9 +122,11 @@ export const getModelTransactionList = async (
   return data;
 };
 
-
-export const deleteTransactionDatabase = async (id:string , user: string | null | undefined,
-  token: string | undefined) => {
+export const deleteTransactionDatabase = async (
+  id: string,
+  user: string | null | undefined,
+  token: string | undefined
+) => {
   let message = {};
 
   await fetch(`${URL}transaction`, {
@@ -134,7 +135,7 @@ export const deleteTransactionDatabase = async (id:string , user: string | null 
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ id, user, token}),
+    body: JSON.stringify({ id, user, token }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -146,8 +147,11 @@ export const deleteTransactionDatabase = async (id:string , user: string | null 
   return message;
 };
 
-export const deleteModelDatabase = async (id:string , user: string | null | undefined,
-  token: string | undefined) => {
+export const deleteModelDatabase = async (
+  id: string,
+  user: string | null | undefined,
+  token: string | undefined
+) => {
   let message = {};
 
   await fetch(`${URL}modeltransaction`, {
@@ -156,7 +160,7 @@ export const deleteModelDatabase = async (id:string , user: string | null | unde
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ id, user, token}),
+    body: JSON.stringify({ id, user, token }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -167,6 +171,3 @@ export const deleteModelDatabase = async (id:string , user: string | null | unde
     });
   return message;
 };
-
-
-

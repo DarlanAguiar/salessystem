@@ -1,6 +1,5 @@
 const routes = require("./routes");
 
-//console.log("express typescript");
 const express = require("express");
 const cors = require("cors");
 const { resolve } = require("path");
@@ -16,7 +15,7 @@ app.use("/home", routes);
 
 app.listen(process.env.PORT || 3000, (err) => {
   if (err) {
-    console.log(err);
+    return console.log(err);
   }
   console.log("Servidor rodando");
 });

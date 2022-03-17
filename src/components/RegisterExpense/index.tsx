@@ -1,48 +1,36 @@
 import React, { useState } from "react";
-import {FaRegMoneyBillAlt} from  "react-icons/fa"
+import { FaRegMoneyBillAlt } from "react-icons/fa";
 
 import { insertTransactionModelIntoDatabase } from "../../database/firebase";
 
-import {useInfoContext} from "../../contexts/userInfoContext"
+import { useInfoContext } from "../../contexts/userInfoContext";
 
 import * as C from "./styles";
 
 import { Product } from "../../types/Product";
 
 type Props = {
-  //databaseProducts: Product[];
-  //setDatabaseProducts: (data: Product[]) => void;
   handleShowRegisterExpense: () => void;
   showRegisterExpense: boolean;
   expenseListCategory: string[];
-  getProducts: ()=> void;
+  getProducts: () => void;
 };
 
 function RegisterExpense(props: Props) {
   const {
-    //setDatabaseProducts,
-    //databaseProducts,
     handleShowRegisterExpense,
     showRegisterExpense,
     expenseListCategory,
-    getProducts
+    getProducts,
   } = props;
 
-  const {state, dispatch} = useInfoContext();
+  const { state, dispatch } = useInfoContext();
 
   const [inputCategory, setInputCategory] = useState("");
   const [inputNameExpense, setinputNameExpense] = useState("");
   const [newCategory, setNewCategory] = useState(false);
 
- /*  const insertItemIntoDatabase = (newProduct: Product) => {
-    let databaseProductList = [...databaseProducts];
-
-    databaseProductList.push(newProduct);
-
-    setDatabaseProducts(databaseProductList);
-  }; */
-  // concertar any
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async(e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     //forcar a barra no type de e
@@ -55,7 +43,7 @@ function RegisterExpense(props: Props) {
     }
 
     const newExpense = {
-      category: inputCategory, //String(dados.category),
+      category: inputCategory, 
       name: String(dados.name),
       unity: true,
       price: 0,
@@ -63,13 +51,11 @@ function RegisterExpense(props: Props) {
     };
 
     handleShowRegisterExpense();
-    const user = state.infoUser?.email
+    const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    await insertTransactionModelIntoDatabase(newExpense, user, token)
-    getProducts()
-
-    //insertItemIntoDatabase(newExpense);
+    await insertTransactionModelIntoDatabase(newExpense, user, token);
+    getProducts();
 
     setInputCategory("");
     setinputNameExpense("");
@@ -85,7 +71,7 @@ function RegisterExpense(props: Props) {
               value={inputCategory}
               onChange={(e) => {
                 if (e.target.value === "Nova categoria") {
-                  setInputCategory("")
+                  setInputCategory("");
                   setNewCategory(true);
                 } else {
                   setInputCategory(e.target.value);
@@ -143,7 +129,12 @@ function RegisterExpense(props: Props) {
           </C.DivButtons>
         </C.FormField>
       </C.ContainerForm>
-      <C.CloseExpenseButton onClick={handleShowRegisterExpense} showRegisterExpense={showRegisterExpense} ><FaRegMoneyBillAlt /> Despesas</C.CloseExpenseButton>
+      <C.CloseExpenseButton
+        onClick={handleShowRegisterExpense}
+        showRegisterExpense={showRegisterExpense}
+      >
+        <FaRegMoneyBillAlt /> Despesas
+      </C.CloseExpenseButton>
     </C.Container>
   );
 }

@@ -3,13 +3,11 @@ import Router from "./router";
 import { FormProvider } from "./contexts/userInfoContext";
 
 function App() {
-  return(
-
+  return (
     <FormProvider>
       <Router />
     </FormProvider>
-
-  ) 
+  );
 }
 
 export default App;

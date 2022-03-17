@@ -3,10 +3,8 @@ import { Item } from "../../types/Item";
 import * as C from "./styles";
 
 import { getDate } from "../../helpers/dateFilter";
-import { useInfoContext } from "../../contexts/userInfoContext";
 
 import { Product } from "../../types/Product";
-import { insertTransactionIntoDatabase } from "../../database/firebase";
 
 type Props = {
   onAdd: (item: Item[]) => void;
@@ -17,16 +15,12 @@ type Props = {
 function ExpenseArea(props: Props) {
   const { onAdd, databaseProducts, categoryList } = props;
 
-  const { state } = useInfoContext();
-
   const [dateField, setDateField] = useState(getDate());
   const [categoryExpenseField, setCategoryExpenseField] = useState("");
   const [ExpenseField, setExpenseField] = useState("");
   const [valueField, setValueField] = useState<number | null>(null);
   const [productList, setProductList] = useState<string[]>([]);
   const [showExpenseField, setShowExpenseField] = useState(false);
-
-  //concertar any
 
   useEffect(() => {
     let newProductsList: string[] = [];
@@ -71,15 +65,9 @@ function ExpenseArea(props: Props) {
         expense: true,
       };
 
-      setShowExpenseField(false)
-
-      //const user = state.infoUser?.email;
-      //const token = await state.infoUser?.getIdToken();
-
-      //await insertTransactionIntoDatabase(itemExpense, user, token);
+      setShowExpenseField(false);
 
       onAdd([itemExpense]);
-     
 
       clearFields();
     }
@@ -156,7 +144,10 @@ function ExpenseArea(props: Props) {
           </C.InputLabel>
           <C.InputLabel className="button">
             <C.InputTitle>&nbsp;</C.InputTitle>
-            <C.Button className="buttonRegister" onClick={handleAddExpenseToDatabase}>
+            <C.Button
+              className="buttonRegister"
+              onClick={handleAddExpenseToDatabase}
+            >
               Registrar despesa
             </C.Button>
             <C.Button

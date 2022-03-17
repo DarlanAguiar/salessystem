@@ -4,18 +4,15 @@ import { FaWineBottle } from "react-icons/fa";
 import * as C from "./styles";
 import { IoMdClose } from "react-icons/io";
 
-
 import { useInfoContext } from "../../contexts/userInfoContext";
 
 import { insertTransactionModelIntoDatabase } from "../../database/firebase";
 
 type Props = {
-  //databaseProducts: Product[];
-  //setDatabaseProducts: (data: Product[]) => void;
   handleShowRegisterProduct: () => void;
   showRegisterProduct: boolean;
   productCategoryList: string[];
-  getProducts: ()=> void;
+  getProducts: () => void;
 };
 
 type FormType = {
@@ -35,8 +32,6 @@ const initialState = {
 
 function RegisterProduct(props: Props) {
   const {
-    //setDatabaseProducts,
-    //databaseProducts,
     handleShowRegisterProduct,
     showRegisterProduct,
     productCategoryList,
@@ -55,14 +50,6 @@ function RegisterProduct(props: Props) {
     setFormValues({ ...formValues, [campo]: value });
   };
 
- /*  const insertItemIntoDatabase = (newProduct: Product) => {
-    let databaseProductList = [...databaseProducts];
-
-    databaseProductList.push(newProduct);
-
-    setDatabaseProducts(databaseProductList);
-  };
- */
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -91,9 +78,7 @@ function RegisterProduct(props: Props) {
     const user = state.infoUser?.email;
     await insertTransactionModelIntoDatabase(newProduct, user, token);
 
-    getProducts()
-
-    //insertItemIntoDatabase(newProduct);
+    getProducts();
 
     setFormValues(initialState);
   };
@@ -224,11 +209,3 @@ function RegisterProduct(props: Props) {
 }
 
 export default RegisterProduct;
-
-/* 
-  category: string;
-  name: string;
-  unity: boolean;
-  price: number;
-  expense: boolean;
-*/

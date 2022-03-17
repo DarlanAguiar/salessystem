@@ -23,8 +23,6 @@ import InfoArea from "../InfoArea";
 import SalesArea from "../SalesArea";
 import RegisterProduct from "../RegisterProduct";
 
-import { products } from "../../data/products";
-
 import RegisterExpense from "../RegisterExpense";
 import ExpenseArea from "../ExpenseArea";
 import {
@@ -33,7 +31,7 @@ import {
   insertTransactionIntoDatabase,
 } from "../../database/firebase";
 import TableRemoveModel from "../TableRemoveModel";
-import { Product, ProductDatabase } from "../../types/Product";
+import { ProductDatabase } from "../../types/Product";
 
 const auth = getAuth();
 
@@ -41,7 +39,9 @@ function Home() {
   const { state, dispatch } = useInfoContext();
   const navigate = useNavigate();
 
-  const [databaseProducts, setDatabaseProducts] = useState<ProductDatabase[]>([]);
+  const [databaseProducts, setDatabaseProducts] = useState<ProductDatabase[]>(
+    []
+  );
 
   const [list, setList] = useState<ItemDataBase[]>([]);
   const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
@@ -73,7 +73,6 @@ function Home() {
     if (token !== undefined) {
       const listDataBaseProducts = await getModelTransactionList(user, token);
 
-     
       setDatabaseProducts(listDataBaseProducts);
     }
   };
@@ -142,27 +141,16 @@ function Home() {
   };
 
   const handleAddItem = (items: Item[]) => {
-    /* let newList = [...list];
-    newList.push(item)
-    setList(newList) */
-
-    //let newList = [...list];
     items.forEach(async (item) => {
       const user = state.infoUser?.email;
 
       const token = await state.infoUser?.getIdToken();
 
       await insertTransactionIntoDatabase(item, user, token);
-
-      //newList.push(item);
     });
-    ///setList(newList);
+
     getList();
   };
-
- /*  const handleSetDatabaseProducts = (data: Product[]) => {
-    setDatabaseProducts(data);
-  }; */
 
   const handleShowRegisterProduct = () => {
     setShowRegisterProduct(!showRegisterProduct);
@@ -172,10 +160,9 @@ function Home() {
     setShowRegisterExpense(!showRegisterExpense);
   };
 
-  const handleSetShowRemoveModel = ()=> {
-    setShowRemoveModel(!showRemoveModel)
-
-  }
+  const handleSetShowRemoveModel = () => {
+    setShowRemoveModel(!showRemoveModel);
+  };
   const logout = async () => {
     await signOut(auth);
     dispatch({ type: FormActions.setUser, payload: "" });
@@ -255,20 +242,20 @@ function Home() {
           />
         ))}
 
-        <TableArea filteredList={filteredList} titleTable={titleTable} getList={getList}/>
+        <TableArea
+          filteredList={filteredList}
+          titleTable={titleTable}
+          getList={getList}
+        />
       </C.Body>
 
       <RegisterExpense
-        //databaseProducts={databaseProducts}
-        //setDatabaseProducts={handleSetDatabaseProducts}
         handleShowRegisterExpense={handleShowRegisterExpense}
         showRegisterExpense={showRegisterExpense}
         expenseListCategory={expenseListCategory}
         getProducts={getProducts}
       />
       <RegisterProduct
-        //databaseProducts={databaseProducts}
-        //setDatabaseProducts={handleSetDatabaseProducts}
         handleShowRegisterProduct={handleShowRegisterProduct}
         showRegisterProduct={showRegisterProduct}
         productCategoryList={productCategoryList}
@@ -280,7 +267,12 @@ function Home() {
         categoryList={expenseListCategory}
       />
 
-      <TableRemoveModel databaseProduct={databaseProducts} getProducts={getProducts} handleSetShowRemoveModel={handleSetShowRemoveModel} />
+      <TableRemoveModel
+        databaseProduct={databaseProducts}
+        getProducts={getProducts}
+        handleSetShowRemoveModel={handleSetShowRemoveModel}
+        showRemoveModel={showRemoveModel}
+      />
     </C.Container>
   );
 }

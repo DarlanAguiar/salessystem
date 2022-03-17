@@ -4,8 +4,6 @@ export const TableLine = styled.tr``;
 
 export const TableColumn = styled.td`
   padding: 4px 0;
-
-
 `;
 
 export const Category = styled.div<{ color: string }>`
@@ -21,20 +19,17 @@ export const Value = styled.div<{ color: string }>`
 `;
 
 export const ButtonDeleteItem = styled.button`
-padding: 0;
-font-size: 20px;
-color: red;
-border: 0;
-background-color: transparent;
-display: flex;
-align-items: center;
-border-radius: 3px;
+  padding: 0;
+  font-size: 20px;
+  color: red;
+  border: 0;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
 
-&:hover {
-  background-color: red;
-  color: white;
-}
-
-
-
-`
+  &:hover {
+    background-color: red;
+    color: white;
+  }
+`;

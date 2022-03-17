@@ -35,7 +35,7 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
     cursor: pointer;
     transition: 0.3s;
     position: absolute;
-    left: 240px;
+    left: 355px;
     bottom: -35px;
 
     &:hover {

@@ -101,14 +101,17 @@ function SalesArea(props: Props) {
       const tempDate = dateField ? new Date(dateField) : new Date();
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
 
-      console.log(new Date().getHours()+4)
-      if(tempDate.getHours() === 0 && tempDate.getMinutes() === 0&& tempDate.getSeconds() === 0){
+      console.log(new Date().getHours() + 4);
+      if (
+        tempDate.getHours() === 0 &&
+        tempDate.getMinutes() === 0 &&
+        tempDate.getSeconds() === 0
+      ) {
         const now = new Date();
-        tempDate.setHours(now.getHours()+4)
-        tempDate.setMinutes(now.getMinutes())
-        tempDate.setSeconds(now.getSeconds())
-      };
-      
+        tempDate.setHours(now.getHours() + 4);
+        tempDate.setMinutes(now.getMinutes());
+        tempDate.setSeconds(now.getSeconds());
+      }
 
       const list: Item = {
         date: tempDate,
@@ -122,15 +125,8 @@ function SalesArea(props: Props) {
 
       const newOrderList = [...orderList];
       newOrderList.push(list);
-/* 
-      const totalList = productAllClient;
-
-      totalList[itemIdAllList] = newOrderList; */
 
       insertNewListToTotal(itemIdAllList, newOrderList);
-
-     
-    
 
       clearFields();
     }
@@ -187,7 +183,6 @@ function SalesArea(props: Props) {
 
   const handleSetTitle = () => {
     if (productAllClient.length === 1) {
-      
       setTitle("Área de vendas");
     }
   };
@@ -219,7 +214,7 @@ function SalesArea(props: Props) {
           <C.InputTitle>Data</C.InputTitle>
           <C.Input
             type="date"
-            value={dateField} 
+            value={dateField}
             onChange={(e) => setDateField(e.target.value)}
           />
         </C.InputLabel>
