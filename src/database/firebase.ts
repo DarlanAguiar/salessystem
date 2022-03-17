@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-const URL = "/home";
+const URL = "/home/";
 //const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
