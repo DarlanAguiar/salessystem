@@ -214,6 +214,10 @@ app.delete("/home/modeltransaction", async (req, res) => {
   }
 });
 
+app.get("/login", (req, res) => {
+  res.redirect("/");
+});
+
 
 
 //////////////////////////////////////////////////////////////////

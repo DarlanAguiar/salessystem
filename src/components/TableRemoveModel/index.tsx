@@ -19,7 +19,7 @@ function TableRemoveModel(props: Props) {
     showRemoveModel,
   } = props;
 
-  console.log(databaseProduct);
+ 
 
   const transaction = databaseProduct.sort((element1, element2) => {
     return element1.name.localeCompare(element2.name);

@@ -47,7 +47,6 @@ function ExpenseArea(props: Props) {
       errors.push("Valor inválido!");
     }
 
-    console.log(isNaN(Number(valueField)) === true);
 
     if (errors.length > 0) {
       alert(errors[0]);

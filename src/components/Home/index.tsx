@@ -38,25 +38,26 @@ const auth = getAuth();
 function Home() {
   const { state, dispatch } = useInfoContext();
   const navigate = useNavigate();
-
+  
   const [databaseProducts, setDatabaseProducts] = useState<ProductDatabase[]>(
     []
-  );
-
-  const [list, setList] = useState<ItemDataBase[]>([]);
-  const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
-  //pegando o mês atual
-  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
-  const [currentDay, setCurrentDay] = useState(getCurrentDay());
-  const [income, setIncome] = useState(0);
-  const [expense, setExpense] = useState(0);
-  const [showRegisterProduct, setShowRegisterProduct] = useState(false);
-  const [showRegisterExpense, setShowRegisterExpense] = useState(false);
-  const [showRemoveModel, setShowRemoveModel] = useState(false);
-  const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
-  const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
-  const [titleTable, setTitleTable] = useState("");
-
+    );
+    
+    const [list, setList] = useState<ItemDataBase[]>([]);
+    const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
+    //pegando o mês atual
+    const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+    const [currentDay, setCurrentDay] = useState(getCurrentDay());
+    const [income, setIncome] = useState(0);
+    const [expense, setExpense] = useState(0);
+    const [showRegisterProduct, setShowRegisterProduct] = useState(false);
+    const [showRegisterExpense, setShowRegisterExpense] = useState(false);
+    const [showRemoveModel, setShowRemoveModel] = useState(false);
+    const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
+    const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
+    const [titleTable, setTitleTable] = useState("");
+    const [salesField, setSalesField] = useState([[]]);
+    
   const getList = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
@@ -172,7 +173,6 @@ function Home() {
     navigate("/login");
   };
 
-  const [salesField, setSalesField] = useState([[]]);
 
   const addNewClient = () => {
     const listClient = [...salesField];
@@ -191,7 +191,7 @@ function Home() {
   };
 
   const insertNewListToTotal = (itemId: number, list: any) => {
-    console.log(list);
+  
     const totalList = [...salesField];
 
     totalList[itemId] = list;

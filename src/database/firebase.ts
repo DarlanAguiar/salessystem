@@ -13,8 +13,8 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-const URL = "/home/";
-//const URL = "http://localhost:3000/home/";
+//const URL = "/home/";
+const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
@@ -46,8 +46,6 @@ export const insertTransactionIntoDatabase = async (
   token: string | undefined
 ) => {
   let message = {};
-
-  console.log("passou aqui");
 
   await fetch(`${URL}transaction`, {
     method: "POST",
@@ -86,8 +84,7 @@ export const getTransactionList = async (
     })
     .then((resp) => (data = resp))
     .catch((err) => {
-      console.log("Inicio do catch");
-
+     
       throw new Error("Problemas no servidor GET");
     });
 
@@ -114,8 +111,7 @@ export const getModelTransactionList = async (
     })
     .then((resp) => (data = resp))
     .catch((err) => {
-      console.log("Inicio do catch");
-
+     
       throw new Error("Problemas no servidor GET");
     });
 
@@ -139,7 +135,7 @@ export const deleteTransactionDatabase = async (
   })
     .then((resp) => resp.json())
     .then((resp) => {
-      console.log(resp);
+   
       if (resp.error) {
         message = { error: resp.error };
       }
@@ -164,7 +160,7 @@ export const deleteModelDatabase = async (
   })
     .then((resp) => resp.json())
     .then((resp) => {
-      console.log(resp);
+     
       if (resp.error) {
         message = { error: resp.error };
       }

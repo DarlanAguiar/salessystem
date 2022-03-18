@@ -8,6 +8,17 @@ import { getDate } from "../../helpers/dateFilter";
 import { IoMdClose } from "react-icons/io";
 import { FaUserPlus } from "react-icons/fa";
 
+type ProductClientTitle = {
+  title: string | null;
+  date: Date;
+  category: string;
+  product: string;
+  unity: boolean;
+  amont: number;
+  price: number;
+  expense: boolean;
+};
+
 type Props = {
   onAdd: (item: Item[]) => void;
   databaseProducts: Product[];
@@ -16,7 +27,7 @@ type Props = {
   addNewClient: () => void;
   removeClient: (itemId: number) => void;
   productAllClient: any;
-  clientProducts: Item[];
+  clientProducts: ProductClientTitle[];
   insertNewListToTotal: (itemid: number, list: any) => void;
   deleteLastClientProducts: () => void;
 };
@@ -36,24 +47,21 @@ function SalesArea(props: Props) {
   } = props;
 
   const [dateField, setDateField] = useState(getDate());
-  //const [dateField, setDateField] = useState(getDate);
   const [categoryField, setCategoryField] = useState("");
   const [productField, setProductField] = useState("");
   const [valueField, setValueField] = useState(0);
   const [unityFied, setUnityFild] = useState(true);
   const [amontField, setAmontField] = useState(1);
   const [expenseField, setExpenseField] = useState(false);
-  //const [categoryList, setCategoryList] = useState<string[]>([]);
   const [productList, setProductList] = useState<string[]>([]);
   const [valueOfOneUnit, setValueOfOneUnit] = useState(0);
-  const [orderList, setOrderList] = useState<Item[]>(clientProducts);
+  const [orderList, setOrderList] =
+    useState<ProductClientTitle[]>(clientProducts);
   const [title, setTitle] = useState<string | null>("Área de vendas");
 
   useEffect(() => {
     setOrderList(clientProducts);
   }, [productAllClient]);
-
-  //concertar any
 
   useEffect(() => {
     let newProductsList: string[] = [];
@@ -101,7 +109,6 @@ function SalesArea(props: Props) {
       const tempDate = dateField ? new Date(dateField) : new Date();
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
 
-      console.log(new Date().getHours() + 4);
       if (
         tempDate.getHours() === 0 &&
         tempDate.getMinutes() === 0 &&
@@ -113,7 +120,8 @@ function SalesArea(props: Props) {
         tempDate.setSeconds(now.getSeconds());
       }
 
-      const list: Item = {
+      const list: ProductClientTitle = {
+        title: title,
         date: tempDate,
         category: categoryField,
         product: productField,
@@ -187,14 +195,24 @@ function SalesArea(props: Props) {
     }
   };
 
+  const insertTitle = async (title: string | null) => {
+    setTitle(title);
+
+    let newList = [...orderList];
+    newList.forEach((item) => {
+      item.title = title;
+    });
+    setOrderList(newList);
+  };
+
   return (
     <C.Container>
       <C.Title
-        onBlur={(e) => setTitle(e.target.textContent)}
+        onBlur={(e) => insertTitle(e.target.textContent)}
         contentEditable
         suppressContentEditableWarning={true}
       >
-        {title}
+        {clientProducts[0] ? clientProducts[0].title : "Área de vendas"}
       </C.Title>
       <C.AddMoreOne onClick={addNewClient}>
         <FaUserPlus />

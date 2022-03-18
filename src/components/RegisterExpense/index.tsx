@@ -36,7 +36,6 @@ function RegisterExpense(props: Props) {
     //forcar a barra no type de e
     const dadosDoFormulario = new FormData(e.target as HTMLFormElement);
     const dados = Object.fromEntries(dadosDoFormulario);
-    console.log(dados);
     if (dados.category === "" || dados.name === "") {
       alert("Cadastro não efetuado \nPreecha todos os campos corretamente ");
       return;
