@@ -3,6 +3,11 @@ import styled from "styled-components";
 export const ContainerTable = styled.div`
   position: relative;
   width: 100%;
+  @media (max-width: 600px) {
+    overflow: auto;
+    width: 100vw;
+    font-size: 14px;
+  }
 `;
 
 export const Table = styled.table`
@@ -12,6 +17,10 @@ export const Table = styled.table`
   box-shadow: 0 0 5px #ccc;
   border-radius: 10px;
   margin-top: 20px;
+
+  @media (max-width: 600px) {
+    width: 100vw;
+  }
 `;
 
 export const TableHeadColumn = styled.th<{ width?: number }>`

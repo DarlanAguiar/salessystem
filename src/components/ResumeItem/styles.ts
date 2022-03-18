@@ -15,4 +15,5 @@ export const Value = styled.div<{ color?: string }>`
   text-align: center;
   font-weight: bold;
   color: ${(props) => props.color ?? "#000"};
+  padding: 0 10px
 `;

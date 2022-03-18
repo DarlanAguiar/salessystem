@@ -6,6 +6,12 @@ export const Container = styled.div`
   border-radius: 10px;
   transition: 0.3s;
 
+  @media (max-width: 600px) {
+    width: 490px;
+    padding: 4px;
+    
+  }
+
   .tableSummary {
   }
 `;
@@ -20,12 +26,20 @@ export const MoneyChange = styled.div`
   align-items: center;
   font-weight: bold;
   font-size: 20px;
+  @media (max-width: 600px) {
+
+    font-size: 14px;
+  }
 
   input {
     font-weight: bold;
     width: 80px;
     padding: 7px;
     border-radius: 5px;
+    @media (max-width: 600px) {
+
+      width: 50px;
+    }
   }
 
   label {
@@ -40,10 +54,18 @@ export const MoneyChange = styled.div`
     .leftover {
       color: green;
       font-size: 29px;
+
+      @media (max-width: 600px) {
+        font-size: 14px;
+      }
     }
     .lack {
       color: red;
       font-size: 29px;
+
+      @media (max-width: 600px) {
+        font-size: 14px;
+      }
     }
   }
 `;
@@ -58,12 +80,23 @@ export const CloseSale = styled.div`
   p {
     font-size: 20px;
     margin: 0 10px;
+
+    @media (max-width: 600px) {
+      margin: 0 5px;
+      font-size: 14px;
+    }
   }
 
   span {
     color: darkblue;
     margin: 0 10px;
     font-size: 29px;
+
+    @media (max-width: 600px) {
+      margin: 0 5px;
+
+      font-size: 14px;
+    }
   }
 
   .completeSaleButton {
@@ -82,6 +115,14 @@ export const CloseSale = styled.div`
       background-color: green;
       color: white;
     }
+
+    @media (max-width: 600px) {
+      width: 70px;
+
+    }
+  
+
+    
   }
 
   .cancelSale {
@@ -99,6 +140,11 @@ export const CloseSale = styled.div`
     &:hover {
       background-color: red;
       color: white;
+    }
+
+    @media (max-width: 600px) {
+      width: 70px;
+
     }
   }
 `;

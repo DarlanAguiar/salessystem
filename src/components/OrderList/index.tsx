@@ -111,7 +111,7 @@ function OrderList(props: Props) {
               handleSetTitle();
             }}
           >
-            Fechar venda
+            Concluir
           </button>
         </C.CloseSale>
       </C.TableSummary>

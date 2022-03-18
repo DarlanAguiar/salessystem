@@ -40,4 +40,8 @@ export const ButtonDeleteItem = styled.button`
     background-color: red;
     color: white;
   }
+
+  @media (max-width: 600px) {
+    right: -17px;
+  }
 `;

@@ -30,11 +30,16 @@ export const FormField = styled.div`
   max-width: 1000px;
   margin: auto;
   display: flex;
+
+  @media(max-width: 600px) {
+    overflow: scroll;
+   
+  }
 `;
 
 export const InputDiv = styled.div<{ width?: number }>`
   margin: 0 10px;
-  width: ${(props) => props.width}%;
+  width: 180px;
 
   .radioButtons {
     display: flex;
@@ -109,4 +114,12 @@ export const CloseExpenseButton = styled.button<{
     background-color: lightblue;
     color: black;
   }
+
+  @media (max-width: 600px) {
+    width: 25vw;
+    left: 25vw;
+    font-size: 11px
+  }
 `;
+
+

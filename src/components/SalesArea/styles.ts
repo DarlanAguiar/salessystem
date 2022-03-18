@@ -7,6 +7,19 @@ export const Container = styled.div`
   padding: 27px 20px 20px 20px;
   margin-top: 20px;
   position: relative;
+
+  @media (max-width: 600px) {
+
+    overflow: auto;
+  }
+
+
+  @media (max-width: 600px) {
+
+    
+  }
+
+  
 `;
 
 export const Title = styled.div`
@@ -35,6 +48,7 @@ export const AddMoreOne = styled.button`
   &:hover {
     background-color: lightblue;
   }
+  
 `;
 
 export const Closed = styled.button`
@@ -64,22 +78,47 @@ export const ContainerInput = styled.div`
 
   .date {
     width: 15%;
+    @media (max-width: 600px) {
+      width:100px
+    
+    }
+  
   }
 
   .category {
     width: 17%;
+    @media (max-width: 600px) {
+      width:120px
+    
+    }
   }
   .product {
     width: 25%;
+    @media (max-width: 600px) {
+      width:120px
+    
+    }
   }
   .qtd {
     width: 7%;
+    @media (max-width: 600px) {
+      width:100px
+    
+    }
   }
   .value {
     width: 10%;
+    @media (max-width: 600px) {
+      width:120px
+    
+    }
   }
   .button {
     width: 15%;
+    @media (max-width: 600px) {
+      width:120px
+    
+    }
   }
 `;
 

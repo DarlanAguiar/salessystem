@@ -12,11 +12,17 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
   position: fixed;
   top: ${(props) => (props.showExpenseField ? "0" : "-170")}px;
   z-index: ${(props) => (props.showExpenseField ? "5" : "1")};
-
+  
+  @media (max-width: 600px) {
+    border-radius: 0 0 10px 40px;
+    
+  }
+  
   div {
     width: 100%;
     height: 100%;
     position: relative;
+    
   }
 
   .addExpenseButton {
@@ -42,6 +48,14 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
       background-color: lightblue;
       color: black;
     }
+
+    @media (max-width: 600px) {
+      width: 25vw;
+      left: 75vw;
+      font-size: 13px;
+      height: 37px;
+      bottom: -37px;
+    }
   }
 `;
 
@@ -52,21 +66,26 @@ export const ContainerInput = styled.div`
   margin: auto;
 
   .date {
-    width: 15%;
+    width: 150px;
   }
 
   .category {
-    width: 17%;
+    width: 150px;
   }
   .product {
-    width: 25%;
+    width: 150px;
   }
 
   .value {
-    width: 10%;
+    width: 150px;
   }
   .button {
-    width: 15%;
+    width: 150px;
+  }
+
+  @media(max-width: 600px) {
+    overflow: scroll;
+   
   }
 `;
 

@@ -96,7 +96,7 @@ function ExpenseArea(props: Props) {
             />
           </C.InputLabel>
           <C.InputLabel className="category">
-            <C.InputTitle>Categoriada Despesa</C.InputTitle>
+            <C.InputTitle>Categoria</C.InputTitle>
             <C.Select
               value={categoryExpenseField}
               onChange={(e) => {

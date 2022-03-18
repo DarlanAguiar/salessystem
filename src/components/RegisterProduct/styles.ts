@@ -7,13 +7,12 @@ export const Container = styled.div<{ showRegisterProduct: boolean }>`
   height: 170px;
   transition: 0.5s;
   position: fixed;
-  border: 3px solid  ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
+  border: 3px solid
+    ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
   border-top: 0;
   top: ${(props) => (props.showRegisterProduct ? "0" : "-170px")};
   left: 0;
   z-index: ${(props) => (props.showRegisterProduct ? "5" : "1")};
-
- 
 `;
 
 export const Select = styled.select`
@@ -24,7 +23,6 @@ export const Select = styled.select`
   border-radius: 5px;
 `;
 
-
 export const ContainerForm = styled.form``;
 
 export const FormField = styled.div`
@@ -32,6 +30,10 @@ export const FormField = styled.div`
   max-width: 1000px;
   margin: auto;
   display: flex;
+
+  @media (max-width: 600px) {
+    overflow: scroll;
+  }
 `;
 
 export const InputDiv = styled.div<{ width?: number }>`
@@ -65,8 +67,6 @@ export const InputText = styled.input`
 
 export const DivButtons = styled.div``;
 
-
-
 export const ButtonSubmit = styled.input`
   background-color: var(--colorBackground);
   color: var(--colorFontSecondary);
@@ -75,7 +75,6 @@ export const ButtonSubmit = styled.input`
   border-radius: 5px;
   font-weight: bold;
 `;
-
 
 export const ButtonRegisterCancel = styled.button`
   display: block;
@@ -89,31 +88,35 @@ export const ButtonRegisterCancel = styled.button`
   font-weight: bold;
 `;
 
-export const CloseRegisterProductButton = styled.button<{showRegisterProduct: boolean}>`
-width: 110px;
-height: 35px;
-padding: 5px;
-border: 3px solid
-  ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
-border-top: 0;
-background-color: ${(props) =>
-  props.showRegisterProduct ? "lightblue" : "darkblue"};
-color: ${(props) => (props.showRegisterProduct ? "#000" : "#fff")};
-font-size: 15px;
-border-radius: 0 0 10px 10px;
-font-weight: bold;
-cursor: pointer;
-transition: 0.3s;
-position: absolute;
-left: 8px;
-bottom: -35px;
+export const CloseRegisterProductButton = styled.button<{
+  showRegisterProduct: boolean;
+}>`
+  width: 110px;
+  height: 35px;
+  padding: 5px;
+  border: 3px solid
+    ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
+  border-top: 0;
+  background-color: ${(props) =>
+    props.showRegisterProduct ? "lightblue" : "darkblue"};
+  color: ${(props) => (props.showRegisterProduct ? "#000" : "#fff")};
+  font-size: 15px;
+  border-radius: 0 0 10px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  position: absolute;
+  left: 8px;
+  bottom: -35px;
 
-&:hover {
-  background-color: lightblue;
-  color: black;
-}
+  &:hover {
+    background-color: lightblue;
+    color: black;
+  }
 
-
-
-`
-
+  @media (max-width: 600px) {
+    width: 25vw;
+    left: 0;
+    font-size: 11px;
+  }
+`;

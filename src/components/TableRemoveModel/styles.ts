@@ -12,6 +12,11 @@ export const Container = styled.div<{ showRemoveModel: boolean }>`
   border: 3px solid ${(props) => (props.showRemoveModel ? "darkblue" : "#fff")};
   border-top: 0;
 
+  @media (max-width: 600px) {
+    width: 100vw;
+  }
+ 
+
   div {
     height: 100%;
     width: 100%;
@@ -39,6 +44,10 @@ export const Title = styled.h1`
   text-align: center;
   color: darkblue;
   font-size: 23px;
+
+  @media (max-width: 600px) {
+    font-size: 18px;
+  }
 `;
 
 export const Table = styled.table`
@@ -49,6 +58,10 @@ export const Table = styled.table`
     background-color: darkblue;
     border: 0;
     font-size: 20px;
+
+    @media (max-width: 600px) {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -77,8 +90,19 @@ export const ButtonShowRemoveModel = styled.button<{
   left: 240px;
   bottom: -35px;
 
+  @media (max-width: 600px) {
+    font-size: 11px;
+    width: 90px;
+  }
+
   &:hover {
     background-color: lightblue;
     color: black;
+  }
+
+  @media (max-width: 600px) {
+    width: 25vw;
+    left: 50vw;
+    font-size: 11px
   }
 `;

@@ -32,6 +32,14 @@ export const ButtonLogout = styled.button`
     background-color: lightblue;
     color: black;
   }
+
+  @media (max-width: 600px) {
+    top: 75px;
+    right: 2px;
+    padding: 3px;
+    border: 2px solid var(--colorFontSecondary);
+   
+  }
 `;
 
 export const HeaderText = styled.h1`
@@ -39,6 +47,12 @@ export const HeaderText = styled.h1`
   padding: 0;
   color: var(--colorFontPrimary);
   padding-top: 30px;
+
+  @media (max-width: 600px) {
+    padding-top: 50px;
+  }
+
+  
 `;
 
 export const Body = styled.div`

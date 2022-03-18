@@ -9,6 +9,11 @@ export const Container = styled.div`
   margin-top: -40px;
   display: flex;
   align-items: center;
+
+  @media (max-width: 600px) {
+    overflow: auto;
+  
+  }
 `;
 
 export const Title = styled.div`
@@ -26,6 +31,12 @@ export const DayArea = styled.div`
     padding: 0 5px;
     border: 1px solid lightblue;
     border-radius: 5px;
+
+    @media (max-width: 600px) {
+
+      width:100px;
+    }
+
   }
 `;
 

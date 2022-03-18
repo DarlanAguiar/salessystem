@@ -24,7 +24,7 @@ function RegisterExpense(props: Props) {
     getProducts,
   } = props;
 
-  const { state, dispatch } = useInfoContext();
+  const { state } = useInfoContext();
 
   const [inputCategory, setInputCategory] = useState("");
   const [inputNameExpense, setinputNameExpense] = useState("");
@@ -65,7 +65,7 @@ function RegisterExpense(props: Props) {
       <C.ContainerForm onSubmit={handleSubmit}>
         <C.FormField>
           <C.InputDiv width={100}>
-            <C.InputLabel>selecione uma categoria:</C.InputLabel>
+            <C.InputLabel>Categoria:</C.InputLabel>
             <C.Select
               value={inputCategory}
               onChange={(e) => {
@@ -102,7 +102,7 @@ function RegisterExpense(props: Props) {
           )}
 
           <C.InputDiv width={100}>
-            <C.InputLabel>Nome da despesa:</C.InputLabel>
+            <C.InputLabel>Nome:</C.InputLabel>
             <C.InputText
               type={"text"}
               name={"name"}
