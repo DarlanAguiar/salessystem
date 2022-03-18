@@ -1,7 +1,9 @@
 # salessystem
- projeto de controle de vendas com relatórios
+
+sales control project with reports
 
  functionalities:
+ 
 * Add product.
 * Add expenses.
 * Record a sale/expense.
