@@ -23,9 +23,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server/server.ts",
+    "start": "node build-server/server.js",
     "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc -p tsconfig-server.json && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "ts-node-dev --respawn --transpile-only server/server.ts "

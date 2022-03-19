@@ -1,58 +1,57 @@
-//const { initializeApp } = require("firebase/app");
-//const { getFirestore } = require("firebase/firestore");
-// const {
-//   collection,
-//   getDocs,
-//   query,
-//   doc,
-//   addDoc,
-//   deleteDoc,
-//   updateDoc,
-//   setDoc,
-// } = require("firebase/firestore");
-//const { getAuth } = require("firebase/auth");
+const { initializeApp } = require("firebase/app");
+const { getFirestore } = require("firebase/firestore");
+const {
+  collection,
+  getDocs,
+  query,
+  doc,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  setDoc,
+} = require("firebase/firestore");
 
-//const router = require("express").Router();
+const router = require("express").Router();
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
-//   authDomain: "salessystem-659c6.firebaseapp.com",
-//   projectId: "salessystem-659c6",
-//   storageBucket: "salessystem-659c6.appspot.com",
-//   messagingSenderId: "402827702936",
-//   appId: "1:402827702936:web:bcee0d74934dc1cc6016ed",
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
+  authDomain: "salessystem-659c6.firebaseapp.com",
+  projectId: "salessystem-659c6",
+  storageBucket: "salessystem-659c6.appspot.com",
+  messagingSenderId: "402827702936",
+  appId: "1:402827702936:web:bcee0d74934dc1cc6016ed",
+};
 
-// initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
-// const db = getFirestore();
+const db = getFirestore();
 
-// const admin = require("firebase-admin");
-// const serviceAccount = require("../salessystem-credential-firebase-admin.json");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-// });
-// const { getAuth } = require("firebase-admin/auth");
+const admin = require("firebase-admin");
+const serviceAccount = require("../salessystem-credential-firebase-admin.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+const { getAuth } = require("firebase-admin/auth");
 
-// const validateToken = async (userDB, token) => {
-//   let validToken = true;
-//   await getAuth()
-//     .verifyIdToken(token)
-//     .then((decodedToken) => {
-//       const uid = decodedToken;
-//       if (uid.email !== userDB) {
-//         validToken = false;
-//       }
-//     })
-//     .catch((error) => {
-//       validToken = false;
-//       console.error(error);
-//     });
+const validateToken = async (userDB, token) => {
+  let validToken = true;
+  await getAuth()
+    .verifyIdToken(token)
+    .then((decodedToken) => {
+      const uid = decodedToken;
+      if (uid.email !== userDB) {
+        validToken = false;
+      }
+    })
+    .catch((error) => {
+      validToken = false;
+      console.error(error);
+    });
 
-//   return validToken;
-// };
+  return validToken;
+};
 
-/* router.post("/home/modeltransaction", async (req, res) => {
+router.post("/home/modeltransaction", async (req, res) => {
   const { data, user, token } = req.body;
   const validated = await validateToken(user, token);
 
@@ -188,5 +187,4 @@ router.delete("/home/modeltransaction", async (req, res) => {
   }
 });
 
-module.exports = router;
- */
+export default router;

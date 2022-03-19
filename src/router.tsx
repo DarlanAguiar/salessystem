@@ -16,26 +16,27 @@ function Router() {
   const Private = ({ children }: any) => {
     const navigate = useNavigate();
 
-    if (!state.authenticated) {
-      onAuthStateChanged(auth, async (usuarioFirebase) => {
-        if (usuarioFirebase !== null) {
-          //console.log(usuarioFirebase);
-          const token = await usuarioFirebase.getIdToken();
-
-          dispatch({ type: FormActions.setAuthenticated, payload: true });
-          dispatch({
-            type: FormActions.setUser,
-            payload: usuarioFirebase.email,
-          });
-          dispatch({ type: FormActions.setToken, payload: token });
-          dispatch({type:FormActions.setInfoUser, payload: usuarioFirebase })
-        } else {
-          navigate("/login");
-        }
-      });
+    if (state.authenticated) {
+      return children;
     }
 
-    return children;
+    onAuthStateChanged(auth, async (usuarioFirebase) => {
+      if (usuarioFirebase !== null) {
+        //console.log(usuarioFirebase);
+        const token = await usuarioFirebase.getIdToken();
+
+        dispatch({ type: FormActions.setAuthenticated, payload: true });
+        dispatch({
+          type: FormActions.setUser,
+          payload: usuarioFirebase.email,
+        });
+        dispatch({ type: FormActions.setToken, payload: token });
+        dispatch({ type: FormActions.setInfoUser, payload: usuarioFirebase });
+      } else {
+        navigate("/login");
+      }
+    });
+    return <></>;
   };
 
   return (
