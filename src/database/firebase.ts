@@ -14,8 +14,8 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-//export const URL = "/home/";
-export const URL = "http://localhost:3000/home/";
+export const URL = "/home/";
+//export const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
