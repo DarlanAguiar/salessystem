@@ -35,11 +35,14 @@ function Login() {
 
       const token = await user.user.getIdToken();
       const userEmail = user.user.email;
+      const databaseAuth = localStorage.getItem("authorizedDatabase");
 
       dispatch({ type: FormActions.setUser, payload: userEmail });
       dispatch({ type: FormActions.setToken, payload: token });
       dispatch({ type: FormActions.setAuthenticated, payload: true });
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
+
+      dispatch({ type: FormActions.setDatabaseAuth, payload: databaseAuth });
 
       navigate("/");
     } catch (error) {
@@ -54,10 +57,14 @@ function Login() {
 
         const token = await result.user.getIdToken();
         const userEmail = result.user.email;
+        const databaseAuth = localStorage.getItem("authorizedDatabase");
+
         dispatch({ type: FormActions.setUser, payload: userEmail });
         dispatch({ type: FormActions.setToken, payload: token });
         dispatch({ type: FormActions.setAuthenticated, payload: true });
         dispatch({ type: FormActions.setInfoUser, payload: result.user });
+
+        dispatch({ type: FormActions.setDatabaseAuth, payload: databaseAuth });
 
         navigate("/");
       });

@@ -1,14 +1,14 @@
 // Context , Reducer, Provider , Hook
 
 import { UserCredential } from "firebase/auth";
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import { createContext, ReactNode, useContext, useReducer, useState } from "react";
 
 //criando types
 type State = {
-  user: string;
+  user: string |null;
   token: string;
   authenticated: boolean;
-  theme: string;
+  databaseAuth: string | null;
   idConfiguration: string;
   infoUser: UserCredential["user"] | null;
 };
@@ -30,10 +30,10 @@ type ProviderChildrem = {
 
 // informções que inicia o reducer
 const initialData: State = {
-  user: "",
+  user: null,
   token: "",
   authenticated: false,
-  theme: "",
+  databaseAuth: null,
   idConfiguration: "",
   infoUser: null,
 };
@@ -44,7 +44,7 @@ export enum FormActions {
   setUser,
   setToken,
   setAuthenticated,
-  setTheme,
+  setDatabaseAuth,
   setIdConfiguration,
   setInfoUser,
 }
@@ -57,8 +57,8 @@ const formReducer = (state: State, action: Action) => {
       return { ...state, token: action.payload };
     case FormActions.setAuthenticated:
       return { ...state, authenticated: action.payload };
-    case FormActions.setTheme:
-      return { ...state, theme: action.payload };
+    case FormActions.setDatabaseAuth:
+      return { ...state, databaseAuth: action.payload };
     case FormActions.setIdConfiguration:
       return { ...state, idConfiguration: action.payload };
     case FormActions.setInfoUser:
@@ -92,17 +92,3 @@ export const useInfoContext = () => {
   return context;
 };
 
-enum VendaPor {
-  Kg,
-  Unidade,
-}
-
-type teste = {
-  name: VendaPor;
-  age: VendaPor;
-};
-
-const teste: teste = {
-  name: VendaPor.Kg,
-  age: 45,
-};

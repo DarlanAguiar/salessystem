@@ -20,10 +20,10 @@ function BodyTableRemoveModel(props: Props) {
 
   const removeModelDatabase = async () => {
     const user = state.infoUser?.email;
-
     const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
 
-    await deleteModelDatabase(item.id, user, token);
+    await deleteModelDatabase(item.id, user, token, authorizedDatabase);
     getProducts();
   };
 

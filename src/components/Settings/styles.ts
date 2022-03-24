@@ -46,7 +46,7 @@ export const Title = styled.h2`
 export const ContainerFilds = styled.div``;
 
 export const DivInput = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const TitleUser = styled.h3`
@@ -62,6 +62,20 @@ export const Input = styled.input`
   border: 1px solid lightblue;
   padding: 7px;
   border-radius: 5px;
+`;
+
+export const StatusAuthorization = styled.p`
+  color: darkblue;
+  span {
+    font-weight: bold;
+  }
+`;
+
+export const ButtonAccessMyDatabase = styled.button`
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightblue;
+  margin-bottom: 10px;
 `;
 
 export const DivInputAuth = styled.div``;

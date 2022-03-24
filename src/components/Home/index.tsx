@@ -44,10 +44,7 @@ function Home() {
   );
 
   const [list, setList] = useState<ItemDataBase[]>([]);
-  //const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
-  //pegando o mês atual
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
-  //const [currentDay, setCurrentDay] = useState(getCurrentDay());
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [showRegisterProduct, setShowRegisterProduct] = useState(false);
@@ -75,20 +72,22 @@ function Home() {
   const getProducts = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    if (token !== undefined) {
-      const listDataBaseProducts = await getModelTransactionList(user, token);
+    const authorizedDatabase = state.databaseAuth;
 
-      setDatabaseProducts(listDataBaseProducts);
-    }
+    const listDataBaseProducts = await getModelTransactionList(user, token, authorizedDatabase);
+
+    setDatabaseProducts(listDataBaseProducts);
   };
 
   const getListByDate = async (initialDate: string, finalDate: string) => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
 
     const listDataBase = await getTransactionList(
       user,
       token,
+      authorizedDatabase,
       initialDate,
       finalDate
     );
@@ -162,11 +161,13 @@ function Home() {
 
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
+      
       const user = state.infoUser?.email;
-
       const token = await state.infoUser?.getIdToken();
+      const authorizedDatabase = state.databaseAuth;
+      
 
-      await insertTransactionIntoDatabase(item, user, token);
+      await insertTransactionIntoDatabase(item, user, token, authorizedDatabase);
     });
 
     setTitleTable(getDate().split("-").reverse().join("/"));
@@ -175,8 +176,8 @@ function Home() {
   };
 
   const handleSetShowSettings = () => {
-    setShowSettings(!showSettings)
-  }
+    setShowSettings(!showSettings);
+  };
 
   const handleShowRegisterProduct = () => {
     setShowRegisterProduct(!showRegisterProduct);
@@ -195,6 +196,8 @@ function Home() {
     dispatch({ type: FormActions.setToken, payload: "" });
     dispatch({ type: FormActions.setAuthenticated, payload: false });
     dispatch({ type: FormActions.setInfoUser, payload: null });
+    dispatch({ type: FormActions.setDatabaseAuth, payload: "" });
+    dispatch({ type: FormActions.setIdConfiguration, payload: "" });
     navigate("/login");
   };
 
@@ -233,7 +236,7 @@ function Home() {
           {" "}
           <RiLogoutBoxRLine />{" "}
         </C.ButtonLogout>
-        <C.ButtonSettings onClick={()=> handleSetShowSettings()}>
+        <C.ButtonSettings onClick={() => handleSetShowSettings()}>
           <IoMdSettings />
         </C.ButtonSettings>
         <C.HeaderText>
@@ -302,7 +305,10 @@ function Home() {
         showRemoveModel={showRemoveModel}
       />
 
-    <Settings handleSetShowSettings={handleSetShowSettings} showSettings={showSettings}/>
+      <Settings
+        handleSetShowSettings={handleSetShowSettings}
+        showSettings={showSettings}
+      />
     </C.Container>
   );
 }

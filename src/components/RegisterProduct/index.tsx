@@ -76,7 +76,8 @@ function RegisterProduct(props: Props) {
 
     const token = await state.infoUser?.getIdToken();
     const user = state.infoUser?.email;
-    await insertTransactionModelIntoDatabase(newProduct, user, token);
+    const authorizedDatabase = state.databaseAuth;
+    await insertTransactionModelIntoDatabase(newProduct, user, token, authorizedDatabase);
 
     getProducts();
 

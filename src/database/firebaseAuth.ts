@@ -1,4 +1,4 @@
-import { UserAuth } from "../types/users";
+import { Authorized, UserAuth } from "../types/users";
 import { URL } from "./firebase";
 
 export const insertAuthorizedUser = async (
@@ -73,4 +73,29 @@ export const getAllAllowedUsers = async (
   return data;
 };
 
+export const confirmAuthorization = async (
+  user: string | null | undefined,
+  token: string | undefined,
+  userToConfirm: string
+) => {
+  let authorization: Authorized = {
+    authorized: false,
+  };
 
+  await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      authorization = resp;
+    })
+    .catch((err) => {
+      throw new Error("Problemas no servidor GET, confirmando autorizção");
+    });
+
+  return authorization;
+};

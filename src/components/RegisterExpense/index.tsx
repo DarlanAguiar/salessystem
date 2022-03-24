@@ -52,8 +52,9 @@ function RegisterExpense(props: Props) {
     handleShowRegisterExpense();
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
 
-    await insertTransactionModelIntoDatabase(newExpense, user, token);
+    await insertTransactionModelIntoDatabase(newExpense, user, token, authorizedDatabase);
     getProducts();
 
     setInputCategory("");

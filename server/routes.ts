@@ -79,12 +79,17 @@ const validateToken = async (userDB: string, token: string) => {
 };
 
 router.post("/home/modeltransaction", async (req: Request, res: Response) => {
-  const { data, user, token } = req.body;
+  const { data, user, token, authorizedDatabase } = req.body;
+  let referredDatabase = user;
   const validated = await validateToken(user, token);
+  
+  if (authorizedDatabase !== null) {
+    referredDatabase = authorizedDatabase;
+  }
 
   if (validated) {
     try {
-      await addDoc(collection(db, `${user}.transaction`), data);
+      await addDoc(collection(db, `${referredDatabase}.transaction`), data);
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.status(201).json({ message: "Iserido com sucesso" });
     } catch (err) {
@@ -97,14 +102,21 @@ router.post("/home/modeltransaction", async (req: Request, res: Response) => {
 });
 
 router.post("/home/transaction", async (req: Request, res: Response) => {
-  const { data, user, token } = req.body;
+  const { data, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
+  let referredDatabase = user;
+  
+  if (authorizedDatabase !== null) {
+    referredDatabase = authorizedDatabase;
+    
+    
+  }
 
   data.date = new Date(data.date);
 
   if (validated) {
     try {
-      await addDoc(collection(db, user), data);
+      await addDoc(collection(db, referredDatabase), data);
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.status(201).json({ message: "Iserido com sucesso" });
     } catch (err) {
@@ -117,23 +129,26 @@ router.post("/home/transaction", async (req: Request, res: Response) => {
 });
 
 router.get(
-  "/home/transaction/:user/:token/:initialdate/:finaldate",
+  "/home/transaction/:user/:token/:initialdate/:finaldate/:authorizedDatabase",
   async (req: Request, res: Response) => {
     const user = req.params.user;
     const token = req.params.token;
+    const authorizedDatabase = req.params.authorizedDatabase;
     const initialDate = new Date(req.params.initialdate);
     const finalDate = new Date(req.params.finaldate);
-
+    let referredDatabase = user;
     const validated = await validateToken(user, token);
 
-    console.log("chamou");
+    if (authorizedDatabase !== "null") {
+      referredDatabase = authorizedDatabase;
+    }
 
     let arrayData: DataTransaction[] = [];
 
     if (validated) {
       try {
         const data = await query(
-          collection(db, user),
+          collection(db, referredDatabase),
           where("date", ">", new Date(initialDate)),
           where("date", "<", new Date(finalDate))
         );
@@ -154,23 +169,6 @@ router.get(
 
         res.status(200).json(arrayData);
 
-        /* const result = await getDocs(query(collection(db, user)));
-        //let arrayData: DataTransaction[] = [];
-
-        result.docs.forEach((data: any) => {
-          arrayData.push({
-            id: data.id,
-            amont: data.data().amont,
-            category: data.data().category,
-            date: new Date(data.data().date.seconds * 1000),
-            expense: data.data().expense,
-            price: data.data().price,
-            product: data.data().product,
-            unity: data.data().unity,
-          });
-        }); */
-
-        //res.status(200).json(arrayData);
       } catch (err) {
         console.error("Erro do serverRoutes: ", err);
         res.status(500).json({ error: "Erro interno do servidor (GET)" });
@@ -182,16 +180,23 @@ router.get(
 );
 
 router.get(
-  "/home/modeltransaction/:user/:token",
+  "/home/modeltransaction/:user/:token/:authorizedDatabase",
   async (req: Request, res: Response) => {
     const user = req.params.user;
     const token = req.params.token;
+    const authorizedDatabase = req.params.authorizedDatabase;
+    let referredDatabase = user;
     const validated = await validateToken(user, token);
+
+    if (authorizedDatabase !== "null") {
+      referredDatabase = authorizedDatabase;
+    }
+
 
     if (validated) {
       try {
         const result = await getDocs(
-          query(collection(db, `${user}.transaction`))
+          query(collection(db, `${referredDatabase}.transaction`))
         );
         let arrayData: DataModelTransaction[] = [];
 
@@ -218,12 +223,19 @@ router.get(
 );
 
 router.delete("/home/transaction", async (req: Request, res: Response) => {
-  const { id, user, token } = req.body;
+  const { id, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
+  let referredDatabase = user;
+  
+  if (authorizedDatabase !== null) {
+    referredDatabase = authorizedDatabase;
+    
+    
+  }
 
   if (validated) {
     try {
-      await deleteDoc(doc(db, user, id));
+      await deleteDoc(doc(db, referredDatabase, id));
       res.status(200).json({ message: "Deletado com sucesso" });
     } catch (err) {
       console.error(err);
@@ -235,12 +247,19 @@ router.delete("/home/transaction", async (req: Request, res: Response) => {
 });
 
 router.delete("/home/modeltransaction", async (req: Request, res: Response) => {
-  const { id, user, token } = req.body;
+  const { id, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
+  let referredDatabase = user;
+  
+  if (authorizedDatabase !== null) {
+    referredDatabase = authorizedDatabase;
+    
+    
+  }
 
   if (validated) {
     try {
-      await deleteDoc(doc(db, `${user}.transaction`, id));
+      await deleteDoc(doc(db, `${referredDatabase}.transaction`, id));
       res.status(200).json({ message: "Deletado com sucesso" });
     } catch (err) {
       console.error(err);
@@ -265,12 +284,10 @@ router.post("/home/auth", async (req: Request, res: Response) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.status(201).json({ message: "Iserido com sucesso" });
     } catch (err) {
-      res
-        .status(500)
-        .json({
-          error:
-            "Erro interno do servidor (POST), postando um usuario autorizado.",
-        });
+      res.status(500).json({
+        error:
+          "Erro interno do servidor (POST), postando um usuario autorizado.",
+      });
       console.error(err);
     }
   } else {
@@ -326,6 +343,40 @@ router.delete("/home/auth", async (req: Request, res: Response) => {
   }
 });
 
+router.get(
+  "/home/auth/:user/:token/:usertoconfirm",
+  async (req: Request, res: Response) => {
+    const user = req.params.user;
+    const token = req.params.token;
+    const usertoconfirm = req.params.usertoconfirm;
+    const validated = await validateToken(user, token);
 
+    if (validated) {
+      try {
+        const result = await getDocs(
+          query(collection(db, `${usertoconfirm}.auth`))
+        );
+        let authorized = false;
+
+        result.docs.forEach((data: any) => {
+          if (data.data().user === user) {
+            authorized = true;
+          }
+        });
+
+        return res.status(200).json({ authorized: authorized });
+
+        return;
+      } catch (err) {
+        console.error("Erro do serverRoutes: ", err);
+        res
+          .status(500)
+          .json({ error: "Erro interno do servidor (GET), buscando usuario" });
+      }
+    } else {
+      res.status(500).json({ error: "Token de usuario invalido" });
+    }
+  }
+);
 
 export default router;

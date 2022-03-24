@@ -25,8 +25,9 @@ function TableItem(props: Props) {
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
 
-    await deleteTransactionDatabase(itemId, user, token);
+    await deleteTransactionDatabase(itemId, user, token, authorizedDatabase);
 
     getList();
   };

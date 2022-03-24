@@ -20,7 +20,8 @@ export const URL = "http://localhost:3000/home/";
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  authorizedDatabase: string |null,
 ) => {
   let message = {};
 
@@ -30,7 +31,7 @@ export const insertTransactionModelIntoDatabase = async (
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ data, user, token }),
+    body: JSON.stringify({ data, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -44,8 +45,10 @@ export const insertTransactionModelIntoDatabase = async (
 export const insertTransactionIntoDatabase = async (
   data: Item,
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  authorizedDatabase: string |null
 ) => {
+  
   let message = {};
 
   await fetch(`${URL}transaction`, {
@@ -54,7 +57,7 @@ export const insertTransactionIntoDatabase = async (
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ data, user, token }),
+    body: JSON.stringify({ data, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -68,13 +71,14 @@ export const insertTransactionIntoDatabase = async (
 export const getTransactionList = async (
   user: string | null | undefined,
   token: string | undefined,
+  authorizedDatabase: string | null,
   initialDate: string,
   finalDate: string
 ) => {
   let data: ItemDataBase[] = [];
 
   await fetch(
-    `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}`,
+    `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}/${authorizedDatabase}`,
     {
       method: "GET",
       headers: {
@@ -98,11 +102,12 @@ export const getTransactionList = async (
 
 export const getModelTransactionList = async (
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  authorizedDatabase: string | null
 ) => {
   let data: ProductDatabase[] = [];
 
-  await fetch(`${URL}modeltransaction/${user}/${token}`, {
+  await fetch(`${URL}modeltransaction/${user}/${token}/${authorizedDatabase}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -125,7 +130,8 @@ export const getModelTransactionList = async (
 export const deleteTransactionDatabase = async (
   id: string,
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  authorizedDatabase: string | null
 ) => {
   let message = {};
 
@@ -135,7 +141,7 @@ export const deleteTransactionDatabase = async (
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ id, user, token }),
+    body: JSON.stringify({ id, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -149,7 +155,8 @@ export const deleteTransactionDatabase = async (
 export const deleteModelDatabase = async (
   id: string,
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  authorizedDatabase: string | null
 ) => {
   let message = {};
 
@@ -159,7 +166,7 @@ export const deleteModelDatabase = async (
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({ id, user, token }),
+    body: JSON.stringify({ id, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
     .then((resp) => {

@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from "react";
 import * as C from "./styles";
 
-import { useInfoContext } from "../../contexts/userInfoContext";
+import { useInfoContext, FormActions } from "../../contexts/userInfoContext";
 import {
   insertAuthorizedUser,
   getAllAllowedUsers,
   deleteUserAuthorized,
+  confirmAuthorization,
 } from "../../database/firebaseAuth";
 import { UserAuth } from "../../types/users";
 import { IoMdClose } from "react-icons/io";
 
 type Props = {
-  handleSetShowSettings: ()=> void;
+  handleSetShowSettings: () => void;
   showSettings: boolean;
 };
 
 function Settings(props: Props) {
-  const {handleSetShowSettings, showSettings} = props;
+  const { handleSetShowSettings, showSettings } = props;
 
-  const { state } = useInfoContext();
+  const { state, dispatch } = useInfoContext();
 
   const [userWhoHasAccess, setUserWhoHasAccess] = useState("");
+  const [userIWantToAccess, setUserIWantToAccess] = useState("");
   const [usersAuthorized, setUsersAuthorized] = useState<UserAuth[]>([]);
-  
+  const [messageAuthorization, setMessageAuthorization] = useState("");
+  const [showButtonAccessMyDatabase, setShowButtonAccessMyDatabase] =
+    useState(false);
 
   useEffect(() => {
     if (state.infoUser?.email) {
       getAllowedUsers();
+
+      if (state.databaseAuth) {
+        setShowButtonAccessMyDatabase(true);
+      }
     }
   }, []);
 
@@ -45,8 +53,6 @@ function Settings(props: Props) {
 
     const insert = await insertAuthorizedUser(userWhoHasAccess, user, token);
 
-    console.log(insert);
-
     getAllowedUsers();
   };
 
@@ -59,20 +65,75 @@ function Settings(props: Props) {
     getAllowedUsers();
   };
 
+  const accessDataFromAnotherUser = async () => {
+    if (userIWantToAccess === "") return;
+
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+
+    const approved = await confirmAuthorization(user, token, userIWantToAccess);
+
+    if (approved.authorized) {
+      setMessageAuthorization(
+        `Permissão CONCEDIDA - Acessando dados ${userIWantToAccess}...`
+      );
+
+      localStorage.setItem("authorizedDatabase", userIWantToAccess);
+
+      setTimeout(() => {
+        dispatch({ type: FormActions.setDatabaseAuth, payload: userIWantToAccess });
+      }, 5000);
+
+      //busca os dados
+    } else {
+      setMessageAuthorization(`Permissão NEGADA`);
+    }
+  };
+
+  const removeAuthorizedUserView = () => {
+    localStorage.removeItem("authorizedDatabase");
+
+    setMessageAuthorization("Alterando banco de dados...")
+
+    setTimeout(() => {
+      dispatch({ type: FormActions.setDatabaseAuth, payload: null });
+      setShowButtonAccessMyDatabase(false);
+    }, 5000);
+
+    //busca os dados
+  };
+
   return (
     <C.Container showSettings={showSettings}>
       <C.ContainerFilds>
-        <C.ButtonCloseSettings onClick={()=> handleSetShowSettings()}>
+        <C.ButtonCloseSettings onClick={() => handleSetShowSettings()}>
           <IoMdClose />
         </C.ButtonCloseSettings>
         <C.Title>Configurações</C.Title>
         <C.DivInput>
           <C.TitleUser>Acessar dados de outro usuário</C.TitleUser>
           <C.Label>E-mail do usuário:</C.Label>
-          <C.Input type={"email"} placeholder={"E-mail do usuário"}></C.Input>
+          <C.Input
+            type={"email"}
+            placeholder={"E-mail do usuário"}
+            value={userIWantToAccess}
+            onChange={(e) => setUserIWantToAccess(e.target.value)}
+          ></C.Input>
 
-          <C.ButtonConfirm>Verificar Permissão</C.ButtonConfirm>
+          <C.ButtonConfirm onClick={accessDataFromAnotherUser}>
+            Verificar Permissão
+          </C.ButtonConfirm>
+
+          <C.StatusAuthorization>{messageAuthorization}</C.StatusAuthorization>
         </C.DivInput>
+        {showButtonAccessMyDatabase && (
+          <C.ContainerFilds>
+            <C.StatusAuthorization>Você está conectado a <span>{state.databaseAuth}</span></C.StatusAuthorization>
+            <C.ButtonAccessMyDatabase onClick={removeAuthorizedUserView}>
+              Acessar conta {state.infoUser?.email}
+            </C.ButtonAccessMyDatabase>
+          </C.ContainerFilds>
+        )}
 
         <hr />
 
@@ -82,7 +143,7 @@ function Settings(props: Props) {
             <C.Label>Autorizar usuário a acessar meus dados</C.Label>
             <C.Input
               type={"email"}
-              placeholder={"E-mail alturizado"}
+              placeholder={"E-mail autorizado"}
               value={userWhoHasAccess}
               onChange={(e) => setUserWhoHasAccess(e.target.value)}
             ></C.Input>
@@ -92,7 +153,9 @@ function Settings(props: Props) {
           </C.DivInputAuth>
 
           <C.DivUsersAuth>
-            <C.AllowedUsers>Usuários Permitidos</C.AllowedUsers>
+            {usersAuthorized.length > 0 && (
+              <C.AllowedUsers>Usuários Permitidos</C.AllowedUsers>
+            )}
             {usersAuthorized.map((user, index) => (
               <C.DivUser key={index}>
                 <C.User>{user.user}</C.User>
