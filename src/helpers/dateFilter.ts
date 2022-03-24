@@ -5,7 +5,7 @@ export const getCurrentMonth = () => {
 
   return `${now.getFullYear()}-${now.getMonth() + 1}`;
 };
-
+/* 
 export const filterListByMonth = (
   list: ItemDataBase[],
   date: string
@@ -56,11 +56,24 @@ export const filterListByDay = (
     return a.date.getTime() - b.date.getTime();
   });
 };
+ */
+
+/* export const getCurrentDay = () => {
+  let now = new Date();
+
+  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+};
+ */
+
+
 
 export const fromatDate = (date: Date): string => {
-  let year = date.getFullYear();
-  let month = String(date.getMonth() + 1).padStart(2, "0");
-  let day = String(date.getDate()).padStart(2, "0");
+
+  const newDate = new Date(date)
+
+  let year = newDate.getFullYear();
+  let month = String(newDate.getMonth() + 1).padStart(2, "0");
+  let day = String(newDate.getDate()).padStart(2, "0");
 
   return `${day}/${month}/${year}`;
 };
@@ -83,13 +96,6 @@ export const formatCurrentMonth = (currentMonth: string): string => {
   ];
 
   return `${months[Number(month) - 1]} de ${year}`;
-};
-
-
-export const getCurrentDay = () => {
-  let now = new Date();
-
-  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 };
 
 export const getDate = () => {

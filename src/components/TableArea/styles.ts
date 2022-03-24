@@ -35,4 +35,11 @@ export const Title = styled.h1`
   position: absolute;
   top: 7px;
   left: 20px;
+
+  @media (max-width: 600px) {
+
+    top: 20px;
+
+
+  }
 `;

@@ -28,7 +28,7 @@
     "build": "tsc -p tsconfig-server.json && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "ts-node-dev --respawn --transpile-only server/server.ts "
+    "server": "ts-node-dev -P tsconfig-server.json --respawn --transpile-only server/server.ts "
   },
   "eslintConfig": {
     "extends": [

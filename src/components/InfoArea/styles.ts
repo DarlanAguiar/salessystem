@@ -8,12 +8,18 @@ export const Container = styled.div`
   padding: 35px 20px 20px 20px;
   margin-top: -40px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  transition: 0.4s;
 
   @media (max-width: 600px) {
     overflow: auto;
-  
   }
+`;
+
+export const DivContents = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 export const Title = styled.div`
@@ -22,6 +28,23 @@ export const Title = styled.div`
   font-size: 23px;
   color: darkblue;
   font-weight: bold;
+`;
+
+export const DetailsButton = styled.button`
+  position: absolute;
+  top: 7px;
+  right: 25px;
+  font-size: 27px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  color: darkblue;
+  cursor: pointer;
+  border: 0;
+  
+  span {
+    font-size: 16px;
+  }
 `;
 
 export const DayArea = styled.div`
@@ -33,10 +56,8 @@ export const DayArea = styled.div`
     border-radius: 5px;
 
     @media (max-width: 600px) {
-
-      width:100px;
+      width: 100px;
     }
-
   }
 `;
 

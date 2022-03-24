@@ -23,6 +23,7 @@ function ExpenseArea(props: Props) {
   const [showExpenseField, setShowExpenseField] = useState(false);
 
   useEffect(() => {
+    
     let newProductsList: string[] = [];
 
     databaseProducts.forEach((product) => {
@@ -52,8 +53,26 @@ function ExpenseArea(props: Props) {
       alert(errors[0]);
       //alert(errors.join("\n"));
     } else {
-      const tempDate = dateField ? new Date(dateField) : new Date();
+     
+
+      console.log(dateField)
+
+      const tempDate = new Date(dateField)
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
+ 
+      if (
+        tempDate.getHours() === 0 &&
+        tempDate.getMinutes() === 0 &&
+        tempDate.getSeconds() === 0
+      ) {
+        const now = new Date();
+        tempDate.setHours(now.getHours());// +4
+        tempDate.setMinutes(now.getMinutes());
+        tempDate.setSeconds(now.getSeconds());
+      }
+
+
+
       const itemExpense: Item = {
         date: tempDate,
         category: categoryExpenseField,
@@ -63,6 +82,8 @@ function ExpenseArea(props: Props) {
         price: Number(valueField),
         expense: true,
       };
+
+      console.log(tempDate)
 
       setShowExpenseField(false);
 

@@ -5,26 +5,20 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { IoIosTrain } from "react-icons/io";
+import { IoIosTrain, IoMdSettings } from "react-icons/io";
 
 import { Item, ItemDataBase } from "../../types/Item";
 
-import {
-  getCurrentMonth,
-  filterListByMonth,
-  filterListByDay,
-  getCurrentDay,
-  formatCurrentMonth,
-} from "../../helpers/dateFilter";
+import { getCurrentMonth, getDate } from "../../helpers/dateFilter";
 
 import * as C from "./styles";
 import TableArea from "../TableArea";
 import InfoArea from "../InfoArea";
 import SalesArea from "../SalesArea";
 import RegisterProduct from "../RegisterProduct";
-
 import RegisterExpense from "../RegisterExpense";
 import ExpenseArea from "../ExpenseArea";
+
 import {
   getModelTransactionList,
   getTransactionList,
@@ -32,40 +26,50 @@ import {
 } from "../../database/firebase";
 import TableRemoveModel from "../TableRemoveModel";
 import { ProductDatabase } from "../../types/Product";
+import { BestSeller } from "../../types/FilterProducts";
+import {
+  orderedAmountOfMoney,
+  orderedByBestSellers,
+} from "../../helpers/filterByProducts";
+import Settings from "../Settings";
 
 const auth = getAuth();
 
 function Home() {
   const { state, dispatch } = useInfoContext();
   const navigate = useNavigate();
-  
+
   const [databaseProducts, setDatabaseProducts] = useState<ProductDatabase[]>(
     []
-    );
-    
-    const [list, setList] = useState<ItemDataBase[]>([]);
-    const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
-    //pegando o mês atual
-    const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
-    const [currentDay, setCurrentDay] = useState(getCurrentDay());
-    const [income, setIncome] = useState(0);
-    const [expense, setExpense] = useState(0);
-    const [showRegisterProduct, setShowRegisterProduct] = useState(false);
-    const [showRegisterExpense, setShowRegisterExpense] = useState(false);
-    const [showRemoveModel, setShowRemoveModel] = useState(false);
-    const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
-    const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
-    const [titleTable, setTitleTable] = useState("");
-    const [salesField, setSalesField] = useState([[]]);
-    
-  const getList = async () => {
-    const user = state.infoUser?.email;
-    const token = await state.infoUser?.getIdToken();
-    if (token !== undefined) {
-      const listDataBase = await getTransactionList(user, token);
+  );
 
-      setList(listDataBase);
-    }
+  const [list, setList] = useState<ItemDataBase[]>([]);
+  //const [filteredList, setFilteredList] = useState<ItemDataBase[]>([]);
+  //pegando o mês atual
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+  //const [currentDay, setCurrentDay] = useState(getCurrentDay());
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [showRegisterProduct, setShowRegisterProduct] = useState(false);
+  const [showRegisterExpense, setShowRegisterExpense] = useState(false);
+  const [showRemoveModel, setShowRemoveModel] = useState(false);
+  const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
+  const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
+  const [titleTable, setTitleTable] = useState("");
+  const [salesField, setSalesField] = useState([[]]);
+  const [listBestSellers, setListBestSellers] = useState<BestSeller[]>([]);
+  const [listAmountOfMoney, setlistAmountOfMoney] = useState<BestSeller[]>([]);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const getList = async () => {
+    let date = getDate().split("-");
+    date[2] = String(Number(date[2]) + 1).padStart(2, "0");
+    const formatDate = date.join("-");
+
+    const initialDate = `${getDate()}T04:00:00.000Z`;
+    const finalDate = `${formatDate}T04:00:00.000Z`;
+
+    getListByDate(initialDate, finalDate);
   };
 
   const getProducts = async () => {
@@ -78,27 +82,46 @@ function Home() {
     }
   };
 
+  const getListByDate = async (initialDate: string, finalDate: string) => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+
+    const listDataBase = await getTransactionList(
+      user,
+      token,
+      initialDate,
+      finalDate
+    );
+    setList(listDataBase);
+    //setFilteredList(listDataBase)
+  };
+
   useEffect(() => {
-    getProducts();
-    getList();
+    setListBestSellers(orderedByBestSellers(list));
+    setlistAmountOfMoney(orderedAmountOfMoney(list));
+  }, [list]);
+
+  useEffect(() => {
+    if (state.infoUser?.email) {
+      getList();
+      getProducts();
+      setTitleTable(getDate().split("-").reverse().join("/"));
+    }
   }, []);
-
+  /* 
   useEffect(() => {
-    setFilteredList(filterListByMonth(list, currentMonth));
     setTitleTable(formatCurrentMonth(currentMonth));
-  }, [currentMonth]);
+  }, [currentMonth]); */
 
-  useEffect(() => {
-    setFilteredList(filterListByDay(list, currentDay));
-    const titleTableFormated = currentDay.split("-").reverse().join("/");
-    setTitleTable(titleTableFormated);
-  }, [list, currentDay]);
+  const updateTableTitle = (title: string) => {
+    setTitleTable(title);
+  };
 
   useEffect(() => {
     let newIncome = 0;
     let newExpense = 0;
 
-    filteredList.forEach((element) => {
+    list.forEach((element) => {
       if (element.expense) {
         newExpense += element.price;
       } else {
@@ -108,7 +131,7 @@ function Home() {
       setIncome(newIncome);
       setExpense(newExpense);
     });
-  }, [filteredList]);
+  }, [list]);
 
   useEffect(() => {
     const assemblesCategoryOptions = () => {
@@ -137,10 +160,6 @@ function Home() {
     setCurrentMonth(newMonth);
   };
 
-  const handleDayChange = (newDay: string) => {
-    setCurrentDay(newDay);
-  };
-
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
       const user = state.infoUser?.email;
@@ -150,8 +169,14 @@ function Home() {
       await insertTransactionIntoDatabase(item, user, token);
     });
 
+    setTitleTable(getDate().split("-").reverse().join("/"));
+
     getList();
   };
+
+  const handleSetShowSettings = () => {
+    setShowSettings(!showSettings)
+  }
 
   const handleShowRegisterProduct = () => {
     setShowRegisterProduct(!showRegisterProduct);
@@ -173,7 +198,6 @@ function Home() {
     navigate("/login");
   };
 
-
   const addNewClient = () => {
     const listClient = [...salesField];
 
@@ -191,7 +215,6 @@ function Home() {
   };
 
   const insertNewListToTotal = (itemId: number, list: any) => {
-  
     const totalList = [...salesField];
 
     totalList[itemId] = list;
@@ -208,9 +231,11 @@ function Home() {
       <C.Header>
         <C.ButtonLogout onClick={logout}>
           {" "}
-          sair
           <RiLogoutBoxRLine />{" "}
         </C.ButtonLogout>
+        <C.ButtonSettings onClick={()=> handleSetShowSettings()}>
+          <IoMdSettings />
+        </C.ButtonSettings>
         <C.HeaderText>
           Trem
           <IoIosTrain />
@@ -223,7 +248,10 @@ function Home() {
           onMonthChange={handleMonthChange}
           income={income}
           expense={expense}
-          handleDayChange={handleDayChange}
+          listBestSellers={listBestSellers}
+          listAmountOfMoney={listAmountOfMoney}
+          getListByDate={getListByDate}
+          updateTableTitle={updateTableTitle}
         />
 
         {salesField.map((field, index) => (
@@ -243,7 +271,7 @@ function Home() {
         ))}
 
         <TableArea
-          filteredList={filteredList}
+          filteredList={list}
           titleTable={titleTable}
           getList={getList}
         />
@@ -273,6 +301,8 @@ function Home() {
         handleSetShowRemoveModel={handleSetShowRemoveModel}
         showRemoveModel={showRemoveModel}
       />
+
+    <Settings handleSetShowSettings={handleSetShowSettings} showSettings={showSettings}/>
     </C.Container>
   );
 }

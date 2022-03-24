@@ -25,3 +25,7 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 export {};
+
+
+//codigo para transpilar
+//tsc -p tsconfig-server.json && react-scripts build

@@ -17,10 +17,10 @@ export const ButtonLogout = styled.button`
   top: 8px;
   right: 8px;
   padding: 5px;
-  border: 3px solid var(--colorFontSecondary);
+  border: 0;
   background-color: transparent;
   color: var(--colorFontSecondary);
-  font-size: 17px;
+  font-size: 35px;
   border-radius: 10px;
   font-weight: bold;
   display: flex;
@@ -34,13 +34,46 @@ export const ButtonLogout = styled.button`
   }
 
   @media (max-width: 600px) {
-    top: 75px;
+    top: 70px;
     right: 2px;
     padding: 3px;
-    border: 2px solid var(--colorFontSecondary);
+    font-size: 27px;
    
   }
 `;
+
+export const ButtonSettings = styled.button`
+
+position: absolute;
+  top: 8px;
+  right: 60px;
+  padding: 5px;
+  border: 0;
+  background-color: transparent;
+  color: var(--colorFontSecondary);
+  font-size: 35px;
+  border-radius: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: lightblue;
+    color: black;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 27px;
+    top: 70px;
+    right: 40px;
+    padding: 3px;
+   
+   
+  }
+
+`
 
 export const HeaderText = styled.h1`
   margin: 0;

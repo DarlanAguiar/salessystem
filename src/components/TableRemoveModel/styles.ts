@@ -15,7 +15,6 @@ export const Container = styled.div<{ showRemoveModel: boolean }>`
   @media (max-width: 600px) {
     width: 100vw;
   }
- 
 
   div {
     height: 100%;
@@ -103,6 +102,6 @@ export const ButtonShowRemoveModel = styled.button<{
   @media (max-width: 600px) {
     width: 25vw;
     left: 50vw;
-    font-size: 11px
+    font-size: 11px;
   }
 `;

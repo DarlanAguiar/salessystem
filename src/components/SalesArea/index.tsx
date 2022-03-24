@@ -115,7 +115,7 @@ function SalesArea(props: Props) {
         tempDate.getSeconds() === 0
       ) {
         const now = new Date();
-        tempDate.setHours(now.getHours() + 4);
+        tempDate.setHours(now.getHours());
         tempDate.setMinutes(now.getMinutes());
         tempDate.setSeconds(now.getSeconds());
       }

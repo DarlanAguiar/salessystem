@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { Item, ItemDataBase } from "../types/Item";
 import { Product, ProductDatabase } from "../types/Product";
+import { UserAuth } from "../types/users";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
@@ -13,8 +14,8 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-const URL = "/home/";
-//const URL = "http://localhost:3000/home/";
+//export const URL = "/home/";
+export const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
@@ -66,17 +67,22 @@ export const insertTransactionIntoDatabase = async (
 
 export const getTransactionList = async (
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  initialDate: string,
+  finalDate: string
 ) => {
   let data: ItemDataBase[] = [];
 
-  await fetch(`${URL}transaction/${user}/${token}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  })
+  await fetch(
+    `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    }
+  )
     .then((resp) => {
       const parsedResp = resp.json();
 
@@ -84,7 +90,6 @@ export const getTransactionList = async (
     })
     .then((resp) => (data = resp))
     .catch((err) => {
-     
       throw new Error("Problemas no servidor GET");
     });
 
@@ -111,7 +116,6 @@ export const getModelTransactionList = async (
     })
     .then((resp) => (data = resp))
     .catch((err) => {
-     
       throw new Error("Problemas no servidor GET");
     });
 
@@ -135,7 +139,6 @@ export const deleteTransactionDatabase = async (
   })
     .then((resp) => resp.json())
     .then((resp) => {
-   
       if (resp.error) {
         message = { error: resp.error };
       }
@@ -160,10 +163,13 @@ export const deleteModelDatabase = async (
   })
     .then((resp) => resp.json())
     .then((resp) => {
-     
       if (resp.error) {
         message = { error: resp.error };
       }
     });
   return message;
 };
+
+//rotas para autorizações
+////////////////////////////////////
+
