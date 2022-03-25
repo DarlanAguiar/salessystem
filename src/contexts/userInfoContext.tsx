@@ -1,7 +1,7 @@
 // Context , Reducer, Provider , Hook
 
 import { UserCredential } from "firebase/auth";
-import { createContext, ReactNode, useContext, useReducer, useState } from "react";
+import { createContext, ReactNode, useContext, useReducer} from "react";
 
 //criando types
 type State = {

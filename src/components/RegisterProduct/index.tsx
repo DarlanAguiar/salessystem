@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { FaWineBottle } from "react-icons/fa";
-
 import * as C from "./styles";
-import { IoMdClose } from "react-icons/io";
-
 import { useInfoContext } from "../../contexts/userInfoContext";
-
 import { insertTransactionModelIntoDatabase } from "../../database/firebase";
 
 type Props = {
@@ -77,7 +73,12 @@ function RegisterProduct(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const user = state.infoUser?.email;
     const authorizedDatabase = state.databaseAuth;
-    await insertTransactionModelIntoDatabase(newProduct, user, token, authorizedDatabase);
+    await insertTransactionModelIntoDatabase(
+      newProduct,
+      user,
+      token,
+      authorizedDatabase
+    );
 
     getProducts();
 

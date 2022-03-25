@@ -4,14 +4,9 @@ export const ContainerTr = styled.tr`
   font-size: 18px;
   border-bottom: 1px solid #fff;
 
-  
-
-  @media(max-width: 600px) {
-
+  @media (max-width: 600px) {
     font-size: 13px;
-   
-    
-   }
+  }
 `;
 
 export const TableColumn = styled.td`

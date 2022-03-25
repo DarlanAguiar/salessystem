@@ -51,7 +51,7 @@ function Settings(props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    const insert = await insertAuthorizedUser(userWhoHasAccess, user, token);
+    await insertAuthorizedUser(userWhoHasAccess, user, token);
 
     getAllowedUsers();
   };
@@ -81,7 +81,10 @@ function Settings(props: Props) {
       localStorage.setItem("authorizedDatabase", userIWantToAccess);
 
       setTimeout(() => {
-        dispatch({ type: FormActions.setDatabaseAuth, payload: userIWantToAccess });
+        dispatch({
+          type: FormActions.setDatabaseAuth,
+          payload: userIWantToAccess,
+        });
       }, 5000);
 
       //busca os dados
@@ -93,7 +96,7 @@ function Settings(props: Props) {
   const removeAuthorizedUserView = () => {
     localStorage.removeItem("authorizedDatabase");
 
-    setMessageAuthorization("Alterando banco de dados...")
+    setMessageAuthorization("Alterando banco de dados...");
 
     setTimeout(() => {
       dispatch({ type: FormActions.setDatabaseAuth, payload: null });
@@ -128,7 +131,9 @@ function Settings(props: Props) {
         </C.DivInput>
         {showButtonAccessMyDatabase && (
           <C.ContainerFilds>
-            <C.StatusAuthorization>Você está conectado a <span>{state.databaseAuth}</span></C.StatusAuthorization>
+            <C.StatusAuthorization>
+              Você está conectado a <span>{state.databaseAuth}</span>
+            </C.StatusAuthorization>
             <C.ButtonAccessMyDatabase onClick={removeAuthorizedUserView}>
               Acessar conta {state.infoUser?.email}
             </C.ButtonAccessMyDatabase>

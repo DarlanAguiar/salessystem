@@ -12,7 +12,12 @@ type Props = {
 };
 
 function SalesSortedList(props: Props) {
-  const { listBestSellers, listAmountOfMoney, getListByDate, updateTableTitle } = props;
+  const {
+    listBestSellers,
+    listAmountOfMoney,
+    getListByDate,
+    updateTableTitle,
+  } = props;
 
   const [startDateField, setStartDateField] = useState("");
   const [endDateField, setEndDateField] = useState("");
@@ -35,19 +40,22 @@ function SalesSortedList(props: Props) {
       alert("Adicione uma data Final MAIOR que a data inicial");
       return;
     }
-    if(startDateField === "" || endDateField === ""){
+    if (startDateField === "" || endDateField === "") {
       alert("Adicione as duas datas para poder filtrar.");
       return;
     }
 
     const initialDate = `${startDateField}T04:00:00.000Z`;
     const finalDate = `${formatFinalDate()}T04:00:00.000Z`;
-    console.log(formatFinalDate());
-    
 
     getListByDate(initialDate, finalDate);
 
-    updateTableTitle(`${startDateField.split("-").reverse().join("/")} à ${ endDateField.split("-").reverse().join("/")}`)
+    updateTableTitle(
+      `${startDateField.split("-").reverse().join("/")} à ${endDateField
+        .split("-")
+        .reverse()
+        .join("/")}`
+    );
   };
 
   return (

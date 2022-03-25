@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
-
 import { insertTransactionModelIntoDatabase } from "../../database/firebase";
-
 import { useInfoContext } from "../../contexts/userInfoContext";
-
 import * as C from "./styles";
-
-import { Product } from "../../types/Product";
 
 type Props = {
   handleShowRegisterExpense: () => void;
@@ -42,7 +37,7 @@ function RegisterExpense(props: Props) {
     }
 
     const newExpense = {
-      category: inputCategory, 
+      category: inputCategory,
       name: String(dados.name),
       unity: true,
       price: 0,
@@ -54,7 +49,12 @@ function RegisterExpense(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
 
-    await insertTransactionModelIntoDatabase(newExpense, user, token, authorizedDatabase);
+    await insertTransactionModelIntoDatabase(
+      newExpense,
+      user,
+      token,
+      authorizedDatabase
+    );
     getProducts();
 
     setInputCategory("");

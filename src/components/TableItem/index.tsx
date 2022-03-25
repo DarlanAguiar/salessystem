@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { fromatDate } from "../../helpers/dateFilter";
 import { ItemDataBase } from "../../types/Item";
 import * as C from "./styles";
-
 import { useInfoContext } from "../../contexts/userInfoContext";
-
 import { IoMdClose } from "react-icons/io";
 import { deleteTransactionDatabase } from "../../database/firebase";
 

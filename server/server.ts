@@ -12,9 +12,7 @@ app.use(express.json());
 app.use("/", express.static(resolve(__dirname, "../build")));
 
 app.use("/", routes);
-////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////
 
 app.get("/login", (req, res) => {
   res.redirect("/");

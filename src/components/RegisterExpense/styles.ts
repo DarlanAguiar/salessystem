@@ -31,9 +31,8 @@ export const FormField = styled.div`
   margin: auto;
   display: flex;
 
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     overflow: scroll;
-   
   }
 `;
 
@@ -118,8 +117,6 @@ export const CloseExpenseButton = styled.button<{
   @media (max-width: 600px) {
     width: 25vw;
     left: 25vw;
-    font-size: 11px
+    font-size: 11px;
   }
 `;
-
-

@@ -82,7 +82,7 @@ router.post("/home/modeltransaction", async (req: Request, res: Response) => {
   const { data, user, token, authorizedDatabase } = req.body;
   let referredDatabase = user;
   const validated = await validateToken(user, token);
-  
+
   if (authorizedDatabase !== null) {
     referredDatabase = authorizedDatabase;
   }
@@ -105,11 +105,9 @@ router.post("/home/transaction", async (req: Request, res: Response) => {
   const { data, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
   let referredDatabase = user;
-  
+
   if (authorizedDatabase !== null) {
     referredDatabase = authorizedDatabase;
-    
-    
   }
 
   data.date = new Date(data.date);
@@ -168,7 +166,6 @@ router.get(
         });
 
         res.status(200).json(arrayData);
-
       } catch (err) {
         console.error("Erro do serverRoutes: ", err);
         res.status(500).json({ error: "Erro interno do servidor (GET)" });
@@ -191,7 +188,6 @@ router.get(
     if (authorizedDatabase !== "null") {
       referredDatabase = authorizedDatabase;
     }
-
 
     if (validated) {
       try {
@@ -226,11 +222,9 @@ router.delete("/home/transaction", async (req: Request, res: Response) => {
   const { id, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
   let referredDatabase = user;
-  
+
   if (authorizedDatabase !== null) {
     referredDatabase = authorizedDatabase;
-    
-    
   }
 
   if (validated) {
@@ -250,11 +244,9 @@ router.delete("/home/modeltransaction", async (req: Request, res: Response) => {
   const { id, user, token, authorizedDatabase } = req.body;
   const validated = await validateToken(user, token);
   let referredDatabase = user;
-  
+
   if (authorizedDatabase !== null) {
     referredDatabase = authorizedDatabase;
-    
-    
   }
 
   if (validated) {
@@ -269,6 +261,12 @@ router.delete("/home/modeltransaction", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Token de usuario invalido" });
   }
 });
+
+
+
+
+
+
 
 //rotas para autorizações
 ///////////////////////////////////////////////////
@@ -365,8 +363,6 @@ router.get(
         });
 
         return res.status(200).json({ authorized: authorized });
-
-        return;
       } catch (err) {
         console.error("Erro do serverRoutes: ", err);
         res

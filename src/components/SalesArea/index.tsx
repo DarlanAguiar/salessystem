@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Item } from "../../types/Item";
 import * as C from "./styles";
-
 import { Product } from "../../types/Product";
 import OrderList from "../OrderList";
 import { getDate } from "../../helpers/dateFilter";
@@ -60,8 +59,10 @@ function SalesArea(props: Props) {
   const [title, setTitle] = useState<string | null>("Área de vendas");
 
   useEffect(() => {
+    
     setOrderList(clientProducts);
-  }, [productAllClient]);
+    
+  }, [productAllClient]); 
 
   useEffect(() => {
     let newProductsList: string[] = [];

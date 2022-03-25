@@ -64,8 +64,6 @@ function InfoArea(props: Props) {
     let currentDate = new Date(Number(year), Number(month) - 1, 1);
     currentDate.setMonth(currentDate.getMonth() + 1);
 
-    console.log(currentDate);
-
     const formatMonth = currentDate.getMonth() + 1;
 
     const initialDate = `${currentDate.getFullYear()}-${String(

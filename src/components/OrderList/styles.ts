@@ -9,7 +9,6 @@ export const Container = styled.div`
   @media (max-width: 600px) {
     width: 490px;
     padding: 4px;
-    
   }
 
   .tableSummary {
@@ -27,7 +26,6 @@ export const MoneyChange = styled.div`
   font-weight: bold;
   font-size: 20px;
   @media (max-width: 600px) {
-
     font-size: 14px;
   }
 
@@ -37,7 +35,6 @@ export const MoneyChange = styled.div`
     padding: 7px;
     border-radius: 5px;
     @media (max-width: 600px) {
-
       width: 50px;
     }
   }
@@ -118,11 +115,7 @@ export const CloseSale = styled.div`
 
     @media (max-width: 600px) {
       width: 70px;
-
     }
-  
-
-    
   }
 
   .cancelSale {
@@ -144,7 +137,6 @@ export const CloseSale = styled.div`
 
     @media (max-width: 600px) {
       width: 70px;
-
     }
   }
 `;

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-
 import { FormActions, useInfoContext } from "../../contexts/userInfoContext";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoIosTrain, IoMdSettings } from "react-icons/io";
-
+import Logo from "../../logo/logo2.png"
 import { Item, ItemDataBase } from "../../types/Item";
-
 import { getCurrentMonth, getDate } from "../../helpers/dateFilter";
-
 import * as C from "./styles";
 import TableArea from "../TableArea";
 import InfoArea from "../InfoArea";
@@ -58,63 +54,19 @@ function Home() {
   const [listAmountOfMoney, setlistAmountOfMoney] = useState<BestSeller[]>([]);
   const [showSettings, setShowSettings] = useState(false);
 
-  const getList = async () => {
-    let date = getDate().split("-");
-    date[2] = String(Number(date[2]) + 1).padStart(2, "0");
-    const formatDate = date.join("-");
-
-    const initialDate = `${getDate()}T04:00:00.000Z`;
-    const finalDate = `${formatDate}T04:00:00.000Z`;
-
-    getListByDate(initialDate, finalDate);
-  };
-
-  const getProducts = async () => {
-    const user = state.infoUser?.email;
-    const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    const listDataBaseProducts = await getModelTransactionList(user, token, authorizedDatabase);
-
-    setDatabaseProducts(listDataBaseProducts);
-  };
-
-  const getListByDate = async (initialDate: string, finalDate: string) => {
-    const user = state.infoUser?.email;
-    const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    const listDataBase = await getTransactionList(
-      user,
-      token,
-      authorizedDatabase,
-      initialDate,
-      finalDate
-    );
-    setList(listDataBase);
-    //setFilteredList(listDataBase)
-  };
-
   useEffect(() => {
     setListBestSellers(orderedByBestSellers(list));
     setlistAmountOfMoney(orderedAmountOfMoney(list));
   }, [list]);
 
   useEffect(() => {
+    
     if (state.infoUser?.email) {
       getList();
       getProducts();
       setTitleTable(getDate().split("-").reverse().join("/"));
     }
-  }, []);
-  /* 
-  useEffect(() => {
-    setTitleTable(formatCurrentMonth(currentMonth));
-  }, [currentMonth]); */
-
-  const updateTableTitle = (title: string) => {
-    setTitleTable(title);
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     let newIncome = 0;
@@ -155,19 +107,67 @@ function Home() {
     assemblesCategoryOptions();
   }, [databaseProducts]);
 
+  const getList = async () => {
+    let date = getDate().split("-");
+    date[2] = String(Number(date[2]) + 1).padStart(2, "0");
+    const formatDate = date.join("-");
+
+    const initialDate = `${getDate()}T04:00:00.000Z`;
+    const finalDate = `${formatDate}T04:00:00.000Z`;
+
+    getListByDate(initialDate, finalDate);
+  };
+
+  const getProducts = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
+
+    const listDataBaseProducts = await getModelTransactionList(
+      user,
+      token,
+      authorizedDatabase
+    );
+
+    setDatabaseProducts(listDataBaseProducts);
+  };
+
+  const getListByDate = async (initialDate: string, finalDate: string) => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth;
+
+    const listDataBase = await getTransactionList(
+      user,
+      token,
+      authorizedDatabase,
+      initialDate,
+      finalDate
+    );
+    setList(listDataBase);
+  };
+
+
+  const updateTableTitle = (title: string) => {
+    setTitleTable(title);
+  };
+
   const handleMonthChange = (newMonth: string) => {
     setCurrentMonth(newMonth);
   };
 
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
-      
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
-      
 
-      await insertTransactionIntoDatabase(item, user, token, authorizedDatabase);
+      await insertTransactionIntoDatabase(
+        item,
+        user,
+        token,
+        authorizedDatabase
+      );
     });
 
     setTitleTable(getDate().split("-").reverse().join("/"));
@@ -175,21 +175,6 @@ function Home() {
     getList();
   };
 
-  const handleSetShowSettings = () => {
-    setShowSettings(!showSettings);
-  };
-
-  const handleShowRegisterProduct = () => {
-    setShowRegisterProduct(!showRegisterProduct);
-  };
-
-  const handleShowRegisterExpense = () => {
-    setShowRegisterExpense(!showRegisterExpense);
-  };
-
-  const handleSetShowRemoveModel = () => {
-    setShowRemoveModel(!showRemoveModel);
-  };
   const logout = async () => {
     await signOut(auth);
     dispatch({ type: FormActions.setUser, payload: "" });
@@ -200,6 +185,7 @@ function Home() {
     dispatch({ type: FormActions.setIdConfiguration, payload: "" });
     navigate("/login");
   };
+  
 
   const addNewClient = () => {
     const listClient = [...salesField];
@@ -229,6 +215,22 @@ function Home() {
     setSalesField([[]]);
   };
 
+  const handleSetShowSettings = () => {
+    setShowSettings(!showSettings);
+  };
+
+  const handleShowRegisterProduct = () => {
+    setShowRegisterProduct(!showRegisterProduct);
+  };
+
+  const handleShowRegisterExpense = () => {
+    setShowRegisterExpense(!showRegisterExpense);
+  };
+
+  const handleSetShowRemoveModel = () => {
+    setShowRemoveModel(!showRemoveModel);
+  };
+  
   return (
     <C.Container>
       <C.Header>
@@ -241,7 +243,7 @@ function Home() {
         </C.ButtonSettings>
         <C.HeaderText>
           Trem
-          <IoIosTrain />
+        <img src={Logo} alt={"logo Trem bão"}/>
           Bão
         </C.HeaderText>
       </C.Header>

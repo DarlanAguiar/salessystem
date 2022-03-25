@@ -6,7 +6,8 @@ export const Header = styled.div`
   background-color: darkblue;
   height: 150px;
   color: white;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 
   .bottonLogout {
   }
@@ -78,11 +79,22 @@ position: absolute;
 export const HeaderText = styled.h1`
   margin: 0;
   padding: 0;
-  color: var(--colorFontPrimary);
-  padding-top: 30px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+
+  
+  
 
   @media (max-width: 600px) {
-    padding-top: 50px;
+    
+  }
+  img{
+    width: 60px;
+    border-radius: 50%;
+    margin: 0 4px;
   }
 
   

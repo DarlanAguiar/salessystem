@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { Item, ItemDataBase } from "../types/Item";
 import { Product, ProductDatabase } from "../types/Product";
-import { UserAuth } from "../types/users";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
@@ -14,8 +13,8 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-export const URL = "/home/";
-//export const URL = "http://localhost:3000/home/";
+//export const URL = "/home/";
+export const URL = "http://localhost:3000/home/";
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
@@ -176,7 +175,3 @@ export const deleteModelDatabase = async (
     });
   return message;
 };
-
-//rotas para autorizações
-////////////////////////////////////
-

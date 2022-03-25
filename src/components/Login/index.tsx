@@ -2,9 +2,7 @@ import * as C from "./styles";
 import { FcGoogle } from "react-icons/fc";
 import { FaUserPlus } from "react-icons/fa";
 import { FormActions, useInfoContext } from "../../contexts/userInfoContext";
-
 import { firebaseApp } from "../../database/firebase";
-
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -12,7 +10,6 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-
 import React, { MouseEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +17,7 @@ const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
 function Login() {
-  const { state, dispatch } = useInfoContext();
+  const { dispatch } = useInfoContext();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>("");
@@ -76,7 +73,6 @@ function Login() {
   const createUser = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
 
       const token = await user.user.getIdToken();
       const userEmail = user.user.email;
@@ -124,7 +120,7 @@ function Login() {
         break;
       default:
         errorMessage =
-          "cadastro não efetivado, confira os dados e tente novamente";
+          "Procedimento não efetivado, confira os dados e tente novamente";
     }
 
     return setErrorMessage(errorMessage);

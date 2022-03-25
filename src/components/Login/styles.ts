@@ -58,7 +58,7 @@ export const Form = styled.div`
 export const FormInput = styled.div`
   color: var(--colorFontSecondary);
 
-  p{
+  p {
     font-size: 14px;
     margin: -5px 5px 5px 5px;
   }
@@ -83,6 +83,5 @@ export const FormInput = styled.div`
     font-weight: bold;
     border-radius: 5px;
     background-color: var(--colorFontPrimary);
-    
   }
 `;
