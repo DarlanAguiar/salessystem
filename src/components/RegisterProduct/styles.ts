@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div<{ showRegisterProduct: boolean }>`
   width: 100vw;
   background-color: var(--colorBackground2);
-  border-radius: 0 0 30px 10px;
+  border-radius: 0 0 30px 5px;
   height: 170px;
   transition: 0.5s;
   position: fixed;

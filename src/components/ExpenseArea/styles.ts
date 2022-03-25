@@ -14,7 +14,7 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
   z-index: ${(props) => (props.showExpenseField ? "5" : "1")};
   
   @media (max-width: 600px) {
-    border-radius: 0 0 10px 40px;
+    border-radius: 0 0 0 40px;
     
   }
   
@@ -50,7 +50,7 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
     }
 
     @media (max-width: 600px) {
-      width: 25vw;
+      width: 24.5vw;
       left: 75vw;
       font-size: 13px;
       height: 37px;
@@ -98,6 +98,7 @@ export const InputLabel = styled.label`
     color: white;
     cursor: pointer;
     margin-bottom: 5px;
+    padding: 0 10px 30px;
   }
 
   .buttonCancel {
