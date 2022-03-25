@@ -11,3 +11,5 @@ sales control project with reports
 * Option to sell simultaneously to more than 1 customer.
 * Change calculator.
 * Cloud data storage.
+* Accept more than one user per account.
+* Customized products sold by date reports
