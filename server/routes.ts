@@ -1,6 +1,9 @@
 import { Request, Response, Router } from "express";
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 
+import {credentials} from "../salessystem-credential-firebase-admin";
+
+import admin from "firebase-admin";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -28,13 +31,10 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const db = getFirestore();
-
-const admin = require("firebase-admin");
-const serviceAccount = require("../salessystem-credential-firebase-admin.json");
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(credentials),
 });
+const db = getFirestore();
 
 type DataTransaction = {
   id: string;
@@ -262,12 +262,6 @@ router.delete("/home/modeltransaction", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Token de usuario invalido" });
   }
 });
-
-
-
-
-
-
 
 //rotas para autorizações
 ///////////////////////////////////////////////////
