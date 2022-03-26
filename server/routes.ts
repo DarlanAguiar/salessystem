@@ -1,7 +1,9 @@
-import { Request, Response } from "express";
-const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
-const {
+import { Request, Response, Router } from "express";
+import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import {
   collection,
   getDocs,
   query,
@@ -11,9 +13,9 @@ const {
   updateDoc,
   setDoc,
   where,
-} = require("firebase/firestore");
+} from "firebase/firestore";
 
-const router = require("express").Router();
+const router = Router();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
@@ -33,7 +35,6 @@ const serviceAccount = require("../salessystem-credential-firebase-admin.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-const { getAuth } = require("firebase-admin/auth");
 
 type DataTransaction = {
   id: string;
@@ -64,7 +65,7 @@ const validateToken = async (userDB: string, token: string) => {
   let validToken = true;
   await getAuth()
     .verifyIdToken(token)
-    .then((decodedToken: any) => {
+    .then((decodedToken: DecodedIdToken) => {
       const uid = decodedToken;
       if (uid.email !== userDB) {
         validToken = false;

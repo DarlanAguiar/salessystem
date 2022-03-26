@@ -4,7 +4,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoIosTrain, IoMdSettings } from "react-icons/io";
-import Logo from "../../logo/logo2.png"
+import Logo from "../../logo/logo2.png";
 import { Item, ItemDataBase } from "../../types/Item";
 import { getCurrentMonth, getDate } from "../../helpers/dateFilter";
 import * as C from "./styles";
@@ -60,7 +60,6 @@ function Home() {
   }, [list]);
 
   useEffect(() => {
-    
     if (state.infoUser?.email) {
       getList();
       getProducts();
@@ -147,7 +146,6 @@ function Home() {
     setList(listDataBase);
   };
 
-
   const updateTableTitle = (title: string) => {
     setTitleTable(title);
   };
@@ -185,7 +183,6 @@ function Home() {
     dispatch({ type: FormActions.setIdConfiguration, payload: "" });
     navigate("/login");
   };
-  
 
   const addNewClient = () => {
     const listClient = [...salesField];
@@ -230,7 +227,7 @@ function Home() {
   const handleSetShowRemoveModel = () => {
     setShowRemoveModel(!showRemoveModel);
   };
-  
+
   return (
     <C.Container>
       <C.Header>
@@ -243,7 +240,7 @@ function Home() {
         </C.ButtonSettings>
         <C.HeaderText>
           Trem
-        <img src={Logo} alt={"logo Trem bão"}/>
+          <img src={Logo} alt={"logo Trem bão"} />
           Bão
         </C.HeaderText>
       </C.Header>
