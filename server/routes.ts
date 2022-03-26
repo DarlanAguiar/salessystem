@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 
-const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
-const {
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import {
   collection,
   getDocs,
   query,
@@ -13,9 +13,9 @@ const {
   updateDoc,
   setDoc,
   where,
-} = require("firebase/firestore");
+} from "firebase/firestore";
 
-const router = require("express").Router();
+const router = Router();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
