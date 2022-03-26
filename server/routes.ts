@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+
 const { initializeApp } = require("firebase/app");
 const { getFirestore } = require("firebase/firestore");
 const {
@@ -33,7 +35,6 @@ const serviceAccount = require("../salessystem-credential-firebase-admin.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-const { getAuth } = require("firebase-admin/auth");
 
 type DataTransaction = {
   id: string;
@@ -64,7 +65,7 @@ const validateToken = async (userDB: string, token: string) => {
   let validToken = true;
   await getAuth()
     .verifyIdToken(token)
-    .then((decodedToken: any) => {
+    .then((decodedToken: DecodedIdToken) => {
       const uid = decodedToken;
       if (uid.email !== userDB) {
         validToken = false;
