@@ -1,5 +1,6 @@
-import { AccessDatabase, Authorized, UserAuth } from "../types/users";
+import { AccessDatabase } from "../types/users";
 import { URL } from "./firebase";
+import { headers } from "./firebase";
 
 export const saveDatabaseIWantToAccess = async (
   userIWantToAccess: string,
@@ -10,10 +11,7 @@ export const saveDatabaseIWantToAccess = async (
 
   await fetch(`${URL}authaccess`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ userIWantToAccess, user, token }),
   })
     .then((resp) => resp.json())
@@ -37,10 +35,7 @@ export const fetchAccessDatabase = async (
 
   await fetch(`${URL}authaccess/${user}/${token}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -65,10 +60,7 @@ export const updateDatabaseIWantToAccess = async (
 
   await fetch(`${URL}authaccess`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({
       databaseIWantToAccess,
       idDatabaseAuth,
@@ -94,10 +86,7 @@ export const deleteAccessToCurrentDatabase = async (
 
   await fetch(`${URL}authaccess`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ id, user, token }),
   })
     .then((resp) => resp.json())

@@ -26,10 +26,11 @@ function Router() {
         if (usuarioFirebase !== null) {
           //console.log(usuarioFirebase);
           const token = await usuarioFirebase.getIdToken();
-          const accessDatabase: AccessDatabase = await fetchAccessDatabase(usuarioFirebase.email, token)
-          
+          const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+            usuarioFirebase.email,
+            token
+          );
 
-          
           dispatch({ type: FormActions.setAuthenticated, payload: true });
           dispatch({
             type: FormActions.setUser,
@@ -37,15 +38,19 @@ function Router() {
           });
           dispatch({ type: FormActions.setToken, payload: token });
           dispatch({ type: FormActions.setInfoUser, payload: usuarioFirebase });
-          
-          if(accessDatabase.nameDatabase){
-            dispatch({ type: FormActions.setDatabaseAuth, payload: accessDatabase.nameDatabase });
-            dispatch({ type: FormActions.setIdDatabaseAuth, payload: accessDatabase.id });
-          }else{
+
+          if (accessDatabase.nameDatabase) {
+            dispatch({
+              type: FormActions.setDatabaseAuth,
+              payload: accessDatabase.nameDatabase,
+            });
+            dispatch({
+              type: FormActions.setIdDatabaseAuth,
+              payload: accessDatabase.id,
+            });
+          } else {
             dispatch({ type: FormActions.setDatabaseAuth, payload: null });
-            
           }
-        
         } else {
           navigate("/login");
         }

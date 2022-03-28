@@ -14,7 +14,11 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig);
 
 export const URL = "/home/";
-//export const URL = "http://localhost:3000/home/";
+
+export const headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+}
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
@@ -26,10 +30,7 @@ export const insertTransactionModelIntoDatabase = async (
 
   await fetch(`${URL}modeltransaction`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ data, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
@@ -52,10 +53,7 @@ export const insertTransactionIntoDatabase = async (
 
   await fetch(`${URL}transaction`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ data, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
@@ -80,10 +78,7 @@ export const getTransactionList = async (
     `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}/${authorizedDatabase}`,
     {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers: headers,
     }
   )
     .then((resp) => {
@@ -108,10 +103,7 @@ export const getModelTransactionList = async (
 
   await fetch(`${URL}modeltransaction/${user}/${token}/${authorizedDatabase}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
   })
     .then((resp) => {
       const parsedResp = resp.json();
@@ -136,10 +128,7 @@ export const deleteTransactionDatabase = async (
 
   await fetch(`${URL}transaction`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ id, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())
@@ -161,10 +150,7 @@ export const deleteModelDatabase = async (
 
   await fetch(`${URL}modeltransaction`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ id, user, token, authorizedDatabase }),
   })
     .then((resp) => resp.json())

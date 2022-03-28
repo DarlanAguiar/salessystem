@@ -1,5 +1,6 @@
 import { Authorized, UserAuth } from "../types/users";
 import { URL } from "./firebase";
+import {headers} from "./firebase"
 
 export const insertAuthorizedUser = async (
   userAuthorized: string,
@@ -10,10 +11,7 @@ export const insertAuthorizedUser = async (
 
   await fetch(`${URL}auth`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ userAuthorized, user, token }),
   })
     .then((resp) => resp.json())
@@ -35,10 +33,7 @@ export const deleteUserAuthorized = async (
 
   await fetch(`${URL}auth`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
     body: JSON.stringify({ id, user, token }),
   })
     .then((resp) => resp.json())
@@ -59,10 +54,7 @@ export const getAllAllowedUsers = async (
 
   await fetch(`${URL}auth/${user}/${token}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
   })
     .then((resp) => resp.json())
     .then((resp) => (data = resp))
@@ -84,10 +76,7 @@ export const confirmAuthorization = async (
 
   await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
+    headers: headers,
   })
     .then((resp) => resp.json())
     .then((resp) => {
