@@ -12,6 +12,8 @@ import {
 } from "firebase/auth";
 import React, { MouseEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AccessDatabase } from "../../types/users";
+import { fetchAccessDatabase } from "../../database/firebaseAuthAccess";
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -32,14 +34,29 @@ function Login() {
 
       const token = await user.user.getIdToken();
       const userEmail = user.user.email;
-      const databaseAuth = localStorage.getItem("authorizedDatabase");
 
       dispatch({ type: FormActions.setUser, payload: userEmail });
       dispatch({ type: FormActions.setToken, payload: token });
       dispatch({ type: FormActions.setAuthenticated, payload: true });
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
-      dispatch({ type: FormActions.setDatabaseAuth, payload: databaseAuth });
+      const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+        userEmail,
+        token
+      );
+
+      if (accessDatabase.nameDatabase) {
+        console.log("tem" + accessDatabase.nameDatabase);
+
+        dispatch({
+          type: FormActions.setDatabaseAuth,
+          payload: accessDatabase.nameDatabase,
+        });
+        dispatch({
+          type: FormActions.setIdDatabaseAuth,
+          payload: accessDatabase.id,
+        });
+      }
 
       navigate("/");
     } catch (error) {
@@ -54,14 +71,29 @@ function Login() {
 
         const token = await result.user.getIdToken();
         const userEmail = result.user.email;
-        const databaseAuth = localStorage.getItem("authorizedDatabase");
 
         dispatch({ type: FormActions.setUser, payload: userEmail });
         dispatch({ type: FormActions.setToken, payload: token });
         dispatch({ type: FormActions.setAuthenticated, payload: true });
         dispatch({ type: FormActions.setInfoUser, payload: result.user });
 
-        dispatch({ type: FormActions.setDatabaseAuth, payload: databaseAuth });
+        const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+          userEmail,
+          token
+        );
+
+        if (accessDatabase.nameDatabase) {
+          console.log("tem" + accessDatabase.nameDatabase);
+
+          dispatch({
+            type: FormActions.setDatabaseAuth,
+            payload: accessDatabase.nameDatabase,
+          });
+          dispatch({
+            type: FormActions.setIdDatabaseAuth,
+            payload: accessDatabase.id,
+          });
+        }
 
         navigate("/");
       });

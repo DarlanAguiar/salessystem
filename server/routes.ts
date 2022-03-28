@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { DecodedIdToken, getAuth } from "firebase-admin/auth";
 
-import {credentials} from "../salessystem-credential-firebase-admin";
+import { credentials } from "../salessystem-credential-firebase-admin";
 
 import admin from "firebase-admin";
 import { initializeApp } from "firebase/app";
@@ -59,6 +59,11 @@ type DataModelTransaction = {
 type DataUserAuthorized = {
   id: string;
   user: string;
+};
+
+type AccessDatabase = {
+  id: string;
+  accessDatabase: string;
 };
 
 const validateToken = async (userDB: string, token: string) => {
@@ -369,5 +374,110 @@ router.get(
     }
   }
 );
+
+//rotas para banco de dados autorizados
+///////////////////////////////////////////////////
+router.post("/home/authaccess", async (req: Request, res: Response) => {
+  const { userIWantToAccess, user, token } = req.body;
+  const validated = await validateToken(user, token);
+
+  const databaseValid = { accessDatabase: userIWantToAccess };
+
+  if (validated) {
+    try {
+      await addDoc(collection(db, `${user}.access.database`), databaseValid);
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.status(201).json({ message: "Iserido com sucesso" });
+    } catch (err) {
+      res.status(500).json({
+        error:
+          "Erro interno do servidor (POST), postando um usuario autorizado.",
+      });
+      console.error(err);
+    }
+  } else {
+    res.status(500).json({ error: "Token de usuario invalido" });
+  }
+});
+
+router.get(
+  "/home/authaccess/:user/:token",
+  async (req: Request, res: Response) => {
+    const user = req.params.user;
+    const token = req.params.token;
+    const validated = await validateToken(user, token);
+
+    if (validated) {
+      try {
+        const result = await getDocs(
+          query(collection(db, `${user}.access.database`))
+        );
+        
+        let databaseAuth = {};
+        result.docs.forEach((data: any) => {
+          databaseAuth = {
+            id: data.id,
+            nameDatabase: data.data().accessDatabase,
+          };
+        });
+
+        return res.status(200).json(databaseAuth);
+      } catch (err) {
+        console.error("Erro do serverRoutes: ", err);
+        res
+          .status(500)
+          .json({ error: "Erro interno do servidor (GET), buscando usuario" });
+      }
+    } else {
+      res.status(500).json({
+        error: "Token de usuario invalido (buscar do banco de dados)",
+      });
+    }
+  }
+);
+
+router.patch("/home/authaccess", async (req, res) => {
+  const { databaseIWantToAccess, idDatabaseAuth, user, token } = req.body;
+  const id = idDatabaseAuth;
+  const databaseValid = { accessDatabase: databaseIWantToAccess };
+
+  const validated = await validateToken(user, token);
+
+  if (validated) {
+    try {
+      await updateDoc(doc(db, `${user}.access.database`, id), databaseValid);
+      res
+        .status(200)
+        .json({ message: "Atualizado o banco de dados que quero acessar" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        error:
+          "Erro interno do servidor ( ao atualizar o banco de dados que quero acesso)",
+      });
+    }
+  } else {
+    res.status(500).json({ error: "Token de usuario invalido" });
+  }
+});
+
+router.delete("/home/authaccess", async (req: Request, res: Response) => {
+  const { id, user, token } = req.body;
+  const validated = await validateToken(user, token);
+
+  if (validated) {
+    try {
+      await deleteDoc(doc(db, `${user}.access.database`, id));
+      res.status(200).json({ message: "Deletado com sucesso" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+        error: "Erro interno do servidor (deletar acesso ao banco de dados)",
+      });
+    }
+  } else {
+    res.status(500).json({ error: "Token de usuario invalido" });
+  }
+});
 
 export default router;

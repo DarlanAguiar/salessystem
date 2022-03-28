@@ -8,8 +8,14 @@ import {
   deleteUserAuthorized,
   confirmAuthorization,
 } from "../../database/firebaseAuth";
-import { UserAuth } from "../../types/users";
+import { AccessDatabase, UserAuth } from "../../types/users";
 import { IoMdClose } from "react-icons/io";
+import {
+  deleteAccessToCurrentDatabase,
+  saveDatabaseIWantToAccess,
+  updateDatabaseIWantToAccess,
+  fetchAccessDatabase,
+} from "../../database/firebaseAuthAccess";
 
 type Props = {
   handleSetShowSettings: () => void;
@@ -41,7 +47,6 @@ function Settings(props: Props) {
   const getAllowedUsers = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-
     const usersAuth = await getAllAllowedUsers(user, token);
 
     setUsersAuthorized(usersAuth);
@@ -78,12 +83,37 @@ function Settings(props: Props) {
         `Permissão CONCEDIDA - Acessando dados ${userIWantToAccess}...`
       );
 
-      localStorage.setItem("authorizedDatabase", userIWantToAccess);
+      const user = state.infoUser?.email;
+      const token = await state.infoUser?.getIdToken();
+      const sharedAccessDatabase = state.databaseAuth;
+      const idDatabaseCurrent = state.idDatabaseAuth;
+      let newIdCurrentDatabase = "";
+
+      if (sharedAccessDatabase) {
+        await updateDatabaseIWantToAccess(
+          userIWantToAccess,
+          idDatabaseCurrent,
+          user,
+          token
+        );
+        newIdCurrentDatabase = idDatabaseCurrent;
+      } else {
+        await saveDatabaseIWantToAccess(userIWantToAccess, user, token);
+        const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+          user,
+          token
+        );
+        newIdCurrentDatabase = accessDatabase.id;
+      }
 
       setTimeout(() => {
         dispatch({
           type: FormActions.setDatabaseAuth,
           payload: userIWantToAccess,
+        });
+        dispatch({
+          type: FormActions.setIdDatabaseAuth,
+          payload: newIdCurrentDatabase,
         });
       }, 5000);
 
@@ -93,8 +123,12 @@ function Settings(props: Props) {
     }
   };
 
-  const removeAuthorizedUserView = () => {
-    localStorage.removeItem("authorizedDatabase");
+  const changeDatabase = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    const idDatabaseCurrent = state.idDatabaseAuth;
+
+    await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
 
     setMessageAuthorization("Alterando banco de dados...");
 
@@ -102,8 +136,6 @@ function Settings(props: Props) {
       dispatch({ type: FormActions.setDatabaseAuth, payload: null });
       setShowButtonAccessMyDatabase(false);
     }, 5000);
-
-    //busca os dados
   };
 
   return (
@@ -134,7 +166,7 @@ function Settings(props: Props) {
             <C.StatusAuthorization>
               Você está conectado a <span>{state.databaseAuth}</span>
             </C.StatusAuthorization>
-            <C.ButtonAccessMyDatabase onClick={removeAuthorizedUserView}>
+            <C.ButtonAccessMyDatabase onClick={changeDatabase}>
               Acessar conta {state.infoUser?.email}
             </C.ButtonAccessMyDatabase>
           </C.ContainerFilds>
