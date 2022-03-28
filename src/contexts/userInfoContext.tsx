@@ -9,6 +9,7 @@ type State = {
   token: string;
   authenticated: boolean;
   databaseAuth: string | null;
+  idDatabaseAuth: string,
   idConfiguration: string;
   infoUser: UserCredential["user"] | null;
 };
@@ -34,6 +35,7 @@ const initialData: State = {
   token: "",
   authenticated: false,
   databaseAuth: null,
+  idDatabaseAuth: "",
   idConfiguration: "",
   infoUser: null,
 };
@@ -46,6 +48,7 @@ export enum FormActions {
   setAuthenticated,
   setDatabaseAuth,
   setIdConfiguration,
+  setIdDatabaseAuth,
   setInfoUser,
 }
 
@@ -59,6 +62,8 @@ const formReducer = (state: State, action: Action) => {
       return { ...state, authenticated: action.payload };
     case FormActions.setDatabaseAuth:
       return { ...state, databaseAuth: action.payload };
+      case FormActions.setIdDatabaseAuth:
+      return { ...state, idDatabaseAuth: action.payload };
     case FormActions.setIdConfiguration:
       return { ...state, idConfiguration: action.payload };
     case FormActions.setInfoUser:

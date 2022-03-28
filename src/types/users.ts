@@ -6,3 +6,9 @@ export type UserAuth = {
 export type Authorized = {
  authorized: boolean;
 }
+
+export type AccessDatabase = {
+  id: string;
+  nameDatabase: string;
+
+}

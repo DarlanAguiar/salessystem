@@ -7,6 +7,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import { useInfoContext, FormActions } from "./contexts/userInfoContext";
 import { useEffect } from "react";
+import { AccessDatabase } from "./types/users";
+import { fetchAccessDatabase } from "./database/firebaseAuthAccess";
 
 const auth = getAuth(firebaseApp);
 function Router() {
@@ -24,7 +26,10 @@ function Router() {
         if (usuarioFirebase !== null) {
           //console.log(usuarioFirebase);
           const token = await usuarioFirebase.getIdToken();
-          const databaseAuth = localStorage.getItem("authorizedDatabase");
+          const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+            usuarioFirebase.email,
+            token
+          );
 
           dispatch({ type: FormActions.setAuthenticated, payload: true });
           dispatch({
@@ -34,12 +39,18 @@ function Router() {
           dispatch({ type: FormActions.setToken, payload: token });
           dispatch({ type: FormActions.setInfoUser, payload: usuarioFirebase });
 
-          //erro do log renderizaçao de componente desmontado
-
-          dispatch({
-            type: FormActions.setDatabaseAuth,
-            payload: databaseAuth,
-          });
+          if (accessDatabase.nameDatabase) {
+            dispatch({
+              type: FormActions.setDatabaseAuth,
+              payload: accessDatabase.nameDatabase,
+            });
+            dispatch({
+              type: FormActions.setIdDatabaseAuth,
+              payload: accessDatabase.id,
+            });
+          } else {
+            dispatch({ type: FormActions.setDatabaseAuth, payload: null });
+          }
         } else {
           navigate("/login");
         }
