@@ -98,3 +98,14 @@ export const deleteAccessToCurrentDatabase = async (
 
   return message;
 };
+
+
+/*   const resp = await fetch(`${URL}authaccess`, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify({ userIWantToAccess, user, token }),
+  });
+  if (resp.json().error) {
+      message = { error: resp.error };
+  }
+  return message; */

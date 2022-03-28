@@ -96,7 +96,7 @@ router.post("/home/modeltransaction", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -126,7 +126,7 @@ router.post("/home/transaction", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -162,7 +162,7 @@ router.get(
 
     if (!validated) {
       res
-        .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+        .status(StatusCodes.UNAUTHORIZED)
         .json({ error: "Token de usuario invalido" });
       return;
     }
@@ -213,7 +213,7 @@ router.get(
 
     if (!validated) {
       res
-        .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+        .status(StatusCodes.UNAUTHORIZED)
         .json({ error: "Token de usuario invalido" });
       return;
     }
@@ -256,7 +256,7 @@ router.delete("/home/transaction", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -281,7 +281,7 @@ router.delete("/home/modeltransaction", async (req: Request, res: Response) => {
   }
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -307,7 +307,7 @@ router.post("/home/auth", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -330,7 +330,7 @@ router.get("/home/auth/:user/:token", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -360,7 +360,7 @@ router.delete("/home/auth", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -387,7 +387,7 @@ router.get(
 
     if (!validated) {
       res
-        .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+        .status(StatusCodes.UNAUTHORIZED)
         .json({ error: "Token de usuario invalido" });
       return;
     }
@@ -423,7 +423,7 @@ router.post("/home/authaccess", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -449,7 +449,7 @@ router.get(
 
     if (!validated) {
       res
-        .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+        .status(StatusCodes.UNAUTHORIZED)
         .json({ error: "Token de usuario invalido" });
       return;
     }
@@ -486,7 +486,7 @@ router.patch("/home/authaccess", async (req, res) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
@@ -511,7 +511,7 @@ router.delete("/home/authaccess", async (req: Request, res: Response) => {
 
   if (!validated) {
     res
-      .status(StatusCodes.NON_AUTHORITATIVE_INFORMATION)
+      .status(StatusCodes.UNAUTHORIZED)
       .json({ error: "Token de usuario invalido" });
     return;
   }
