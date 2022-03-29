@@ -1,75 +1,11 @@
-import { ItemDataBase } from "../types/Item";
-
 export const getCurrentMonth = () => {
   let now = new Date();
 
   return `${now.getFullYear()}-${now.getMonth() + 1}`;
 };
-/* 
-export const filterListByMonth = (
-  list: ItemDataBase[],
-  date: string
-): ItemDataBase[] => {
-  let newList: ItemDataBase[] = [];
-  let [year, month] = date.split("-");
-
-  for (let i in list) {
-    list[i].date = new Date(list[i].date);
-    if (
-      list[i].date.getFullYear() === Number(year) &&
-      list[i].date.getMonth() + 1 === Number(month)
-    ) {
-      newList.push(list[i]);
-    }
-  }
-
-  return newList.sort(function (a, b) {
-    return a.date.getTime() - b.date.getTime();
-  });
-};
-
-export const filterListByDay = (
-  list: ItemDataBase[],
-  date: string
-): ItemDataBase[] => {
-  let newList: ItemDataBase[] = [];
-
-  const [year, month, day] = date.split("-");
-
-  list.forEach((item) => {
-    item.date = new Date(item.date);
-    if (
-      item.date.getFullYear() === Number(year) &&
-      item.date.getMonth() + 1 === Number(month) &&
-      item.date.getDate() === Number(day)
-    ) {
-      newList.push(item);
-    }
-  });
-
-  const x = (a: ItemDataBase, b: ItemDataBase) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    a.date.getTime() - b.date.getTime();
-  };
-
-  return newList.sort(function (a, b) {
-    return a.date.getTime() - b.date.getTime();
-  });
-};
- */
-
-/* export const getCurrentDay = () => {
-  let now = new Date();
-
-  return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-};
- */
-
-
 
 export const fromatDate = (date: Date): string => {
-
-  const newDate = new Date(date)
+  const newDate = new Date(date);
 
   let year = newDate.getFullYear();
   let month = String(newDate.getMonth() + 1).padStart(2, "0");
@@ -106,4 +42,44 @@ export const getDate = () => {
   let day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+};
+
+export const getFinalDate = () => {
+  let finalDate = getDate().split("-");
+  finalDate[2] = String(Number(finalDate[2]) + 1).padStart(2, "0");
+  const formattedEndDate = finalDate.join("-");
+
+  return formattedEndDate;
+};
+
+export const formatDateTimeZone = (date: string) => {
+  let tempDate = new Date(date);
+  tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
+
+  return tempDate.getTime();
+};
+
+export const formatFinalDate = (endDate: string) => {
+  let date = new Date(endDate);
+  date.setDate(date.getDate() + 2);
+
+  let year = date.getFullYear();
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+export const formatInitialMonth = (year: number, month: number) => {
+  const date = formatDateTimeZone(
+    `${year}-${String(month).padStart(2, "0")}-01`
+  );
+  return date;
+};
+
+export const formatFinalMonth = (year: number, month: number) => {
+  const date = formatDateTimeZone(
+    `${year}-${String(month + 1).padStart(2, "0")}-01`
+  );
+  return date;
 };

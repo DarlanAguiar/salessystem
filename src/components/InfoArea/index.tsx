@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import * as C from "./styles";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { formatCurrentMonth, getDate } from "../../helpers/dateFilter";
+import {
+  formatCurrentMonth,
+  formatDateTimeZone,
+  formatFinalMonth,
+  formatInitialMonth,
+  getDate,
+} from "../../helpers/dateFilter";
 import ResumeItem from "../ResumeItem";
 import SalesSortedList from "../SalesSortedList";
 import { BestSeller } from "../../types/FilterProducts";
@@ -14,7 +20,7 @@ type Props = {
   expense: number;
   listBestSellers: BestSeller[];
   listAmountOfMoney: BestSeller[];
-  getListByDate: (initialDate: string, finalDate: string) => void;
+  getListByDate: (initialDate: number, finalDate: number) => void;
   updateTableTitle: (title: string) => void;
 };
 
@@ -40,15 +46,14 @@ function InfoArea(props: Props) {
 
     const formatMonth = currentDate.getMonth() + 1;
 
-    const initialDate = `${currentDate.getFullYear()}-${String(
+    const firstDayOfTheMonth = formatInitialMonth(
+      currentDate.getFullYear(),
       formatMonth
-    ).padStart(2, "0")}-01`;
+    );
 
-    const finalDate = `${currentDate.getFullYear()}-${String(
-      formatMonth + 1
-    ).padStart(2, "0")}-01`;
+    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
 
-    getListByDate(initialDate, finalDate);
+    getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
     onMonthChange(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`);
 
@@ -66,15 +71,14 @@ function InfoArea(props: Props) {
 
     const formatMonth = currentDate.getMonth() + 1;
 
-    const initialDate = `${currentDate.getFullYear()}-${String(
+    const firstDayOfTheMonth = formatInitialMonth(
+      currentDate.getFullYear(),
       formatMonth
-    ).padStart(2, "0")}-01`;
+    );
 
-    const finalDate = `${currentDate.getFullYear()}-${String(
-      formatMonth + 1
-    ).padStart(2, "0")}-01`;
+    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
 
-    getListByDate(initialDate, finalDate);
+    getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
     onMonthChange(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`);
 
@@ -90,8 +94,8 @@ function InfoArea(props: Props) {
     date[2] = String(Number(date[2]) + 1).padStart(2, "0");
     const formatDate = date.join("-");
 
-    const initialDate = `${e}T04:00:00.000Z`;
-    const finalDate = `${formatDate}T04:00:00.000Z`;
+    const initialDate = formatDateTimeZone(e);
+    const finalDate = formatDateTimeZone(formatDate);
 
     getListByDate(initialDate, finalDate);
     updateTableTitle(e.split("-").reverse().join("/"));

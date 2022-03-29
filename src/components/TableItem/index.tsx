@@ -5,6 +5,7 @@ import * as C from "./styles";
 import { useInfoContext } from "../../contexts/userInfoContext";
 import { IoMdClose } from "react-icons/io";
 import { deleteTransactionDatabase } from "../../database/firebase";
+import { checkAccess } from "../../helpers/authorizations";
 
 type Props = {
   item: ItemDataBase;
@@ -24,6 +25,11 @@ function TableItem(props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
+    
+    const accessAuthorized = await checkAccess(state);
+    if (!accessAuthorized) {
+      return;
+    }
 
     await deleteTransactionDatabase(itemId, user, token, authorizedDatabase);
 

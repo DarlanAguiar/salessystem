@@ -108,6 +108,7 @@ function SalesArea(props: Props) {
       //alert(errors.join("\n"));
     } else {
       const tempDate = dateField ? new Date(dateField) : new Date();
+      
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
 
       if (
