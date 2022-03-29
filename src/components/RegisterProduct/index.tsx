@@ -5,6 +5,7 @@ import { useInfoContext } from "../../contexts/userInfoContext";
 import { insertTransactionModelIntoDatabase } from "../../database/firebase";
 import { accessDenied, checkAuthorizations } from "../../helpers/authorizations";
 
+
 type Props = {
   handleShowRegisterProduct: () => void;
   showRegisterProduct: boolean;
@@ -74,11 +75,8 @@ function RegisterProduct(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const user = state.infoUser?.email;
     const authorizedDatabase = state.databaseAuth;
-    const infoUser = state;
-    const authorized = await checkAuthorizations(infoUser);
-
-    if (!authorized && authorizedDatabase !== null) {
-      alert(accessDenied(infoUser));
+    const accessAuthorized = await checkAccess(state);
+    if (!accessAuthorized) {
       return;
     }
     
