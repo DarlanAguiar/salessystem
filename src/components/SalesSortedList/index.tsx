@@ -3,11 +3,12 @@ import * as C from "./styles";
 import React, { useState } from "react";
 import { BestSeller } from "../../types/FilterProducts";
 import BodySalesSortedlist from "../BodySalesSortedList";
+import { formatDateTimeZone, formatFinalDate } from "../../helpers/dateFilter";
 
 type Props = {
   listBestSellers: BestSeller[];
   listAmountOfMoney: BestSeller[];
-  getListByDate: (initialDate: string, finalDate: string) => void;
+  getListByDate: (initialDate: number, finalDate: number) => void;
   updateTableTitle: (title: string) => void;
 };
 
@@ -22,17 +23,6 @@ function SalesSortedList(props: Props) {
   const [startDateField, setStartDateField] = useState("");
   const [endDateField, setEndDateField] = useState("");
 
-  const formatFinalDate = () => {
-    let date = new Date(endDateField);
-    date.setDate(date.getDate() + 2);
-
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1).padStart(2, "0");
-    let day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  };
-
   const filterByCustomDate = () => {
     const init = new Date(startDateField).getTime();
     const end = new Date(endDateField).getTime();
@@ -45,8 +35,8 @@ function SalesSortedList(props: Props) {
       return;
     }
 
-    const initialDate = `${startDateField}T04:00:00.000Z`;
-    const finalDate = `${formatFinalDate()}T04:00:00.000Z`;
+    const initialDate = formatDateTimeZone(startDateField);
+    const finalDate = formatDateTimeZone(formatFinalDate(endDateField));
 
     getListByDate(initialDate, finalDate);
 

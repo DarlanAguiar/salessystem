@@ -149,8 +149,8 @@ router.get(
     const user = req.params.user;
     const token = req.params.token;
     const authorizedDatabase = req.params.authorizedDatabase;
-    const initialDate = new Date(req.params.initialdate);
-    const finalDate = new Date(req.params.finaldate);
+    const initialDate = new Date(Number(req.params.initialdate));
+    const finalDate = new Date(Number(req.params.finaldate));
     let referredDatabase = user;
     const validated = await validateToken(user, token);
 
@@ -167,6 +167,8 @@ router.get(
       return;
     }
 
+    console.log(initialDate);
+    
     try {
       const data = await query(
         collection(db, referredDatabase),

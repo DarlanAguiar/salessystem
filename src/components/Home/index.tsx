@@ -6,7 +6,12 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { IoIosTrain, IoMdSettings } from "react-icons/io";
 import Logo from "../../logo/logo2.png";
 import { Item, ItemDataBase } from "../../types/Item";
-import { getCurrentMonth, getDate } from "../../helpers/dateFilter";
+import {
+  formatDateTimeZone,
+  getCurrentMonth,
+  getDate,
+  getFinalDate,
+} from "../../helpers/dateFilter";
 import * as C from "./styles";
 import TableArea from "../TableArea";
 import InfoArea from "../InfoArea";
@@ -28,6 +33,10 @@ import {
   orderedByBestSellers,
 } from "../../helpers/filterByProducts";
 import Settings from "../Settings";
+import {
+  accessDenied,
+  checkAuthorizations,
+} from "../../helpers/authorizations";
 
 const auth = getAuth();
 
@@ -107,12 +116,8 @@ function Home() {
   }, [databaseProducts]);
 
   const getList = async () => {
-    let date = getDate().split("-");
-    date[2] = String(Number(date[2]) + 1).padStart(2, "0");
-    const formatDate = date.join("-");
-
-    const initialDate = `${getDate()}T04:00:00.000Z`;
-    const finalDate = `${formatDate}T04:00:00.000Z`;
+    const initialDate = formatDateTimeZone(getDate());
+    const finalDate = formatDateTimeZone(getFinalDate());
 
     getListByDate(initialDate, finalDate);
   };
@@ -131,10 +136,17 @@ function Home() {
     setDatabaseProducts(listDataBaseProducts);
   };
 
-  const getListByDate = async (initialDate: string, finalDate: string) => {
+  const getListByDate = async (initialDate: number, finalDate: number) => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
+    const infoUser = state;
+    const authorized = await checkAuthorizations(infoUser);
+
+    if (!authorized && authorizedDatabase !== null) {
+      alert(accessDenied(infoUser));
+      return;
+    }
 
     const listDataBase = await getTransactionList(
       user,
@@ -159,6 +171,13 @@ function Home() {
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
+      const infoUser = state;
+      const authorized = await checkAuthorizations(infoUser);
+
+      if (!authorized && authorizedDatabase !== null) {
+        alert(accessDenied(infoUser));
+        return;
+      }
 
       await insertTransactionIntoDatabase(
         item,

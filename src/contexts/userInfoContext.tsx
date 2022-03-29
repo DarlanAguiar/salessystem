@@ -4,7 +4,7 @@ import { UserCredential } from "firebase/auth";
 import { createContext, ReactNode, useContext, useReducer} from "react";
 
 //criando types
-type State = {
+export type State = {
   user: string |null;
   token: string;
   authenticated: boolean;

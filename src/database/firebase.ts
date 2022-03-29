@@ -69,8 +69,8 @@ export const getTransactionList = async (
   user: string | null | undefined,
   token: string | undefined,
   authorizedDatabase: string | null,
-  initialDate: string,
-  finalDate: string
+  initialDate: number,
+  finalDate: number
 ) => {
   let data: ItemDataBase[] = [];
 

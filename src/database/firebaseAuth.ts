@@ -68,7 +68,7 @@ export const getAllAllowedUsers = async (
 export const confirmAuthorization = async (
   user: string | null | undefined,
   token: string | undefined,
-  userToConfirm: string
+  userToConfirm: string | null
 ) => {
   let authorization: Authorized = {
     authorized: false,

@@ -29,7 +29,6 @@ export const orderedByBestSellers = (list: ItemDataBase[]) => {
     }
   });
 
- 
   return listBestSellers;
 };
 
@@ -61,15 +60,11 @@ export const orderedAmountOfMoney = (list: ItemDataBase[]) => {
     }
   });
 
-
-
   return listByAmountOfMoney;
 };
-
 
 // const objeto = [{morango: 55}, {abacaxi: 60}, {tetete: 10}, {tchau: 111}]
 
 // const objectKeys = objeto.map(elem => ({ product: Object.keys(elem)[0], value: Object.values(elem)[0] }))
-
 
 // objectKeys.sort((a,b) => a.value - b.value)

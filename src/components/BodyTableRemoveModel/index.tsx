@@ -5,6 +5,10 @@ import { IoMdClose } from "react-icons/io";
 
 import { useInfoContext } from "../../contexts/userInfoContext";
 import { deleteModelDatabase } from "../../database/firebase";
+import {
+  accessDenied,
+  checkAuthorizations,
+} from "../../helpers/authorizations";
 
 type Props = {
   item: ProductDatabase;
@@ -22,6 +26,13 @@ function BodyTableRemoveModel(props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
+    const infoUser = state;
+    const authorized = await checkAuthorizations(infoUser);
+
+    if (!authorized && authorizedDatabase !== null) {
+      alert(accessDenied(infoUser));
+      return;
+    }
 
     await deleteModelDatabase(item.id, user, token, authorizedDatabase);
     getProducts();
