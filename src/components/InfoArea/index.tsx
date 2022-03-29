@@ -51,7 +51,10 @@ function InfoArea(props: Props) {
       formatMonth
     );
 
-    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
+    const lastDayOfTheMonth = formatFinalMonth(
+      currentDate.getFullYear(),
+      formatMonth
+    );
 
     getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
@@ -76,7 +79,10 @@ function InfoArea(props: Props) {
       formatMonth
     );
 
-    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
+    const lastDayOfTheMonth = formatFinalMonth(
+      currentDate.getFullYear(),
+      formatMonth
+    );
 
     getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
