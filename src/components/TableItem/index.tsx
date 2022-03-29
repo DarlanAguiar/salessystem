@@ -5,7 +5,7 @@ import * as C from "./styles";
 import { useInfoContext } from "../../contexts/userInfoContext";
 import { IoMdClose } from "react-icons/io";
 import { deleteTransactionDatabase } from "../../database/firebase";
-import { checkAuthorizations } from "../../helpers/authorizations";
+import { checkAccess } from "../../helpers/authorizations";
 
 type Props = {
   item: ItemDataBase;
@@ -25,13 +25,9 @@ function TableItem(props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
-    const infoUser = state;
-    const authorized = await checkAuthorizations(infoUser);
-
-    if (!authorized && authorizedDatabase !== null) {
-      alert(
-        `Não autorizado a acessar ${infoUser.databaseAuth} \nVá para configurações e altere o banco de dados.`
-      );
+    
+    const accessAuthorized = await checkAccess(state);
+    if (!accessAuthorized) {
       return;
     }
 

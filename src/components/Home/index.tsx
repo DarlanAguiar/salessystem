@@ -35,6 +35,7 @@ import {
 import Settings from "../Settings";
 import {
   accessDenied,
+  checkAccess,
   checkAuthorizations,
 } from "../../helpers/authorizations";
 
@@ -140,11 +141,9 @@ function Home() {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
-    const infoUser = state;
-    const authorized = await checkAuthorizations(infoUser);
 
-    if (!authorized && authorizedDatabase !== null) {
-      alert(accessDenied(infoUser));
+    const accessAuthorized = await checkAccess(state);
+    if (!accessAuthorized) {
       return;
     }
 
@@ -171,11 +170,9 @@ function Home() {
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
-      const infoUser = state;
-      const authorized = await checkAuthorizations(infoUser);
 
-      if (!authorized && authorizedDatabase !== null) {
-        alert(accessDenied(infoUser));
+      const accessAuthorized = await checkAccess(state);
+      if (!accessAuthorized) {
         return;
       }
 

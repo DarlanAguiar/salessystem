@@ -4,6 +4,8 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import {
   formatCurrentMonth,
   formatDateTimeZone,
+  formatFinalMonth,
+  formatInitialMonth,
   getDate,
 } from "../../helpers/dateFilter";
 import ResumeItem from "../ResumeItem";
@@ -44,15 +46,14 @@ function InfoArea(props: Props) {
 
     const formatMonth = currentDate.getMonth() + 1;
 
-    const initialDate = formatDateTimeZone(
-      `${currentDate.getFullYear()}-${String(formatMonth).padStart(2, "0")}-01`
+    const firstDayOfTheMonth = formatInitialMonth(
+      currentDate.getFullYear(),
+      formatMonth
     );
 
-    const finalDate = formatDateTimeZone(
-      `${currentDate.getFullYear()}-${String(formatMonth + 1).padStart(2, "0")}-01`
-    );
+    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
 
-    getListByDate(initialDate, finalDate);
+    getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
     onMonthChange(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`);
 
@@ -70,15 +71,14 @@ function InfoArea(props: Props) {
 
     const formatMonth = currentDate.getMonth() + 1;
 
-    const initialDate = formatDateTimeZone(
-      `${currentDate.getFullYear()}-${String(formatMonth).padStart(2, "0")}-01`
+    const firstDayOfTheMonth = formatInitialMonth(
+      currentDate.getFullYear(),
+      formatMonth
     );
 
-    const finalDate = formatDateTimeZone(
-      `${currentDate.getFullYear()}-${String(formatMonth + 1).padStart(2, "0")}-01`
-    );
+    const lastDayOfTheMonth = formatFinalMonth(currentDate.getFullYear(), formatMonth);
 
-    getListByDate(initialDate, finalDate);
+    getListByDate(firstDayOfTheMonth, lastDayOfTheMonth);
 
     onMonthChange(`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`);
 

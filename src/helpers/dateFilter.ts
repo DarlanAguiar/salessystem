@@ -69,3 +69,17 @@ export const formatFinalDate = (endDate: string) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const formatInitialMonth = (year: number, month: number) => {
+  const date = formatDateTimeZone(
+    `${year}-${String(month).padStart(2, "0")}-01`
+  );
+  return date;
+};
+
+export const formatFinalMonth = (year: number, month: number) => {
+  const date = formatDateTimeZone(
+    `${year}-${String(month + 1).padStart(2, "0")}-01`
+  );
+  return date;
+};
