@@ -98,7 +98,15 @@ export const InputLabel = styled.label`
     color: white;
     cursor: pointer;
     margin-bottom: 5px;
-    padding: 0 10px 30px;
+   
+
+    @media(max-width: 600px) {
+
+      padding: 5px 10px 35px;
+ 
+   
+  }
+
   }
 
   .buttonCancel {

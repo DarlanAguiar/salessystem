@@ -3,7 +3,7 @@ import { FormActions, useInfoContext } from "../../contexts/userInfoContext";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { IoIosTrain, IoMdSettings } from "react-icons/io";
+import { IoMdSettings } from "react-icons/io";
 import Logo from "../../logo/logo2.png";
 import { Item, ItemDataBase } from "../../types/Item";
 import {
@@ -33,11 +33,8 @@ import {
   orderedByBestSellers,
 } from "../../helpers/filterByProducts";
 import Settings from "../Settings";
-import {
-  accessDenied,
-  checkAccess,
-  checkAuthorizations,
-} from "../../helpers/authorizations";
+import { checkAccess } from "../../helpers/authorizations";
+import Footer from "../Footer";
 
 const auth = getAuth();
 
@@ -324,6 +321,8 @@ function Home() {
         handleSetShowSettings={handleSetShowSettings}
         showSettings={showSettings}
       />
+
+      <Footer />
     </C.Container>
   );
 }
