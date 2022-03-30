@@ -14,8 +14,11 @@ const auth = getAuth(firebaseApp);
 function Router() {
   const { state, dispatch } = useInfoContext();
 
-  // concertar type any
-  const Private = ({ children }: any) => {
+  type Props = {
+    children: JSX.Element
+  }
+
+  const Private = ({ children }: Props) => {
     const navigate = useNavigate();
 
     useEffect(() => {

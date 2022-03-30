@@ -16,7 +16,7 @@ type Props = {
   itemIdAllList: number;
   addNewClient: () => void;
   removeClient: (itemId: number) => void;
-  productAllClient: any;
+  productAllClient: ProductClientTitle[] | any;
   clientProducts: ProductClientTitle[];
   insertNewListToTotal: (itemid: number, list: any) => void;
   deleteLastClientProducts: () => void;

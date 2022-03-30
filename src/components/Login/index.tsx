@@ -97,7 +97,7 @@ function Login() {
 
         navigate("/");
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       showError(error);
     }
   };
@@ -115,7 +115,7 @@ function Login() {
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
       navigate("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       showError(error);
     }
   };

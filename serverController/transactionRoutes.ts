@@ -9,6 +9,7 @@ import {
   addDoc,
   deleteDoc,
   where,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { DataTransaction, DataModelTransaction } from "./types/typesRoutes";
@@ -79,7 +80,7 @@ export const getTransaction = async (req: Request, res: Response) => {
     );
 
     const querySnapshot = await getDocs(data);
-    querySnapshot.forEach((doc: any) => {
+    querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
       arrayData.push({
         id: doc.id,
         amont: doc.data().amont,
@@ -116,7 +117,7 @@ export const getModelTransaction = async (req: Request, res: Response) => {
     );
     let arrayData: DataModelTransaction[] = [];
 
-    result.docs.forEach((data: any) => {
+    result.docs.forEach((data: QueryDocumentSnapshot) => {
       arrayData.push({
         id: data.id,
         name: data.data().name,
