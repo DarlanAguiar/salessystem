@@ -8,6 +8,7 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { DataUserAuthorized } from "./types/typesRoutes";
@@ -38,7 +39,7 @@ export const lisAllAuthorizedUser = async (req: Request, res: Response) => {
     const result = await getDocs(query(collection(db, `${user}.auth`)));
     let arrayData: DataUserAuthorized[] = [];
 
-    result.docs.forEach((data: any) => {
+    result.docs.forEach((data: QueryDocumentSnapshot) => {
       arrayData.push({
         id: data.id,
         user: data.data().user,
@@ -82,7 +83,7 @@ export const checkAuthorizationInUserList = async (
     );
     let authorized = false;
 
-    result.docs.forEach((data: any) => {
+    result.docs.forEach((data: QueryDocumentSnapshot) => {
       if (data.data().user === user) {
         authorized = true;
       }

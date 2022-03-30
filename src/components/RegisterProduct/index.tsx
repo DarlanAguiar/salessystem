@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { BaseSyntheticEvent, useState } from "react";
 import { FaWineBottle } from "react-icons/fa";
 import * as C from "./styles";
 import { useInfoContext } from "../../contexts/userInfoContext";
@@ -41,14 +41,14 @@ function RegisterProduct(props: Props) {
   const [formValues, setFormValues] = useState<FormType>(initialState);
   const [newCategory, setNewCategory] = useState(false);
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: BaseSyntheticEvent) => {
     const campo = e.target.name;
     const value = e.target.value;
 
     setFormValues({ ...formValues, [campo]: value });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: BaseSyntheticEvent) => {
     e.preventDefault();
 
     if (
@@ -76,9 +76,11 @@ function RegisterProduct(props: Props) {
     const user = state.infoUser?.email;
     const authorizedDatabase = state.databaseAuth;
     
-    const accessAuthorized = await checkAccess(state);
-    if (!accessAuthorized) {
-      return;
+    if(authorizedDatabase){
+      const accessAuthorized = await checkAccess(state);
+      if (!accessAuthorized) {
+        return;
+      }
     }
     
     await insertTransactionModelIntoDatabase(

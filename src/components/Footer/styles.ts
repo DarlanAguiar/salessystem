@@ -6,7 +6,7 @@ export const Container = styled.footer`
   right: 6px;
   padding: 2px 5px;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.804);
+  background-color: rgba(173, 216, 230, 0.674);
 
   p {
     font-weight: bold;
@@ -14,7 +14,7 @@ export const Container = styled.footer`
     font-size: 0.8em;
 
     @media (max-width: 600px) {
-      font-size: 0.7em;
+      font-size: 0.6em;
     }
   }
 

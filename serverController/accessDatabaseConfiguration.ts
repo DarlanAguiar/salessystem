@@ -9,6 +9,7 @@ import {
   addDoc,
   deleteDoc,
   updateDoc,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { db } from "../server/routes";
@@ -39,7 +40,7 @@ export const fetchAccessDatabase = async (req: Request, res: Response) => {
     );
 
     let databaseAuth = {};
-    result.docs.forEach((data: any) => {
+    result.docs.forEach((data: QueryDocumentSnapshot) => {
       databaseAuth = {
         id: data.id,
         nameDatabase: data.data().accessDatabase,

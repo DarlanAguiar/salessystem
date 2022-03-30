@@ -170,10 +170,13 @@ function Home() {
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
 
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
+      if(authorizedDatabase){
+        const accessAuthorized = await checkAccess(state);
+        if (!accessAuthorized) {
+          return;
+        }
       }
+  
 
       await insertTransactionIntoDatabase(
         item,
