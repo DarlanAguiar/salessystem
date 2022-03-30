@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../server/routes";
+import { setResponseHeader } from "./helpers/responseHeader";
 
 export const addAccessDatabase = async (req: Request, res: Response) => {
   const { userIWantToAccess, user } = req.body;
@@ -19,7 +20,7 @@ export const addAccessDatabase = async (req: Request, res: Response) => {
 
   try {
     await addDoc(collection(db, `${user}.access.database`), databaseValid);
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    setResponseHeader(res);
     res.status(StatusCodes.CREATED).json({ message: "Iserido com sucesso" });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -68,7 +69,7 @@ export const changeAccessDatabase = async (req: Request, res: Response) => {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error:
-        "Erro interno do servidor ( ao atualizar o banco de dados que quero acesso)",
+        "Erro interno do servidor ( ao atualizar o banco de dados que quero o acesso)",
     });
   }
 };

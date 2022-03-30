@@ -29,10 +29,7 @@ export const validateToken = async (
       console.error(error);
     });
 
-  console.log("antes");
-
   if (validToken) return next();
-  console.log("depois");
 
   res
     .status(StatusCodes.UNAUTHORIZED)

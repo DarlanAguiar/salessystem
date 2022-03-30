@@ -1,5 +1,4 @@
-import { Request, Response, Router } from "express";
-import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import {
@@ -14,6 +13,7 @@ import {
 import { DataUserAuthorized } from "./types/typesRoutes";
 
 import { db } from "../server/routes";
+import { setResponseHeader } from "./helpers/responseHeader";
 
 export const addAuthorizedUser = async (req: Request, res: Response) => {
   const { userAuthorized, user } = req.body;
@@ -21,7 +21,7 @@ export const addAuthorizedUser = async (req: Request, res: Response) => {
 
   try {
     await addDoc(collection(db, `${user}.auth`), userValid);
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    setResponseHeader(res)
     res.status(StatusCodes.CREATED).json({ message: "Iserido com sucesso" });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

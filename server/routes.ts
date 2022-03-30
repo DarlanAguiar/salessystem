@@ -1,6 +1,4 @@
 import { Router } from "express";
-
-
 import { credentials } from "../salessystem-credential-firebase-admin";
 
 import admin from "firebase-admin";
@@ -47,15 +45,14 @@ admin.initializeApp({
 });
 export const db = getFirestore();
 
-
 //Rotas de Transações
 
 router.post("/home/modeltransaction", validateToken, addModelTransaction);
 
-router.post("/home/transaction",  addTransaction);
+router.post("/home/transaction", validateToken, addTransaction);
 
 router.get(
-  "/home/transaction/:user/:token/:initialdate/:finaldate/:authorizedDatabase",
+  "/home/transaction/:user/:token/:initialdate/:finaldate/:authorizedDatabase", validateToken,
   getTransaction
 );
 
@@ -92,3 +89,4 @@ router.patch("/home/authaccess", validateToken, changeAccessDatabase);
 router.delete("/home/authaccess", validateToken, removeAccessDatabase);
 
 export default router;
+

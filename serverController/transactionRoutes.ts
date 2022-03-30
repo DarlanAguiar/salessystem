@@ -14,6 +14,7 @@ import {
 import { DataTransaction, DataModelTransaction } from "./types/typesRoutes";
 
 import { db } from "../server/routes";
+import { setResponseHeader } from "./helpers/responseHeader";
 
 export const addModelTransaction = async (req: Request, res: Response) => {
   const { data, user, authorizedDatabase } = req.body;
@@ -47,7 +48,7 @@ export const addTransaction = async (req: Request, res: Response) => {
 
   try {
     await addDoc(collection(db, referredDatabase), data);
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    setResponseHeader(res);
     res.status(StatusCodes.CREATED).json({ message: "Iserido com sucesso" });
   } catch (err) {
     res
