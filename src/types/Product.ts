@@ -14,3 +14,14 @@ export type ProductDatabase = {
   expense: boolean;
   id: string;
 }
+
+export type ProductClientTitle = {
+  title: string | null;
+  date: Date;
+  category: string;
+  product: string;
+  unity: boolean;
+  amont: number;
+  price: number;
+  expense: boolean;
+};

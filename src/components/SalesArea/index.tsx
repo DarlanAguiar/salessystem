@@ -6,17 +6,8 @@ import OrderList from "../OrderList";
 import { getDate } from "../../helpers/dateFilter";
 import { IoMdClose } from "react-icons/io";
 import { FaUserPlus } from "react-icons/fa";
+import {ProductClientTitle} from "../../types/Product"
 
-type ProductClientTitle = {
-  title: string | null;
-  date: Date;
-  category: string;
-  product: string;
-  unity: boolean;
-  amont: number;
-  price: number;
-  expense: boolean;
-};
 
 type Props = {
   onAdd: (item: Item[]) => void;
