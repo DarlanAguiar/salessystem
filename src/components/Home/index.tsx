@@ -8,9 +8,9 @@ import Logo from "../../logo/logo2.png";
 import { Item, ItemDataBase } from "../../types/Item";
 import {
   formatDateTimeZone,
+  formatFinalDate,
   getCurrentMonth,
   getDate,
-  getFinalDate,
 } from "../../helpers/dateFilter";
 import * as C from "./styles";
 import TableArea from "../TableArea";
@@ -115,7 +115,7 @@ function Home() {
 
   const getList = async () => {
     const initialDate = formatDateTimeZone(getDate());
-    const finalDate = formatDateTimeZone(getFinalDate());
+    const finalDate = formatDateTimeZone(formatFinalDate(getDate()));
 
     getListByDate(initialDate, finalDate);
   };

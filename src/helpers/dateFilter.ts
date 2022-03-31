@@ -44,14 +44,6 @@ export const getDate = () => {
   return `${year}-${month}-${day}`;
 };
 
-export const getFinalDate = () => {
-  let finalDate = getDate().split("-");
-  finalDate[2] = String(Number(finalDate[2]) + 1).padStart(2, "0");
-  const formattedEndDate = finalDate.join("-");
-
-  return formattedEndDate;
-};
-
 export const formatDateTimeZone = (date: string) => {
   let tempDate = new Date(date);
   tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
@@ -62,6 +54,8 @@ export const formatDateTimeZone = (date: string) => {
 export const formatFinalDate = (endDate: string) => {
   let date = new Date(endDate);
   date.setDate(date.getDate() + 2);
+  console.log(date);
+  
 
   let year = date.getFullYear();
   let month = String(date.getMonth() + 1).padStart(2, "0");

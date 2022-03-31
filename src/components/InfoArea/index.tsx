@@ -4,6 +4,7 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import {
   formatCurrentMonth,
   formatDateTimeZone,
+  formatFinalDate,
   formatFinalMonth,
   formatInitialMonth,
   getDate,
@@ -96,13 +97,10 @@ function InfoArea(props: Props) {
   };
 
   const handleFilterDataByDay = (e: string) => {
-    let date = e.split("-");
-    date[2] = String(Number(date[2]) + 1).padStart(2, "0");
-    const formatDate = date.join("-");
-
+ 
     const initialDate = formatDateTimeZone(e);
-    const finalDate = formatDateTimeZone(formatDate);
-
+    const finalDate = formatDateTimeZone(formatFinalDate(e));
+   
     getListByDate(initialDate, finalDate);
     updateTableTitle(e.split("-").reverse().join("/"));
   };
