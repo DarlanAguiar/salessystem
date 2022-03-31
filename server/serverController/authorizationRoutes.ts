@@ -13,7 +13,7 @@ import {
 
 import { DataUserAuthorized } from "./types/typesRoutes";
 
-import { db } from "../server/routes";
+import { db } from "../routes";
 import { setResponseHeader } from "./helpers/responseHeader";
 
 export const addAuthorizedUser = async (req: Request, res: Response) => {

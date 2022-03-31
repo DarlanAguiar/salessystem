@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { credentials } from "../serverController/helpers/salessystem-credential-firebase-admin";
+import { credentials } from "./serverController/helpers/salessystem-credential-firebase-admin";
 
 import admin from "firebase-admin";
 import { initializeApp } from "firebase/app";
@@ -12,20 +12,20 @@ import {
   deleteTransaction,
   getModelTransaction,
   getTransaction,
-} from "../serverController/transactionRoutes";
+} from "./serverController/transactionRoutes";
 import {
   addAuthorizedUser,
   checkAuthorizationInUserList,
   lisAllAuthorizedUser,
   removeAuthorizedUser,
-} from "../serverController/authorizationRoutes";
+} from "./serverController/authorizationRoutes";
 import {
   addAccessDatabase,
   fetchAccessDatabase,
   changeAccessDatabase,
   removeAccessDatabase,
-} from "../serverController/accessDatabaseConfiguration";
-import { validateToken } from "../serverController/middleware/handleValidation";
+} from "./serverController/accessDatabaseConfiguration";
+import { validateToken } from "./serverController/middleware/handleValidation";
 
 const router = Router();
 

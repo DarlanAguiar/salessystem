@@ -12,7 +12,7 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
-import { db } from "../server/routes";
+import { db } from "../routes";
 import { setResponseHeader } from "./helpers/responseHeader";
 
 export const addAccessDatabase = async (req: Request, res: Response) => {

@@ -53,7 +53,10 @@ export const formatDateTimeZone = (date: string) => {
 
 export const formatFinalDate = (endDate: string) => {
   let date = new Date(endDate);
+  console.log(date);
+  
   date.setDate(date.getDate() + 2);
+
   console.log(date);
   
 
