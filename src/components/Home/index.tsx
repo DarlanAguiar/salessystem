@@ -26,7 +26,7 @@ import {
   insertTransactionIntoDatabase,
 } from "../../database/firebase";
 import TableRemoveModel from "../TableRemoveModel";
-import { ProductDatabase } from "../../types/Product";
+import { ProductClientTitle, ProductDatabase } from "../../types/Product";
 import { BestSeller } from "../../types/FilterProducts";
 import {
   orderedAmountOfMoney,
@@ -166,6 +166,9 @@ function Home() {
 
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
+      console.log(item);
+    
+      
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;

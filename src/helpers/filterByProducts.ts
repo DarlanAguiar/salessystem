@@ -9,7 +9,7 @@ export const orderedByBestSellers = (list: ItemDataBase[]) => {
       if (newList[item.product] === undefined) {
         newList[item.product] = 0;
       }
-      newList[item.product] += item.amont;
+      newList[item.product] += item.amount;
     }
   });
 

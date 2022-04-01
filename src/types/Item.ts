@@ -4,7 +4,7 @@ export type Item = {
   category: string;
   product: string;
   unity: boolean;
-  amont: number;
+  amount: number;
   price: number;
   expense: boolean;
 }
@@ -15,7 +15,7 @@ export type ItemDataBase = {
   category: string;
   product: string;
   unity: boolean;
-  amont: number;
+  amount: number;
   price: number;
   expense: boolean;
 }

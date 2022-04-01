@@ -26,7 +26,7 @@ export const addModelTransaction = async (req: Request, res: Response) => {
   }
 
   try {
-    await addDoc(collection(db, `${referredDatabase}.transaction`), data);
+    await addDoc(collection(db, `${referredDatabase}.modeltransaction`), data);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.status(StatusCodes.OK).json({ message: "Iserido com sucesso" });
   } catch (err) {
@@ -83,7 +83,7 @@ export const getTransaction = async (req: Request, res: Response) => {
     querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
       arrayData.push({
         id: doc.id,
-        amont: doc.data().amont,
+        amount: doc.data().amount,
         category: doc.data().category,
         date: new Date(doc.data().date.seconds * 1000),
         expense: doc.data().expense,
@@ -113,7 +113,7 @@ export const getModelTransaction = async (req: Request, res: Response) => {
 
   try {
     const result = await getDocs(
-      query(collection(db, `${referredDatabase}.transaction`))
+      query(collection(db, `${referredDatabase}.modeltransaction`))
     );
     let arrayData: DataModelTransaction[] = [];
 
@@ -165,7 +165,7 @@ export const deleteModelTransaction = async (req: Request, res: Response) => {
   }
 
   try {
-    await deleteDoc(doc(db, `${referredDatabase}.transaction`, id));
+    await deleteDoc(doc(db, `${referredDatabase}.modeltransaction`, id));
     res.status(StatusCodes.OK).json({ message: "Deletado com sucesso" });
   } catch (err) {
     console.error(err);

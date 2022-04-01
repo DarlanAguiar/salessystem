@@ -69,7 +69,7 @@ function ExpenseArea(props: Props) {
         date: tempDate,
         category: categoryExpenseField,
         product: ExpenseField,
-        amont: 1,
+        amount: 1,
         unity: true,
         price: Number(valueField),
         expense: true,

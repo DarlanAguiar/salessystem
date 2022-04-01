@@ -6,8 +6,7 @@ import OrderList from "../OrderList";
 import { getDate } from "../../helpers/dateFilter";
 import { IoMdClose } from "react-icons/io";
 import { FaUserPlus } from "react-icons/fa";
-import {ProductClientTitle} from "../../types/Product"
-
+import { ProductClientTitle } from "../../types/Product";
 
 type Props = {
   onAdd: (item: Item[]) => void;
@@ -41,7 +40,7 @@ function SalesArea(props: Props) {
   const [productField, setProductField] = useState("");
   const [valueField, setValueField] = useState(0);
   const [unityFied, setUnityFild] = useState(true);
-  const [amontField, setAmontField] = useState(1);
+  const [amountField, setAmountField] = useState(1);
   const [expenseField, setExpenseField] = useState(false);
   const [productList, setProductList] = useState<string[]>([]);
   const [valueOfOneUnit, setValueOfOneUnit] = useState(0);
@@ -50,10 +49,8 @@ function SalesArea(props: Props) {
   const [title, setTitle] = useState<string | null>("Área de vendas");
 
   useEffect(() => {
-    
     setOrderList(clientProducts);
-    
-  }, [productAllClient]); 
+  }, [productAllClient]);
 
   useEffect(() => {
     let newProductsList: string[] = [];
@@ -87,7 +84,7 @@ function SalesArea(props: Props) {
     if (productField === "") {
       errors.push("Escolha um produto!");
     }
-    if (amontField < 1 || isNaN(amontField)) {
+    if (amountField < 1 || isNaN(amountField)) {
       errors.push("Quantidade inválida!");
     }
     if (valueField <= 0) {
@@ -99,7 +96,7 @@ function SalesArea(props: Props) {
       //alert(errors.join("\n"));
     } else {
       const tempDate = dateField ? new Date(dateField) : new Date();
-      
+
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
 
       if (
@@ -118,7 +115,7 @@ function SalesArea(props: Props) {
         date: tempDate,
         category: categoryField,
         product: productField,
-        amont: amontField,
+        amount: amountField,
         unity: unityFied,
         price: valueField,
         expense: expenseField,
@@ -138,11 +135,16 @@ function SalesArea(props: Props) {
     setCategoryField("");
     setProductField("");
     setValueField(0);
-    setAmontField(1);
+    setAmountField(1);
   };
 
   const addSaleToDatabase = () => {
-    onAdd(orderList);
+    const productsSold = orderList.map((item) => {
+      delete item.title;
+      return item;
+    });
+
+    onAdd(productsSold);
 
     if (productAllClient.length > 1) {
       removeClient(itemIdAllList);
@@ -236,7 +238,7 @@ function SalesArea(props: Props) {
             onChange={(e) => {
               setValueOfOneUnit(0);
               setCategoryField(e.target.value);
-              setAmontField(1);
+              setAmountField(1);
               setProductField("");
             }}
           >
@@ -274,10 +276,10 @@ function SalesArea(props: Props) {
           <C.Input
             type="number"
             min={1}
-            value={amontField}
+            value={amountField}
             onChange={(e) => {
               setValueField(parseFloat(e.target.value) * valueOfOneUnit);
-              setAmontField(parseFloat(e.target.value));
+              setAmountField(parseFloat(e.target.value));
             }}
           />
         </C.InputLabel>

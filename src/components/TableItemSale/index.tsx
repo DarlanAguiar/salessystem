@@ -26,7 +26,7 @@ function TableItemSale(props: Props) {
       <C.TableColumn>{item.product}</C.TableColumn>
 
       <C.TableColumn>
-        {!item.expense && item.amont}
+        {!item.expense && item.amount}
         {!item.unity ? "g" : ""}
       </C.TableColumn>
 

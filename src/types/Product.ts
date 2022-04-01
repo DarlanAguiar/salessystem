@@ -16,12 +16,12 @@ export type ProductDatabase = {
 }
 
 export type ProductClientTitle = {
-  title: string | null;
+  title?: string | null;
   date: Date;
   category: string;
   product: string;
   unity: boolean;
-  amont: number;
+  amount: number;
   price: number;
   expense: boolean;
 };
