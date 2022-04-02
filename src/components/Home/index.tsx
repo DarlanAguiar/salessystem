@@ -56,7 +56,7 @@ function Home() {
   const [productCategoryList, setProductCategoryList] = useState<string[]>([]);
   const [expenseListCategory, setExpenseListCategory] = useState<string[]>([]);
   const [titleTable, setTitleTable] = useState("");
-  const [salesField, setSalesField] = useState([[]]);
+  const [salesField, setSalesField] = useState<ProductClientTitle[][]>([[]]);
   const [listBestSellers, setListBestSellers] = useState<BestSeller[]>([]);
   const [listAmountOfMoney, setlistAmountOfMoney] = useState<BestSeller[]>([]);
   const [showSettings, setShowSettings] = useState(false);
@@ -138,8 +138,8 @@ function Home() {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
-    
-    if(authorizedDatabase){
+
+    if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);
       if (!accessAuthorized) {
         return;
@@ -167,19 +167,17 @@ function Home() {
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
       console.log(item);
-    
-      
+
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
 
-      if(authorizedDatabase){
+      if (authorizedDatabase) {
         const accessAuthorized = await checkAccess(state);
         if (!accessAuthorized) {
           return;
         }
       }
-  
 
       await insertTransactionIntoDatabase(
         item,
@@ -221,7 +219,7 @@ function Home() {
     setSalesField(listClient);
   };
 
-  const insertNewListToTotal = (itemId: number, list: never[]) => {
+  const insertNewListToTotal = (itemId: number, list: ProductClientTitle[]) => {
     const totalList = [...salesField];
 
     totalList[itemId] = list;

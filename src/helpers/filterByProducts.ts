@@ -2,7 +2,7 @@ import { BestSeller } from "../types/FilterProducts";
 import { ItemDataBase } from "../types/Item";
 
 export const orderedByBestSellers = (list: ItemDataBase[]) => {
-  const newList: any = {};
+  const newList: Record<string, number>  = {};
 
   list.forEach((item) => {
     if (!item.expense) {
@@ -16,7 +16,7 @@ export const orderedByBestSellers = (list: ItemDataBase[]) => {
   const listBestSellers: BestSeller[] = [];
 
   for (const [key, value] of Object.entries(newList)) {
-    const product: any = { product: key, value: value };
+    const product = { product: key, value: value };
 
     listBestSellers.push(product);
   }
@@ -33,7 +33,7 @@ export const orderedByBestSellers = (list: ItemDataBase[]) => {
 };
 
 export const orderedAmountOfMoney = (list: ItemDataBase[]) => {
-  const newList: any = {};
+  const newList: Record<string, number> = {};
 
   list.forEach((item) => {
     if (!item.expense) {
@@ -47,7 +47,7 @@ export const orderedAmountOfMoney = (list: ItemDataBase[]) => {
   const listByAmountOfMoney: BestSeller[] = [];
 
   for (const [key, value] of Object.entries(newList)) {
-    const product: any = { product: key, value: value };
+    const product = { product: key, value: value };
 
     listByAmountOfMoney.push(product);
   }

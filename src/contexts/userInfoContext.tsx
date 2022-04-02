@@ -1,22 +1,22 @@
 // Context , Reducer, Provider , Hook
 
-import { UserCredential } from "firebase/auth";
-import { createContext, ReactNode, useContext, useReducer} from "react";
+import { User } from "firebase/auth";
+import { createContext, ReactNode, useContext, useReducer } from "react";
 
 //criando types
 export type State = {
-  user: string |null;
+  user: string | null;
   token: string;
   authenticated: boolean;
   databaseAuth: string | null;
-  idDatabaseAuth: string,
+  idDatabaseAuth: string;
   idConfiguration: string;
-  infoUser: UserCredential["user"] | null;
+  infoUser: User | null;
 };
 
 type Action = {
   type: FormActions;
-  payload: any;
+  payload: unknown;
 };
 
 type ContextType = {
@@ -52,22 +52,22 @@ export enum FormActions {
   setInfoUser,
 }
 
-const formReducer = (state: State, action: Action) => {
+const formReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case FormActions.setUser:
-      return { ...state, user: action.payload };
+      return { ...state, user: action.payload as string };
     case FormActions.setToken:
-      return { ...state, token: action.payload };
+      return { ...state, token: action.payload as string };
     case FormActions.setAuthenticated:
-      return { ...state, authenticated: action.payload };
+      return { ...state, authenticated: action.payload as boolean };
     case FormActions.setDatabaseAuth:
-      return { ...state, databaseAuth: action.payload };
-      case FormActions.setIdDatabaseAuth:
-      return { ...state, idDatabaseAuth: action.payload };
+      return { ...state, databaseAuth: action.payload as string };
+    case FormActions.setIdDatabaseAuth:
+      return { ...state, idDatabaseAuth: action.payload as string };
     case FormActions.setIdConfiguration:
-      return { ...state, idConfiguration: action.payload };
+      return { ...state, idConfiguration: action.payload as string };
     case FormActions.setInfoUser:
-      return { ...state, infoUser: action.payload };
+      return { ...state, infoUser: action.payload as User };
     default:
       return state;
   }
@@ -96,4 +96,3 @@ export const useInfoContext = () => {
 
   return context;
 };
-

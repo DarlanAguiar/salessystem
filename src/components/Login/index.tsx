@@ -18,6 +18,10 @@ import { fetchAccessDatabase } from "../../database/firebaseAuthAccess";
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 
+interface ErrorWithMessage {
+  message?: string;
+}
+
 function Login() {
   const { dispatch } = useInfoContext();
   const [email, setEmail] = useState<string>("");
@@ -97,7 +101,7 @@ function Login() {
 
         navigate("/");
       });
-    } catch (error: unknown) {
+    } catch (error) {
       showError(error);
     }
   };
@@ -115,14 +119,15 @@ function Login() {
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
       navigate("/");
-    } catch (error: unknown) {
+    } catch (error) {
       showError(error);
     }
   };
 
-  const showError = (error: any) => {
+  const showError = (error: unknown) => {
+    const typedError = error as ErrorWithMessage; 
     let errorMessage = null;
-    switch (error?.message) {
+    switch (typedError?.message) {
       case null:
       case undefined:
         break;
