@@ -1,8 +1,7 @@
-import * as C from "./styles";
-import React from "react";
-import { ProductDatabase } from "../../types/Product";
-import BodyTableRemoveModel from "../BodyTableRemoveModel";
-import { FaRegTrashAlt } from "react-icons/fa";
+import * as C from './styles';
+import { ProductDatabase } from '../../types/Product';
+import BodyTableRemoveModel from '../BodyTableRemoveModel';
+import { FaRegTrashAlt } from 'react-icons/fa';
 
 type Props = {
   databaseProduct: ProductDatabase[];
@@ -11,12 +10,12 @@ type Props = {
   showRemoveModel: boolean;
 };
 
-function TableRemoveModel(props: Props) {
+function TableRemoveModel (props: Props) {
   const {
     databaseProduct,
     getProducts,
     handleSetShowRemoveModel,
-    showRemoveModel,
+    showRemoveModel
   } = props;
 
   const transaction = databaseProduct.sort((element1, element2) => {

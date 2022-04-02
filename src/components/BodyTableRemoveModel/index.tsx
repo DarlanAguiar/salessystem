@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { ProductDatabase } from "../../types/Product";
-import * as C from "./styles";
-import { IoMdClose } from "react-icons/io";
+import { useState } from 'react';
+import { ProductDatabase } from '../../types/Product';
+import * as C from './styles';
+import { IoMdClose } from 'react-icons/io';
 
-import { useInfoContext } from "../../contexts/userInfoContext";
-import { deleteModelDatabase } from "../../database/firebase";
-import { checkAccess } from "../../helpers/authorizations";
+import { useInfoContext } from '../../contexts/userInfoContext';
+import { deleteModelDatabase } from '../../database/firebase';
+import { checkAccess } from '../../helpers/authorizations';
 
 type Props = {
   item: ProductDatabase;
   getProducts: () => void;
 };
 
-function BodyTableRemoveModel(props: Props) {
+function BodyTableRemoveModel (props: Props) {
   const { item, getProducts } = props;
 
   const { state } = useInfoContext();
@@ -24,7 +24,7 @@ function BodyTableRemoveModel(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
 
-    if(authorizedDatabase){
+    if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);
       if (!accessAuthorized) {
         return;
@@ -41,8 +41,8 @@ function BodyTableRemoveModel(props: Props) {
       onMouseLeave={() => setShowButtonRemove(false)}
     >
       <C.TableColumn>
-        <C.Type color={item.expense ? "red" : "darkblue"}>
-          {item.expense ? "Despesa" : "Produto"}
+        <C.Type color={item.expense ? 'red' : 'darkblue'}>
+          {item.expense ? 'Despesa' : 'Produto'}
         </C.Type>
       </C.TableColumn>
       <C.TableColumn>{item.category}</C.TableColumn>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div<{ showExpenseField: boolean }>`
   transition: 0.5s;
@@ -10,8 +10,8 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
   border-top: 0;
   height: 170px;
   position: fixed;
-  top: ${(props) => (props.showExpenseField ? "0" : "-170")}px;
-  z-index: ${(props) => (props.showExpenseField ? "5" : "1")};
+  top: ${(props) => (props.showExpenseField ? '0' : '-170')}px;
+  z-index: ${(props) => (props.showExpenseField ? '5' : '1')};
   
   @media (max-width: 600px) {
     border-radius: 0 0 0 40px;
@@ -30,11 +30,11 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
     height: 35px;
     padding: 5px;
     border: 3px solid
-      ${(props) => (props.showExpenseField ? "darkblue" : "#fff")};
+      ${(props) => (props.showExpenseField ? 'darkblue' : '#fff')};
     border-top: 0;
     background-color: ${(props) =>
-      props.showExpenseField ? "lightblue" : "darkblue"};
-    color: ${(props) => (props.showExpenseField ? "#000" : "#fff")};
+      props.showExpenseField ? 'lightblue' : 'darkblue'};
+    color: ${(props) => (props.showExpenseField ? '#000' : '#fff')};
     font-size: 15px;
     border-radius: 0 0 10px 10px;
     font-weight: bold;

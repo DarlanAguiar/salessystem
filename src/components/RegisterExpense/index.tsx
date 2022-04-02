@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { FaRegMoneyBillAlt } from "react-icons/fa";
-import { insertTransactionModelIntoDatabase } from "../../database/firebase";
-import { useInfoContext } from "../../contexts/userInfoContext";
-import * as C from "./styles";
-import { checkAccess } from "../../helpers/authorizations";
+import { useState } from 'react';
+import { FaRegMoneyBillAlt } from 'react-icons/fa';
+import { insertTransactionModelIntoDatabase } from '../../database/firebase';
+import { useInfoContext } from '../../contexts/userInfoContext';
+import * as C from './styles';
+import { checkAccess } from '../../helpers/authorizations';
 
 type Props = {
   handleShowRegisterExpense: () => void;
@@ -12,28 +12,28 @@ type Props = {
   getProducts: () => void;
 };
 
-function RegisterExpense(props: Props) {
+function RegisterExpense (props: Props) {
   const {
     handleShowRegisterExpense,
     showRegisterExpense,
     expenseListCategory,
-    getProducts,
+    getProducts
   } = props;
 
   const { state } = useInfoContext();
 
-  const [inputCategory, setInputCategory] = useState("");
-  const [inputNameExpense, setinputNameExpense] = useState("");
+  const [inputCategory, setInputCategory] = useState('');
+  const [inputNameExpense, setinputNameExpense] = useState('');
   const [newCategory, setNewCategory] = useState(false);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    //forcar a barra no type de e
+    // forcar a barra no type de e
     const dadosDoFormulario = new FormData(e.target as HTMLFormElement);
     const dados = Object.fromEntries(dadosDoFormulario);
-    if (dados.category === "" || dados.name === "") {
-      alert("Cadastro não efetuado \nPreecha todos os campos corretamente ");
+    if (dados.category === '' || dados.name === '') {
+      alert('Cadastro não efetuado \nPreecha todos os campos corretamente ');
       return;
     }
 
@@ -42,7 +42,7 @@ function RegisterExpense(props: Props) {
       name: String(dados.name),
       unity: true,
       price: 0,
-      expense: true,
+      expense: true
     };
 
     handleShowRegisterExpense();
@@ -50,13 +50,12 @@ function RegisterExpense(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
 
-    if(authorizedDatabase){
+    if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);
       if (!accessAuthorized) {
         return;
       }
     }
-
 
     await insertTransactionModelIntoDatabase(
       newExpense,
@@ -66,8 +65,8 @@ function RegisterExpense(props: Props) {
     );
     getProducts();
 
-    setInputCategory("");
-    setinputNameExpense("");
+    setInputCategory('');
+    setinputNameExpense('');
   };
 
   return (
@@ -79,8 +78,8 @@ function RegisterExpense(props: Props) {
             <C.Select
               value={inputCategory}
               onChange={(e) => {
-                if (e.target.value === "Nova categoria") {
-                  setInputCategory("");
+                if (e.target.value === 'Nova categoria') {
+                  setInputCategory('');
                   setNewCategory(true);
                 } else {
                   setInputCategory(e.target.value);
@@ -102,9 +101,9 @@ function RegisterExpense(props: Props) {
             <C.InputDiv width={100}>
               <C.InputLabel>Nova categoria:</C.InputLabel>
               <C.InputText
-                type={"text"}
-                name={"category"}
-                placeholder={"Categoria"}
+                type={'text'}
+                name={'category'}
+                placeholder={'Categoria'}
                 onChange={(e) => setInputCategory(e.target.value)}
                 value={inputCategory}
               />
@@ -114,20 +113,20 @@ function RegisterExpense(props: Props) {
           <C.InputDiv width={100}>
             <C.InputLabel>Nome:</C.InputLabel>
             <C.InputText
-              type={"text"}
-              name={"name"}
-              placeholder={"Nome do produto"}
+              type={'text'}
+              name={'name'}
+              placeholder={'Nome do produto'}
               onChange={(e) => setinputNameExpense(e.target.value)}
               value={inputNameExpense}
             />
           </C.InputDiv>
           <C.DivButtons>
-            <C.ButtonSubmit type={"submit"} value={"Cadastrar"} />
+            <C.ButtonSubmit type={'submit'} value={'Cadastrar'} />
             <C.ButtonExpenseCancel
               type="reset"
               onClick={() => {
-                setInputCategory("");
-                setinputNameExpense("");
+                setInputCategory('');
+                setinputNameExpense('');
                 setNewCategory(false);
 
                 handleShowRegisterExpense();

@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import {
   collection,
@@ -9,13 +9,13 @@ import {
   addDoc,
   deleteDoc,
   where,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
+  QueryDocumentSnapshot
+} from 'firebase/firestore';
 
-import { DataTransaction, DataModelTransaction } from "./types/typesRoutes";
+import { DataTransaction, DataModelTransaction } from './types/typesRoutes';
 
-import { db } from "../routes";
-import { setResponseHeader } from "./helpers/responseHeader";
+import { db } from '../routes';
+import { setResponseHeader } from './helpers/responseHeader';
 
 export const addModelTransaction = async (req: Request, res: Response) => {
   const { data, user, authorizedDatabase } = req.body;
@@ -27,12 +27,12 @@ export const addModelTransaction = async (req: Request, res: Response) => {
 
   try {
     await addDoc(collection(db, `${referredDatabase}.modeltransaction`), data);
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(StatusCodes.OK).json({ message: "Iserido com sucesso" });
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(StatusCodes.OK).json({ message: 'Iserido com sucesso' });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (POST)" });
+      .json({ error: 'Erro interno do servidor (POST)' });
     console.error(err);
   }
 };
@@ -50,11 +50,11 @@ export const addTransaction = async (req: Request, res: Response) => {
   try {
     await addDoc(collection(db, referredDatabase), data);
     setResponseHeader(res);
-    res.status(StatusCodes.CREATED).json({ message: "Iserido com sucesso" });
+    res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (POST)" });
+      .json({ error: 'Erro interno do servidor (POST)' });
     console.error(err);
   }
 };
@@ -66,17 +66,17 @@ export const getTransaction = async (req: Request, res: Response) => {
   const finalDate = new Date(Number(req.params.finaldate));
   let referredDatabase = user;
 
-  if (authorizedDatabase !== "null") {
+  if (authorizedDatabase !== 'null') {
     referredDatabase = authorizedDatabase;
   }
 
-  let arrayData: DataTransaction[] = [];
+  const arrayData: DataTransaction[] = [];
 
   try {
     const data = await query(
       collection(db, referredDatabase),
-      where("date", ">", new Date(initialDate)),
-      where("date", "<", new Date(finalDate))
+      where('date', '>', new Date(initialDate)),
+      where('date', '<', new Date(finalDate))
     );
 
     const querySnapshot = await getDocs(data);
@@ -89,16 +89,16 @@ export const getTransaction = async (req: Request, res: Response) => {
         expense: doc.data().expense,
         price: doc.data().price,
         product: doc.data().product,
-        unity: doc.data().unity,
+        unity: doc.data().unity
       });
     });
 
     res.status(StatusCodes.OK).json(arrayData);
   } catch (err) {
-    console.error("Erro do serverRoutes: ", err);
+    console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (GET)" });
+      .json({ error: 'Erro interno do servidor (GET)' });
   }
 };
 
@@ -107,7 +107,7 @@ export const getModelTransaction = async (req: Request, res: Response) => {
   const authorizedDatabase = req.params.authorizedDatabase;
   let referredDatabase = user;
 
-  if (authorizedDatabase !== "null") {
+  if (authorizedDatabase !== 'null') {
     referredDatabase = authorizedDatabase;
   }
 
@@ -115,7 +115,7 @@ export const getModelTransaction = async (req: Request, res: Response) => {
     const result = await getDocs(
       query(collection(db, `${referredDatabase}.modeltransaction`))
     );
-    let arrayData: DataModelTransaction[] = [];
+    const arrayData: DataModelTransaction[] = [];
 
     result.docs.forEach((data: QueryDocumentSnapshot) => {
       arrayData.push({
@@ -124,16 +124,16 @@ export const getModelTransaction = async (req: Request, res: Response) => {
         unity: data.data().unity,
         price: data.data().price,
         expense: data.data().expense,
-        category: data.data().category,
+        category: data.data().category
       });
     });
 
     res.status(StatusCodes.OK).json(arrayData);
   } catch (err) {
-    console.error("Erro do serverRoutes: ", err);
+    console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (GET)" });
+      .json({ error: 'Erro interno do servidor (GET)' });
   }
 };
 
@@ -147,12 +147,12 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 
   try {
     await deleteDoc(doc(db, referredDatabase, id));
-    res.status(StatusCodes.OK).json({ message: "Deletado com sucesso" });
+    res.status(StatusCodes.OK).json({ message: 'Deletado com sucesso' });
   } catch (err) {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (DELETE)" });
+      .json({ error: 'Erro interno do servidor (DELETE)' });
   }
 };
 
@@ -166,11 +166,11 @@ export const deleteModelTransaction = async (req: Request, res: Response) => {
 
   try {
     await deleteDoc(doc(db, `${referredDatabase}.modeltransaction`, id));
-    res.status(StatusCodes.OK).json({ message: "Deletado com sucesso" });
+    res.status(StatusCodes.OK).json({ message: 'Deletado com sucesso' });
   } catch (err) {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (DELETE)" });
+      .json({ error: 'Erro interno do servidor (DELETE)' });
   }
 };

@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 // Context , Reducer, Provider , Hook
 
-import { User } from "firebase/auth";
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import { User } from 'firebase/auth';
+import { createContext, ReactNode, useContext, useReducer } from 'react';
 
-//criando types
+// criando types
 export type State = {
   user: string | null;
   token: string;
@@ -13,6 +14,16 @@ export type State = {
   idConfiguration: string;
   infoUser: User | null;
 };
+
+export enum FormActions {
+  setUser,
+  setToken,
+  setAuthenticated,
+  setDatabaseAuth,
+  setIdConfiguration,
+  setIdDatabaseAuth,
+  setInfoUser,
+}
 
 type Action = {
   type: FormActions;
@@ -24,7 +35,7 @@ type ContextType = {
   dispatch: (action: Action) => void;
 };
 
-//type para children
+// type para children
 type ProviderChildrem = {
   children: ReactNode;
 };
@@ -32,25 +43,15 @@ type ProviderChildrem = {
 // informções que inicia o reducer
 const initialData: State = {
   user: null,
-  token: "",
+  token: '',
   authenticated: false,
   databaseAuth: null,
-  idDatabaseAuth: "",
-  idConfiguration: "",
-  infoUser: null,
+  idDatabaseAuth: '',
+  idConfiguration: '',
+  infoUser: null
 };
 
-//criando um Reducer
-
-export enum FormActions {
-  setUser,
-  setToken,
-  setAuthenticated,
-  setDatabaseAuth,
-  setIdConfiguration,
-  setIdDatabaseAuth,
-  setInfoUser,
-}
+// criando um Reducer
 
 const formReducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -73,13 +74,13 @@ const formReducer = (state: State, action: Action): State => {
   }
 };
 
-//criando o context
+// criando o context
 const FormContext = createContext<ContextType | undefined>(undefined);
 
-//provider
+// provider
 
 export const FormProvider = ({ children }: ProviderChildrem) => {
-  //iniciando o reducer(primeiro informo o reducer, segundo como ele deve ser inicializado)
+  // iniciando o reducer(primeiro informo o reducer, segundo como ele deve ser inicializado)
   const [state, dispatch] = useReducer(formReducer, initialData);
   const value = { state, dispatch };
 
@@ -91,7 +92,7 @@ export const useInfoContext = () => {
   const context = useContext(FormContext);
 
   if (context === undefined) {
-    throw new Error("Precisa ser usado dentro de um FormProvider");
+    throw new Error('Precisa ser usado dentro de um FormProvider');
   }
 
   return context;

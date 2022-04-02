@@ -1,7 +1,6 @@
-import React from "react";
-import { ItemDataBase } from "../../types/Item";
-import TableItem from "../TableItem";
-import * as C from "./styles";
+import { ItemDataBase } from '../../types/Item';
+import TableItem from '../TableItem';
+import * as C from './styles';
 
 type Props = {
   filteredList: ItemDataBase[];
@@ -9,7 +8,7 @@ type Props = {
   getList: () => void;
 };
 
-function TableArea(props: Props) {
+function TableArea (props: Props) {
   const { filteredList, titleTable, getList } = props;
 
   return (

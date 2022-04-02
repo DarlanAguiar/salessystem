@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
-import * as C from "./styles";
+import { useState, useEffect } from 'react';
+import * as C from './styles';
 
-import { useInfoContext, FormActions } from "../../contexts/userInfoContext";
+import { useInfoContext, FormActions } from '../../contexts/userInfoContext';
 import {
   insertAuthorizedUser,
   getAllAllowedUsers,
   deleteUserAuthorized,
-  confirmAuthorization,
-} from "../../database/firebaseAuth";
-import { AccessDatabase, UserAuth } from "../../types/users";
-import { IoMdClose } from "react-icons/io";
+  confirmAuthorization
+} from '../../database/firebaseAuth';
+import { AccessDatabase, UserAuth } from '../../types/users';
+import { IoMdClose } from 'react-icons/io';
 import {
   deleteAccessToCurrentDatabase,
   saveDatabaseIWantToAccess,
   updateDatabaseIWantToAccess,
-  fetchAccessDatabase,
-} from "../../database/firebaseAuthAccess";
+  fetchAccessDatabase
+} from '../../database/firebaseAuthAccess';
 
 type Props = {
   handleSetShowSettings: () => void;
   showSettings: boolean;
 };
 
-function Settings(props: Props) {
+function Settings (props: Props) {
   const { handleSetShowSettings, showSettings } = props;
 
   const { state, dispatch } = useInfoContext();
 
-  const [userWhoHasAccess, setUserWhoHasAccess] = useState("");
-  const [userIWantToAccess, setUserIWantToAccess] = useState("");
+  const [userWhoHasAccess, setUserWhoHasAccess] = useState('');
+  const [userIWantToAccess, setUserIWantToAccess] = useState('');
   const [usersAuthorized, setUsersAuthorized] = useState<UserAuth[]>([]);
-  const [messageAuthorization, setMessageAuthorization] = useState("");
+  const [messageAuthorization, setMessageAuthorization] = useState('');
   const [showButtonAccessMyDatabase, setShowButtonAccessMyDatabase] =
     useState(false);
 
@@ -71,7 +71,7 @@ function Settings(props: Props) {
   };
 
   const accessDataFromAnotherUser = async () => {
-    if (userIWantToAccess === "") return;
+    if (userIWantToAccess === '') return;
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
@@ -87,7 +87,7 @@ function Settings(props: Props) {
       const token = await state.infoUser?.getIdToken();
       const sharedAccessDatabase = state.databaseAuth;
       const idDatabaseCurrent = state.idDatabaseAuth;
-      let newIdCurrentDatabase = "";
+      let newIdCurrentDatabase = '';
 
       if (sharedAccessDatabase) {
         await updateDatabaseIWantToAccess(
@@ -109,17 +109,17 @@ function Settings(props: Props) {
       setTimeout(() => {
         dispatch({
           type: FormActions.setDatabaseAuth,
-          payload: userIWantToAccess,
+          payload: userIWantToAccess
         });
         dispatch({
           type: FormActions.setIdDatabaseAuth,
-          payload: newIdCurrentDatabase,
+          payload: newIdCurrentDatabase
         });
       }, 5000);
 
-      //busca os dados
+      // busca os dados
     } else {
-      setMessageAuthorization(`Permissão NEGADA`);
+      setMessageAuthorization('Permissão NEGADA');
     }
   };
 
@@ -130,7 +130,7 @@ function Settings(props: Props) {
 
     await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
 
-    setMessageAuthorization("Alterando banco de dados...");
+    setMessageAuthorization('Alterando banco de dados...');
 
     setTimeout(() => {
       dispatch({ type: FormActions.setDatabaseAuth, payload: null });
@@ -149,8 +149,8 @@ function Settings(props: Props) {
           <C.TitleUser>Acessar dados de outro usuário</C.TitleUser>
           <C.Label>E-mail do usuário:</C.Label>
           <C.Input
-            type={"email"}
-            placeholder={"E-mail do usuário"}
+            type={'email'}
+            placeholder={'E-mail do usuário'}
             value={userIWantToAccess}
             onChange={(e) => setUserIWantToAccess(e.target.value)}
           ></C.Input>
@@ -179,8 +179,8 @@ function Settings(props: Props) {
             <C.TitleUser>Permitir acesso ao meus dados</C.TitleUser>
             <C.Label>Autorizar usuário a acessar meus dados</C.Label>
             <C.Input
-              type={"email"}
-              placeholder={"E-mail autorizado"}
+              type={'email'}
+              placeholder={'E-mail autorizado'}
               value={userWhoHasAccess}
               onChange={(e) => setUserWhoHasAccess(e.target.value)}
             ></C.Input>

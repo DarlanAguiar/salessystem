@@ -1,10 +1,9 @@
-import React, { BaseSyntheticEvent, useState } from "react";
-import { FaWineBottle } from "react-icons/fa";
-import * as C from "./styles";
-import { useInfoContext } from "../../contexts/userInfoContext";
-import { insertTransactionModelIntoDatabase } from "../../database/firebase";
-import {  checkAccess } from "../../helpers/authorizations";
-
+import { BaseSyntheticEvent, useState } from 'react';
+import { FaWineBottle } from 'react-icons/fa';
+import * as C from './styles';
+import { useInfoContext } from '../../contexts/userInfoContext';
+import { insertTransactionModelIntoDatabase } from '../../database/firebase';
+import { checkAccess } from '../../helpers/authorizations';
 
 type Props = {
   handleShowRegisterProduct: () => void;
@@ -21,19 +20,19 @@ type FormType = {
   expense: boolean;
 };
 const initialState = {
-  category: "",
-  name: "",
-  unity: "no",
+  category: '',
+  name: '',
+  unity: 'no',
   price: 0,
-  expense: false,
+  expense: false
 };
 
-function RegisterProduct(props: Props) {
+function RegisterProduct (props: Props) {
   const {
     handleShowRegisterProduct,
     showRegisterProduct,
     productCategoryList,
-    getProducts,
+    getProducts
   } = props;
 
   const { state } = useInfoContext();
@@ -52,22 +51,22 @@ function RegisterProduct(props: Props) {
     e.preventDefault();
 
     if (
-      formValues.category === "" ||
-      formValues.name === "" ||
+      formValues.category === '' ||
+      formValues.name === '' ||
       Number(formValues.price) === 0
     ) {
-      alert("Cadastro não efetuado \nPreecha todos os campos corretamente");
+      alert('Cadastro não efetuado \nPreecha todos os campos corretamente');
       return;
     }
 
-    let product = { ...formValues };
+    const product = { ...formValues };
 
     const newProduct = {
       category: product.category,
       name: product.name,
-      unity: product.unity === "no",
+      unity: product.unity === 'no',
       price: Number(product.price),
-      expense: false,
+      expense: false
     };
 
     handleShowRegisterProduct();
@@ -75,14 +74,14 @@ function RegisterProduct(props: Props) {
     const token = await state.infoUser?.getIdToken();
     const user = state.infoUser?.email;
     const authorizedDatabase = state.databaseAuth;
-    
-    if(authorizedDatabase){
+
+    if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);
       if (!accessAuthorized) {
         return;
       }
     }
-    
+
     await insertTransactionModelIntoDatabase(
       newProduct,
       user,
@@ -102,12 +101,12 @@ function RegisterProduct(props: Props) {
           <C.InputDiv width={100}>
             <C.InputLabel>Categoria:</C.InputLabel>
             <C.Select
-              name={"category"}
-              placeholder={"Categoria"}
-              value={formValues.category || ""}
+              name={'category'}
+              placeholder={'Categoria'}
+              value={formValues.category || ''}
               onChange={(e) => {
-                if (e.target.value === "Nova categoria") {
-                  formValues.category = "";
+                if (e.target.value === 'Nova categoria') {
+                  formValues.category = '';
                   setNewCategory(true);
                 } else {
                   handleInputChange(e);
@@ -130,10 +129,10 @@ function RegisterProduct(props: Props) {
             <C.InputDiv width={100}>
               <C.InputLabel>Nova Categoria:</C.InputLabel>
               <C.InputText
-                type={"text"}
-                name={"category"}
-                placeholder={"Categoria"}
-                value={formValues.category || ""}
+                type={'text'}
+                name={'category'}
+                placeholder={'Categoria'}
+                value={formValues.category || ''}
                 onChange={handleInputChange}
               />
             </C.InputDiv>
@@ -142,20 +141,20 @@ function RegisterProduct(props: Props) {
           <C.InputDiv width={100}>
             <C.InputLabel>Nome:</C.InputLabel>
             <C.InputText
-              type={"text"}
-              name={"name"}
-              placeholder={"Nome do produto"}
+              type={'text'}
+              name={'name'}
+              placeholder={'Nome do produto'}
               onChange={handleInputChange}
-              value={formValues.name || ""}
+              value={formValues.name || ''}
             />
           </C.InputDiv>
 
           <C.InputDiv width={60}>
             <C.InputLabel>Preço:</C.InputLabel>
             <C.InputText
-              type={"number"}
-              name={"price"}
-              placeholder={"Preço"}
+              type={'number'}
+              name={'price'}
+              placeholder={'Preço'}
               onChange={handleInputChange}
               value={formValues.price}
             />
@@ -167,11 +166,11 @@ function RegisterProduct(props: Props) {
               <label>
                 <input
                   type="radio"
-                  value={"yes"}
-                  name={"unity"}
-                  id={"yes"}
+                  value={'yes'}
+                  name={'unity'}
+                  id={'yes'}
                   onChange={handleInputChange}
-                  checked={formValues.unity === "yes"}
+                  checked={formValues.unity === 'yes'}
                 />
                 Sim
               </label>
@@ -179,11 +178,11 @@ function RegisterProduct(props: Props) {
               <label>
                 <input
                   type="radio"
-                  value={"no"}
-                  name={"unity"}
-                  id={"no"}
+                  value={'no'}
+                  name={'unity'}
+                  id={'no'}
                   onChange={handleInputChange}
-                  checked={formValues.unity === "no"}
+                  checked={formValues.unity === 'no'}
                 />
                 Não
               </label>
@@ -191,7 +190,7 @@ function RegisterProduct(props: Props) {
           </C.InputDiv>
 
           <C.DivButtons>
-            <C.ButtonSubmit type={"submit"} value={"Cadastrar"} />
+            <C.ButtonSubmit type={'submit'} value={'Cadastrar'} />
             <C.ButtonRegisterCancel
               type="reset"
               onClick={() => {

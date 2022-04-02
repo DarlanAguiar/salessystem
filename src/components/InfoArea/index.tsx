@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import * as C from "./styles";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { useState } from 'react';
+import * as C from './styles';
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import {
   formatCurrentMonth,
   formatDateTimeZone,
   formatFinalDate,
   formatFinalMonth,
   formatInitialMonth,
-  getDate,
-} from "../../helpers/dateFilter";
-import ResumeItem from "../ResumeItem";
-import SalesSortedList from "../SalesSortedList";
-import { BestSeller } from "../../types/FilterProducts";
-import { FcViewDetails } from "react-icons/fc";
+  getDate
+} from '../../helpers/dateFilter';
+import ResumeItem from '../ResumeItem';
+import SalesSortedList from '../SalesSortedList';
+import { BestSeller } from '../../types/FilterProducts';
+import { FcViewDetails } from 'react-icons/fc';
 
 type Props = {
   currentMonth: string;
@@ -25,7 +25,7 @@ type Props = {
   updateTableTitle: (title: string) => void;
 };
 
-function InfoArea(props: Props) {
+function InfoArea (props: Props) {
   const {
     currentMonth,
     onMonthChange,
@@ -34,15 +34,15 @@ function InfoArea(props: Props) {
     listBestSellers,
     listAmountOfMoney,
     getListByDate,
-    updateTableTitle,
+    updateTableTitle
   } = props;
 
   const [dateList, setDateList] = useState(getDate());
   const [showDetails, setShowDetails] = useState(false);
 
   const handlePrevMonth = () => {
-    const [year, month] = currentMonth.split("-");
-    let currentDate = new Date(Number(year), Number(month) - 1, 1);
+    const [year, month] = currentMonth.split('-');
+    const currentDate = new Date(Number(year), Number(month) - 1, 1);
     currentDate.setMonth(currentDate.getMonth() - 1);
 
     const formatMonth = currentDate.getMonth() + 1;
@@ -69,8 +69,8 @@ function InfoArea(props: Props) {
   };
 
   const handleNextMonth = () => {
-    const [year, month] = currentMonth.split("-");
-    let currentDate = new Date(Number(year), Number(month) - 1, 1);
+    const [year, month] = currentMonth.split('-');
+    const currentDate = new Date(Number(year), Number(month) - 1, 1);
     currentDate.setMonth(currentDate.getMonth() + 1);
 
     const formatMonth = currentDate.getMonth() + 1;
@@ -97,12 +97,11 @@ function InfoArea(props: Props) {
   };
 
   const handleFilterDataByDay = (e: string) => {
- 
     const initialDate = formatDateTimeZone(e);
     const finalDate = formatDateTimeZone(formatFinalDate(e));
-   
+
     getListByDate(initialDate, finalDate);
-    updateTableTitle(e.split("-").reverse().join("/"));
+    updateTableTitle(e.split('-').reverse().join('/'));
   };
 
   return (
@@ -115,7 +114,7 @@ function InfoArea(props: Props) {
         </C.DetailsButton>
         <C.DayArea>
           <input
-            type={"date"}
+            type={'date'}
             value={dateList}
             onChange={(e) => {
               setDateList(e.target.value);
@@ -133,11 +132,11 @@ function InfoArea(props: Props) {
           </C.MonthArrow>
         </C.MonthArea>
         <C.ResumeArea>
-          <ResumeItem title={"Receitas"} value={income} />
-          <ResumeItem title={"Despesas"} value={expense} />
+          <ResumeItem title={'Receitas'} value={income} />
+          <ResumeItem title={'Despesas'} value={expense} />
           <ResumeItem
-            title={"Balanço"}
-            color={income - expense < 0 ? "red" : "blue"}
+            title={'Balanço'}
+            color={income - expense < 0 ? 'red' : 'blue'}
             value={income - expense}
           />
         </C.ResumeArea>

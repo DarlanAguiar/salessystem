@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div``;
 
@@ -74,7 +74,7 @@ position: absolute;
    
   }
 
-`
+`;
 
 export const HeaderText = styled.h1`
   margin: 0;

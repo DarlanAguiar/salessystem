@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import {
   collection,
@@ -8,13 +8,13 @@ import {
   doc,
   addDoc,
   deleteDoc,
-  QueryDocumentSnapshot,
-} from "firebase/firestore";
+  QueryDocumentSnapshot
+} from 'firebase/firestore';
 
-import { DataUserAuthorized } from "./types/typesRoutes";
+import { DataUserAuthorized } from './types/typesRoutes';
 
-import { db } from "../routes";
-import { setResponseHeader } from "./helpers/responseHeader";
+import { db } from '../routes';
+import { setResponseHeader } from './helpers/responseHeader';
 
 export const addAuthorizedUser = async (req: Request, res: Response) => {
   const { userAuthorized, user } = req.body;
@@ -22,11 +22,11 @@ export const addAuthorizedUser = async (req: Request, res: Response) => {
 
   try {
     await addDoc(collection(db, `${user}.auth`), userValid);
-    setResponseHeader(res)
-    res.status(StatusCodes.CREATED).json({ message: "Iserido com sucesso" });
+    setResponseHeader(res);
+    res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: "Erro interno do servidor (POST), postando um usuario autorizado.",
+      error: 'Erro interno do servidor (POST), postando um usuario autorizado.'
     });
     console.error(err);
   }
@@ -37,20 +37,20 @@ export const lisAllAuthorizedUser = async (req: Request, res: Response) => {
 
   try {
     const result = await getDocs(query(collection(db, `${user}.auth`)));
-    let arrayData: DataUserAuthorized[] = [];
+    const arrayData: DataUserAuthorized[] = [];
 
     result.docs.forEach((data: QueryDocumentSnapshot) => {
       arrayData.push({
         id: data.id,
-        user: data.data().user,
+        user: data.data().user
       });
     });
     res.status(StatusCodes.OK).json(arrayData);
   } catch (err) {
-    console.error("Erro do serverRoutes: ", err);
+    console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (GET), buscando usuario" });
+      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };
 
@@ -61,12 +61,12 @@ export const removeAuthorizedUser = async (req: Request, res: Response) => {
     await deleteDoc(doc(db, `${user}.auth`, id));
     res
       .status(StatusCodes.OK)
-      .json({ message: "Usuário deletado com sucesso" });
+      .json({ message: 'Usuário deletado com sucesso' });
   } catch (err) {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro do seridor (Deletar usuário)" });
+      .json({ error: 'Erro do seridor (Deletar usuário)' });
   }
 };
 
@@ -91,9 +91,9 @@ export const checkAuthorizationInUserList = async (
 
     return res.status(StatusCodes.OK).json({ authorized: authorized });
   } catch (err) {
-    console.error("Erro do serverRoutes: ", err);
+    console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erro interno do servidor (GET), buscando usuario" });
+      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };

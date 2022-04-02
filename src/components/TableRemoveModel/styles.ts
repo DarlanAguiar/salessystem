@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div<{ showRemoveModel: boolean }>`
   width: 100%;
@@ -6,10 +6,10 @@ export const Container = styled.div<{ showRemoveModel: boolean }>`
   height: 350px;
   transition: 0.5s;
   position: fixed;
-  top: ${(props) => (props.showRemoveModel ? "0" : "-350px")};
+  top: ${(props) => (props.showRemoveModel ? '0' : '-350px')};
   left: 0;
-  z-index: ${(props) => (props.showRemoveModel ? "5" : "1")};
-  border: 3px solid ${(props) => (props.showRemoveModel ? "darkblue" : "#fff")};
+  z-index: ${(props) => (props.showRemoveModel ? '5' : '1')};
+  border: 3px solid ${(props) => (props.showRemoveModel ? 'darkblue' : '#fff')};
   border-top: 0;
 
   @media (max-width: 600px) {
@@ -75,11 +75,11 @@ export const ButtonShowRemoveModel = styled.button<{
   width: 110px;
   height: 35px;
   padding: 5px;
-  border: 3px solid ${(props) => (props.showRemoveModel ? "darkblue" : "#fff")};
+  border: 3px solid ${(props) => (props.showRemoveModel ? 'darkblue' : '#fff')};
   border-top: 0;
   background-color: ${(props) =>
-    props.showRemoveModel ? "lightblue" : "darkblue"};
-  color: ${(props) => (props.showRemoveModel ? "#000" : "#fff")};
+    props.showRemoveModel ? 'lightblue' : 'darkblue'};
+  color: ${(props) => (props.showRemoveModel ? '#000' : '#fff')};
   font-size: 15px;
   border-radius: 0 0 10px 10px;
   font-weight: bold;

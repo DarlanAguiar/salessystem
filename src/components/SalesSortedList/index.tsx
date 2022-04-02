@@ -1,9 +1,9 @@
-import * as C from "./styles";
+import * as C from './styles';
 
-import React, { useState } from "react";
-import { BestSeller } from "../../types/FilterProducts";
-import BodySalesSortedlist from "../BodySalesSortedList";
-import { formatDateTimeZone, formatFinalDate } from "../../helpers/dateFilter";
+import { useState } from 'react';
+import { BestSeller } from '../../types/FilterProducts';
+import BodySalesSortedlist from '../BodySalesSortedList';
+import { formatDateTimeZone, formatFinalDate } from '../../helpers/dateFilter';
 
 type Props = {
   listBestSellers: BestSeller[];
@@ -12,26 +12,26 @@ type Props = {
   updateTableTitle: (title: string) => void;
 };
 
-function SalesSortedList(props: Props) {
+function SalesSortedList (props: Props) {
   const {
     listBestSellers,
     listAmountOfMoney,
     getListByDate,
-    updateTableTitle,
+    updateTableTitle
   } = props;
 
-  const [startDateField, setStartDateField] = useState("");
-  const [endDateField, setEndDateField] = useState("");
+  const [startDateField, setStartDateField] = useState('');
+  const [endDateField, setEndDateField] = useState('');
 
   const filterByCustomDate = () => {
     const init = new Date(startDateField).getTime();
     const end = new Date(endDateField).getTime();
     if (init > end) {
-      alert("Adicione uma data Final MAIOR que a data inicial");
+      alert('Adicione uma data Final MAIOR que a data inicial');
       return;
     }
-    if (startDateField === "" || endDateField === "") {
-      alert("Adicione as duas datas para poder filtrar.");
+    if (startDateField === '' || endDateField === '') {
+      alert('Adicione as duas datas para poder filtrar.');
       return;
     }
 
@@ -41,10 +41,10 @@ function SalesSortedList(props: Props) {
     getListByDate(initialDate, finalDate);
 
     updateTableTitle(
-      `${startDateField.split("-").reverse().join("/")} à ${endDateField
-        .split("-")
+      `${startDateField.split('-').reverse().join('/')} à ${endDateField
+        .split('-')
         .reverse()
-        .join("/")}`
+        .join('/')}`
     );
   };
 
@@ -54,7 +54,7 @@ function SalesSortedList(props: Props) {
         <C.LabelInitialDate>
           Filtrar de:
           <input
-            type={"date"}
+            type={'date'}
             value={startDateField}
             onChange={(e) => setStartDateField(e.target.value)}
           />
@@ -62,7 +62,7 @@ function SalesSortedList(props: Props) {
         <C.LabelFinalDate>
           até:
           <input
-            type={"date"}
+            type={'date'}
             value={endDateField}
             onChange={(e) => setEndDateField(e.target.value)}
           />

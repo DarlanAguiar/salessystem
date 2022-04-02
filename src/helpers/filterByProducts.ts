@@ -1,8 +1,8 @@
-import { BestSeller } from "../types/FilterProducts";
-import { ItemDataBase } from "../types/Item";
+import { BestSeller } from '../types/FilterProducts';
+import { ItemDataBase } from '../types/Item';
 
 export const orderedByBestSellers = (list: ItemDataBase[]) => {
-  const newList: Record<string, number>  = {};
+  const newList: Record<string, number> = {};
 
   list.forEach((item) => {
     if (!item.expense) {

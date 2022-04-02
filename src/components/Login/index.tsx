@@ -1,19 +1,19 @@
-import * as C from "./styles";
-import { FcGoogle } from "react-icons/fc";
-import { FaUserPlus } from "react-icons/fa";
-import { FormActions, useInfoContext } from "../../contexts/userInfoContext";
-import { firebaseApp } from "../../database/firebase";
+import * as C from './styles';
+import { FcGoogle } from 'react-icons/fc';
+import { FaUserPlus } from 'react-icons/fa';
+import { FormActions, useInfoContext } from '../../contexts/userInfoContext';
+import { firebaseApp } from '../../database/firebase';
 import {
   getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-import React, { MouseEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AccessDatabase } from "../../types/users";
-import { fetchAccessDatabase } from "../../database/firebaseAuthAccess";
+  createUserWithEmailAndPassword
+} from 'firebase/auth';
+import { MouseEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AccessDatabase } from '../../types/users';
+import { fetchAccessDatabase } from '../../database/firebaseAuthAccess';
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -22,11 +22,11 @@ interface ErrorWithMessage {
   message?: string;
 }
 
-function Login() {
+function Login () {
   const { dispatch } = useInfoContext();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState<string | null>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>('');
 
   const navigate = useNavigate();
 
@@ -50,19 +50,19 @@ function Login() {
       );
 
       if (accessDatabase.nameDatabase) {
-        console.log("tem" + accessDatabase.nameDatabase);
+        console.log('tem' + accessDatabase.nameDatabase);
 
         dispatch({
           type: FormActions.setDatabaseAuth,
-          payload: accessDatabase.nameDatabase,
+          payload: accessDatabase.nameDatabase
         });
         dispatch({
           type: FormActions.setIdDatabaseAuth,
-          payload: accessDatabase.id,
+          payload: accessDatabase.id
         });
       }
 
-      navigate("/");
+      navigate('/');
     } catch (error) {
       showError(error);
     }
@@ -87,19 +87,19 @@ function Login() {
         );
 
         if (accessDatabase.nameDatabase) {
-          console.log("tem" + accessDatabase.nameDatabase);
+          console.log('tem' + accessDatabase.nameDatabase);
 
           dispatch({
             type: FormActions.setDatabaseAuth,
-            payload: accessDatabase.nameDatabase,
+            payload: accessDatabase.nameDatabase
           });
           dispatch({
             type: FormActions.setIdDatabaseAuth,
-            payload: accessDatabase.id,
+            payload: accessDatabase.id
           });
         }
 
-        navigate("/");
+        navigate('/');
       });
     } catch (error) {
       showError(error);
@@ -118,46 +118,46 @@ function Login() {
       dispatch({ type: FormActions.setAuthenticated, payload: true });
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
-      navigate("/");
+      navigate('/');
     } catch (error) {
       showError(error);
     }
   };
 
   const showError = (error: unknown) => {
-    const typedError = error as ErrorWithMessage; 
+    const typedError = error as ErrorWithMessage;
     let errorMessage = null;
     switch (typedError?.message) {
       case null:
       case undefined:
         break;
-      case "Firebase: Error (auth/internal-error).":
-        errorMessage = "Dados incompleto";
+      case 'Firebase: Error (auth/internal-error).':
+        errorMessage = 'Dados incompleto';
         break;
-      case "Firebase: Error (auth/missing-email).":
-        errorMessage = "Adicione o Email";
+      case 'Firebase: Error (auth/missing-email).':
+        errorMessage = 'Adicione o Email';
         break;
-      case "Firebase: Error (auth/invalid-email).":
-        errorMessage = "Email inválido";
+      case 'Firebase: Error (auth/invalid-email).':
+        errorMessage = 'Email inválido';
         break;
-      case "Firebase: Password should be at least 6 characters (auth/weak-password).":
-        errorMessage = "A senha deve conter no mínimo 6 caracteres";
+      case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
+        errorMessage = 'A senha deve conter no mínimo 6 caracteres';
         break;
-      case "Firebase: Error (auth/email-already-in-use).":
-        errorMessage = "Email utilizado por outro usuáro";
+      case 'Firebase: Error (auth/email-already-in-use).':
+        errorMessage = 'Email utilizado por outro usuáro';
         break;
-      case "Firebase: Error (auth/wrong-password).":
-        errorMessage = "Senha inválida";
+      case 'Firebase: Error (auth/wrong-password).':
+        errorMessage = 'Senha inválida';
         break;
-      case "Firebase: Error (auth/user-not-found).":
-        errorMessage = "Usuário não existe";
+      case 'Firebase: Error (auth/user-not-found).':
+        errorMessage = 'Usuário não existe';
         break;
-      case "Senhas não conferem":
-        errorMessage = "Senhas não conferem";
+      case 'Senhas não conferem':
+        errorMessage = 'Senhas não conferem';
         break;
       default:
         errorMessage =
-          "Procedimento não efetivado, confira os dados e tente novamente";
+          'Procedimento não efetivado, confira os dados e tente novamente';
     }
 
     return setErrorMessage(errorMessage);

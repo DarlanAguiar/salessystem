@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div<{ showSettings: boolean }>`
   background-color: #ccc;
@@ -6,7 +6,7 @@ export const Container = styled.div<{ showSettings: boolean }>`
   height: calc(100vh - 35px);
   position: fixed;
   top: 35px;
-  left: ${(props) => (props.showSettings ? "0" : "-450px")};
+  left: ${(props) => (props.showSettings ? '0' : '-450px')};
   border: 3px solid blue;
   border-radius: 0 10px 10px 0;
   padding: 15px;
@@ -15,7 +15,7 @@ export const Container = styled.div<{ showSettings: boolean }>`
 
   @media (max-width: 600px) {
     width: 80vw;
-    left: ${(props) => (props.showSettings ? "0" : "-80vw")};
+    left: ${(props) => (props.showSettings ? '0' : '-80vw')};
   }
 `;
 

@@ -1,6 +1,5 @@
-import { AccessDatabase } from "../types/users";
-import { URL } from "./firebase";
-import { headers } from "./firebase";
+import { AccessDatabase } from '../types/users';
+import { URL, headers } from './firebase';
 
 export const saveDatabaseIWantToAccess = async (
   userIWantToAccess: string,
@@ -10,9 +9,9 @@ export const saveDatabaseIWantToAccess = async (
   let message = {};
 
   await fetch(`${URL}authaccess`, {
-    method: "POST",
+    method: 'POST',
     headers: headers,
-    body: JSON.stringify({ userIWantToAccess, user, token }),
+    body: JSON.stringify({ userIWantToAccess, user, token })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -29,21 +28,21 @@ export const fetchAccessDatabase = async (
   token: string | undefined
 ) => {
   let accessDatabase: AccessDatabase = {
-    id: "",
-    nameDatabase: "",
+    id: '',
+    nameDatabase: ''
   };
 
   await fetch(`${URL}authaccess/${user}/${token}`, {
-    method: "GET",
-    headers: headers,
+    method: 'GET',
+    headers: headers
   })
     .then((resp) => resp.json())
     .then((resp) => {
       accessDatabase = resp;
     })
-    .catch((err) => {
+    .catch(() => {
       throw new Error(
-        "Problemas no servidor GET, buscando banco de dado autorizado"
+        'Problemas no servidor GET, buscando banco de dado autorizado'
       );
     });
 
@@ -59,14 +58,14 @@ export const updateDatabaseIWantToAccess = async (
   let message = {};
 
   await fetch(`${URL}authaccess`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: headers,
     body: JSON.stringify({
       databaseIWantToAccess,
       idDatabaseAuth,
       user,
-      token,
-    }),
+      token
+    })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -85,9 +84,9 @@ export const deleteAccessToCurrentDatabase = async (
   let message = {};
 
   await fetch(`${URL}authaccess`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: headers,
-    body: JSON.stringify({ id, user, token }),
+    body: JSON.stringify({ id, user, token })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -98,7 +97,6 @@ export const deleteAccessToCurrentDatabase = async (
 
   return message;
 };
-
 
 /*   const resp = await fetch(`${URL}authaccess`, {
     method: "POST",

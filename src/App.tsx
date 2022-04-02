@@ -1,8 +1,7 @@
-import React from "react";
-import Router from "./router";
-import { FormProvider } from "./contexts/userInfoContext";
+import Router from './router';
+import { FormProvider } from './contexts/userInfoContext';
 
-function App() {
+function App () {
   return (
     <FormProvider>
       <Router />

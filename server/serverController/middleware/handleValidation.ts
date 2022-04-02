@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
-import { DecodedIdToken, getAuth } from "firebase-admin/auth";
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth';
 
 export const validateToken = async (
   req: Request,
@@ -33,6 +33,5 @@ export const validateToken = async (
 
   res
     .status(StatusCodes.UNAUTHORIZED)
-    .json({ error: "Token de usuario invalido" });
-  return;
+    .json({ error: 'Token de usuario invalido' });
 };

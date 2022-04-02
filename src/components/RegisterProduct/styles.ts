@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div<{ showRegisterProduct: boolean }>`
   width: 100vw;
@@ -8,11 +8,11 @@ export const Container = styled.div<{ showRegisterProduct: boolean }>`
   transition: 0.5s;
   position: fixed;
   border: 3px solid
-    ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
+    ${(props) => (props.showRegisterProduct ? 'darkblue' : '#fff')};
   border-top: 0;
-  top: ${(props) => (props.showRegisterProduct ? "0" : "-170px")};
+  top: ${(props) => (props.showRegisterProduct ? '0' : '-170px')};
   left: 0;
-  z-index: ${(props) => (props.showRegisterProduct ? "5" : "1")};
+  z-index: ${(props) => (props.showRegisterProduct ? '5' : '1')};
 `;
 
 export const Select = styled.select`
@@ -95,11 +95,11 @@ export const CloseRegisterProductButton = styled.button<{
   height: 35px;
   padding: 5px;
   border: 3px solid
-    ${(props) => (props.showRegisterProduct ? "darkblue" : "#fff")};
+    ${(props) => (props.showRegisterProduct ? 'darkblue' : '#fff')};
   border-top: 0;
   background-color: ${(props) =>
-    props.showRegisterProduct ? "lightblue" : "darkblue"};
-  color: ${(props) => (props.showRegisterProduct ? "#000" : "#fff")};
+    props.showRegisterProduct ? 'lightblue' : 'darkblue'};
+  color: ${(props) => (props.showRegisterProduct ? '#000' : '#fff')};
   font-size: 15px;
   border-radius: 0 0 10px 10px;
   font-weight: bold;

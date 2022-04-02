@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div<{ showRegisterExpense: boolean }>`
   width: 100vw;
@@ -7,11 +7,11 @@ export const Container = styled.div<{ showRegisterExpense: boolean }>`
   height: 170px;
   transition: 0.5s;
   position: fixed;
-  top: ${(props) => (props.showRegisterExpense ? "0" : "-170px")};
+  top: ${(props) => (props.showRegisterExpense ? '0' : '-170px')};
   left: 0;
-  z-index: ${(props) => (props.showRegisterExpense ? "5" : "1")};
+  z-index: ${(props) => (props.showRegisterExpense ? '5' : '1')};
   border: 3px solid
-    ${(props) => (props.showRegisterExpense ? "darkblue" : "#fff")};
+    ${(props) => (props.showRegisterExpense ? 'darkblue' : '#fff')};
   border-top: 0;
 `;
 
@@ -95,11 +95,11 @@ export const CloseExpenseButton = styled.button<{
   height: 35px;
   padding: 5px;
   border: 3px solid
-    ${(props) => (props.showRegisterExpense ? "darkblue" : "#fff")};
+    ${(props) => (props.showRegisterExpense ? 'darkblue' : '#fff')};
   border-top: 0;
   background-color: ${(props) =>
-    props.showRegisterExpense ? "lightblue" : "darkblue"};
-  color: ${(props) => (props.showRegisterExpense ? "#000" : "#fff")};
+    props.showRegisterExpense ? 'lightblue' : 'darkblue'};
+  color: ${(props) => (props.showRegisterExpense ? '#000' : '#fff')};
   font-size: 15px;
   border-radius: 0 0 10px 10px;
   font-weight: bold;

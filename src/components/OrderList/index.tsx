@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import * as C from "./styles";
-import { Item } from "../../types/Item";
-import TableItemSale from "../TableItemSale";
+import { useState, useEffect } from 'react';
+import * as C from './styles';
+import { Item } from '../../types/Item';
+import TableItemSale from '../TableItemSale';
 
 type Props = {
   orderList: Item[];
@@ -11,13 +11,13 @@ type Props = {
   handleSetTitle: () => void;
 };
 
-function OrderList(props: Props) {
+function OrderList (props: Props) {
   const {
     orderList,
     addSaleToDatabase,
     handleCancelSale,
     removeItem,
-    handleSetTitle,
+    handleSetTitle
   } = props;
 
   const [amount, setAmount] = useState(0);
@@ -60,44 +60,46 @@ function OrderList(props: Props) {
         <C.MoneyChange>
           <label htmlFor="money">Dinheiro: </label>
           <input
-            type={"number"}
+            type={'number'}
             min={0}
             onChange={(e) => setAmountPaid(Number(e.target.value))}
           />
 
           {amountPaid !== 0 &&
-            (amountPaid - amount > 0 ? (
+            (amountPaid - amount > 0
+              ? (
               <p>
-                {" "}
-                Troco:{" "}
+                {' '}
+                Troco:{' '}
                 <span className="leftover">
-                  {(amountPaid - amount).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
+                  {(amountPaid - amount).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
                   })}
                 </span>
               </p>
-            ) : (
+                )
+              : (
               <p>
-                {" "}
-                Falta:{" "}
+                {' '}
+                Falta:{' '}
                 <span className="lack">
-                  {(amountPaid - amount).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
+                  {(amountPaid - amount).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
                   })}
                 </span>
               </p>
-            ))}
+                ))}
         </C.MoneyChange>
 
         <C.CloseSale>
           <p>
             Total
             <span>
-              {amount.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
+              {amount.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
               })}
             </span>
           </p>

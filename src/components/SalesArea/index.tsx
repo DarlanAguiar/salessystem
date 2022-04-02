@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Item } from "../../types/Item";
-import * as C from "./styles";
-import { Product } from "../../types/Product";
-import OrderList from "../OrderList";
-import { getDate } from "../../helpers/dateFilter";
-import { IoMdClose } from "react-icons/io";
-import { FaUserPlus } from "react-icons/fa";
-import { ProductClientTitle } from "../../types/Product";
+import { useEffect, useState } from 'react';
+import { Item } from '../../types/Item';
+import * as C from './styles';
+import { Product, ProductClientTitle } from '../../types/Product';
+import OrderList from '../OrderList';
+import { getDate } from '../../helpers/dateFilter';
+import { IoMdClose } from 'react-icons/io';
+import { FaUserPlus } from 'react-icons/fa';
 
 type Props = {
   onAdd: (item: Item[]) => void;
@@ -21,7 +20,7 @@ type Props = {
   deleteLastClientProducts: () => void;
 };
 
-function SalesArea(props: Props) {
+function SalesArea (props: Props) {
   const {
     onAdd,
     databaseProducts,
@@ -32,12 +31,12 @@ function SalesArea(props: Props) {
     productAllClient,
     clientProducts,
     insertNewListToTotal,
-    deleteLastClientProducts,
+    deleteLastClientProducts
   } = props;
 
   const [dateField, setDateField] = useState(getDate());
-  const [categoryField, setCategoryField] = useState("");
-  const [productField, setProductField] = useState("");
+  const [categoryField, setCategoryField] = useState('');
+  const [productField, setProductField] = useState('');
   const [valueField, setValueField] = useState(0);
   const [unityFied, setUnityFild] = useState(true);
   const [amountField, setAmountField] = useState(1);
@@ -46,14 +45,14 @@ function SalesArea(props: Props) {
   const [valueOfOneUnit, setValueOfOneUnit] = useState(0);
   const [orderList, setOrderList] =
     useState<ProductClientTitle[]>(clientProducts);
-  const [title, setTitle] = useState<string | null>("Área de vendas");
+  const [title, setTitle] = useState<string | null>('Área de vendas');
 
   useEffect(() => {
     setOrderList(clientProducts);
   }, [productAllClient]);
 
   useEffect(() => {
-    let newProductsList: string[] = [];
+    const newProductsList: string[] = [];
 
     databaseProducts.forEach((product) => {
       if (product.category === categoryField) {
@@ -76,24 +75,24 @@ function SalesArea(props: Props) {
   }, [productField]);
 
   const handleAddEvent = () => {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
-    if (categoryField === "") {
-      errors.push("Adicione uma categoria!");
+    if (categoryField === '') {
+      errors.push('Adicione uma categoria!');
     }
-    if (productField === "") {
-      errors.push("Escolha um produto!");
+    if (productField === '') {
+      errors.push('Escolha um produto!');
     }
     if (amountField < 1 || isNaN(amountField)) {
-      errors.push("Quantidade inválida!");
+      errors.push('Quantidade inválida!');
     }
     if (valueField <= 0) {
-      errors.push("Valor inválido!");
+      errors.push('Valor inválido!');
     }
 
     if (errors.length > 0) {
       alert(errors[0]);
-      //alert(errors.join("\n"));
+      // alert(errors.join("\n"));
     } else {
       const tempDate = dateField ? new Date(dateField) : new Date();
 
@@ -118,7 +117,7 @@ function SalesArea(props: Props) {
         amount: amountField,
         unity: unityFied,
         price: valueField,
-        expense: expenseField,
+        expense: expenseField
       };
 
       const newOrderList = [...orderList];
@@ -132,8 +131,8 @@ function SalesArea(props: Props) {
 
   const clearFields = () => {
     setDateField(getDate());
-    setCategoryField("");
-    setProductField("");
+    setCategoryField('');
+    setProductField('');
     setValueField(0);
     setAmountField(1);
   };
@@ -154,7 +153,7 @@ function SalesArea(props: Props) {
   };
 
   const handleCancelSale = () => {
-    let newList = [...orderList];
+    const newList = [...orderList];
 
     newList.splice(0);
 
@@ -174,7 +173,7 @@ function SalesArea(props: Props) {
   };
 
   const removeItem = (itemId: number) => {
-    let newList = [...orderList];
+    const newList = [...orderList];
 
     newList.splice(itemId, 1);
 
@@ -186,14 +185,14 @@ function SalesArea(props: Props) {
 
   const handleSetTitle = () => {
     if (productAllClient.length === 1) {
-      setTitle("Área de vendas");
+      setTitle('Área de vendas');
     }
   };
 
   const insertTitle = async (title: string | null) => {
     setTitle(title);
 
-    let newList = [...orderList];
+    const newList = [...orderList];
     newList.forEach((item) => {
       item.title = title;
     });
@@ -207,7 +206,7 @@ function SalesArea(props: Props) {
         contentEditable
         suppressContentEditableWarning={true}
       >
-        {clientProducts[0] ? clientProducts[0].title : "Área de vendas"}
+        {clientProducts[0] ? clientProducts[0].title : 'Área de vendas'}
       </C.Title>
       <C.AddMoreOne onClick={addNewClient}>
         <FaUserPlus />
@@ -216,7 +215,7 @@ function SalesArea(props: Props) {
         <C.Closed
           onClick={() => {
             removeClient(itemIdAllList);
-            setTitle("Área de vendas");
+            setTitle('Área de vendas');
           }}
         >
           <IoMdClose />
@@ -239,7 +238,7 @@ function SalesArea(props: Props) {
               setValueOfOneUnit(0);
               setCategoryField(e.target.value);
               setAmountField(1);
-              setProductField("");
+              setProductField('');
             }}
           >
             <>

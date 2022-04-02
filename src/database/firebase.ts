@@ -1,37 +1,37 @@
-import { initializeApp } from "firebase/app";
-import { Item, ItemDataBase } from "../types/Item";
-import { Product, ProductDatabase } from "../types/Product";
+import { initializeApp } from 'firebase/app';
+import { Item, ItemDataBase } from '../types/Item';
+import { Product, ProductDatabase } from '../types/Product';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ",
-  authDomain: "salessystem-659c6.firebaseapp.com",
-  projectId: "salessystem-659c6",
-  storageBucket: "salessystem-659c6.appspot.com",
-  messagingSenderId: "402827702936",
-  appId: "1:402827702936:web:bcee0d74934dc1cc6016ed",
+  apiKey: 'AIzaSyDIKzT2bn4MzVPAoi6vAPJr5ty4n2GgtJQ',
+  authDomain: 'salessystem-659c6.firebaseapp.com',
+  projectId: 'salessystem-659c6',
+  storageBucket: 'salessystem-659c6.appspot.com',
+  messagingSenderId: '402827702936',
+  appId: '1:402827702936:web:bcee0d74934dc1cc6016ed'
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-export const URL = "/home/";
+export const URL = '/home/';
 
 export const headers = {
-  "Content-Type": "application/json",
-  "Access-Control-Allow-Origin": "*",
-}
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*'
+};
 
 export const insertTransactionModelIntoDatabase = async (
   data: Product,
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string |null,
+  authorizedDatabase: string | null
 ) => {
   let message = {};
 
   await fetch(`${URL}modeltransaction`, {
-    method: "POST",
+    method: 'POST',
     headers: headers,
-    body: JSON.stringify({ data, user, token, authorizedDatabase }),
+    body: JSON.stringify({ data, user, token, authorizedDatabase })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -46,15 +46,14 @@ export const insertTransactionIntoDatabase = async (
   data: Item,
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string |null
+  authorizedDatabase: string | null
 ) => {
-  
   let message = {};
 
   await fetch(`${URL}transaction`, {
-    method: "POST",
+    method: 'POST',
     headers: headers,
-    body: JSON.stringify({ data, user, token, authorizedDatabase }),
+    body: JSON.stringify({ data, user, token, authorizedDatabase })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -77,8 +76,8 @@ export const getTransactionList = async (
   await fetch(
     `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}/${authorizedDatabase}`,
     {
-      method: "GET",
-      headers: headers,
+      method: 'GET',
+      headers: headers
     }
   )
     .then((resp) => {
@@ -87,8 +86,8 @@ export const getTransactionList = async (
       return parsedResp;
     })
     .then((resp) => (data = resp))
-    .catch((err) => {
-      throw new Error("Problemas no servidor GET");
+    .catch(() => {
+      throw new Error('Problemas no servidor GET');
     });
 
   return data;
@@ -102,8 +101,8 @@ export const getModelTransactionList = async (
   let data: ProductDatabase[] = [];
 
   await fetch(`${URL}modeltransaction/${user}/${token}/${authorizedDatabase}`, {
-    method: "GET",
-    headers: headers,
+    method: 'GET',
+    headers: headers
   })
     .then((resp) => {
       const parsedResp = resp.json();
@@ -111,8 +110,8 @@ export const getModelTransactionList = async (
       return parsedResp;
     })
     .then((resp) => (data = resp))
-    .catch((err) => {
-      throw new Error("Problemas no servidor GET");
+    .catch(() => {
+      throw new Error('Problemas no servidor GET');
     });
 
   return data;
@@ -127,9 +126,9 @@ export const deleteTransactionDatabase = async (
   let message = {};
 
   await fetch(`${URL}transaction`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: headers,
-    body: JSON.stringify({ id, user, token, authorizedDatabase }),
+    body: JSON.stringify({ id, user, token, authorizedDatabase })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -149,9 +148,9 @@ export const deleteModelDatabase = async (
   let message = {};
 
   await fetch(`${URL}modeltransaction`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: headers,
-    body: JSON.stringify({ id, user, token, authorizedDatabase }),
+    body: JSON.stringify({ id, user, token, authorizedDatabase })
   })
     .then((resp) => resp.json())
     .then((resp) => {

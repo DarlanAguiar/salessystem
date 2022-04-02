@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   flex: 1;
@@ -14,6 +14,6 @@ export const Title = styled.div`
 export const Value = styled.div<{ color?: string }>`
   text-align: center;
   font-weight: bold;
-  color: ${(props) => props.color ?? "#000"};
+  color: ${(props) => props.color ?? '#000'};
   padding: 0 10px;
 `;

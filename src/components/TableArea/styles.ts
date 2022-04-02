@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ContainerTable = styled.div`
   position: relative;
@@ -24,7 +24,7 @@ export const Table = styled.table`
 `;
 
 export const TableHeadColumn = styled.th<{ width?: number }>`
-  width: ${(props) => (props.width ? `${props.width}px` : "auto")};
+  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
   padding: 0;
   text-align: left;
 `;

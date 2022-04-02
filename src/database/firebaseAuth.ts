@@ -1,6 +1,5 @@
-import { Authorized, UserAuth } from "../types/users";
-import { URL } from "./firebase";
-import {headers} from "./firebase"
+import { Authorized, UserAuth } from '../types/users';
+import { URL, headers } from './firebase';
 
 export const insertAuthorizedUser = async (
   userAuthorized: string,
@@ -10,9 +9,9 @@ export const insertAuthorizedUser = async (
   let message = {};
 
   await fetch(`${URL}auth`, {
-    method: "POST",
+    method: 'POST',
     headers: headers,
-    body: JSON.stringify({ userAuthorized, user, token }),
+    body: JSON.stringify({ userAuthorized, user, token })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -32,9 +31,9 @@ export const deleteUserAuthorized = async (
   let message = {};
 
   await fetch(`${URL}auth`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: headers,
-    body: JSON.stringify({ id, user, token }),
+    body: JSON.stringify({ id, user, token })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -53,13 +52,13 @@ export const getAllAllowedUsers = async (
   let data: UserAuth[] = [];
 
   await fetch(`${URL}auth/${user}/${token}`, {
-    method: "GET",
-    headers: headers,
+    method: 'GET',
+    headers: headers
   })
     .then((resp) => resp.json())
     .then((resp) => (data = resp))
-    .catch((err) => {
-      throw new Error("Problemas no servidor GET, buscando usuario");
+    .catch(() => {
+      throw new Error('Problemas no servidor GET, buscando usuario');
     });
 
   return data;
@@ -71,19 +70,19 @@ export const confirmAuthorization = async (
   userToConfirm: string | null
 ) => {
   let authorization: Authorized = {
-    authorized: false,
+    authorized: false
   };
 
   await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
-    method: "GET",
-    headers: headers,
+    method: 'GET',
+    headers: headers
   })
     .then((resp) => resp.json())
     .then((resp) => {
       authorization = resp;
     })
-    .catch((err) => {
-      throw new Error("Problemas no servidor GET, confirmando autorizção");
+    .catch(() => {
+      throw new Error('Problemas no servidor GET, confirmando autorizção');
     });
 
   return authorization;

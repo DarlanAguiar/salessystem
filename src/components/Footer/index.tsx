@@ -1,7 +1,5 @@
-import React from 'react'
-import {GiFrozenArrow} from "react-icons/gi"
-import * as C from "./styles"
-
+import { GiFrozenArrow } from 'react-icons/gi';
+import * as C from './styles';
 
 const Footer = () => {
   return (
@@ -16,4 +14,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

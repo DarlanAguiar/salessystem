@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { fromatDate } from "../../helpers/dateFilter";
-import { ItemDataBase } from "../../types/Item";
-import * as C from "./styles";
-import { useInfoContext } from "../../contexts/userInfoContext";
-import { IoMdClose } from "react-icons/io";
-import { deleteTransactionDatabase } from "../../database/firebase";
-import { checkAccess } from "../../helpers/authorizations";
+import { useState } from 'react';
+import { fromatDate } from '../../helpers/dateFilter';
+import { ItemDataBase } from '../../types/Item';
+import * as C from './styles';
+import { useInfoContext } from '../../contexts/userInfoContext';
+import { IoMdClose } from 'react-icons/io';
+import { deleteTransactionDatabase } from '../../database/firebase';
+import { checkAccess } from '../../helpers/authorizations';
 
 type Props = {
   item: ItemDataBase;
   getList: () => void;
 };
 
-function TableItem(props: Props) {
+function TableItem (props: Props) {
   const { item, getList } = props;
 
   const { state } = useInfoContext();
@@ -25,8 +25,8 @@ function TableItem(props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
-    
-    if(authorizedDatabase){
+
+    if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);
       if (!accessAuthorized) {
         return;
@@ -46,7 +46,7 @@ function TableItem(props: Props) {
       <C.TableColumn>{fromatDate(item.date)}</C.TableColumn>
 
       <C.TableColumn>
-        <C.Category color={item.expense ? "red" : "darkblue"}>
+        <C.Category color={item.expense ? 'red' : 'darkblue'}>
           {item.category}
         </C.Category>
       </C.TableColumn>
@@ -55,14 +55,14 @@ function TableItem(props: Props) {
 
       <C.TableColumn>
         {!item.expense && item.amount}
-        {!item.unity ? "g" : ""}
+        {!item.unity ? 'g' : ''}
       </C.TableColumn>
 
       <C.TableColumn>
-        <C.Value color={item.expense ? "red" : "black"}>
-          {item.price.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
+        <C.Value color={item.expense ? 'red' : 'black'}>
+          {item.price.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
           })}
           {showButtonRemove && (
             <C.ButtonDeleteItem onClick={removeItemDatabase}>

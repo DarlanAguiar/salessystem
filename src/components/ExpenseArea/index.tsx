@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Item } from "../../types/Item";
-import * as C from "./styles";
+import { useEffect, useState } from 'react';
+import { Item } from '../../types/Item';
+import * as C from './styles';
 
-import { getDate } from "../../helpers/dateFilter";
+import { getDate } from '../../helpers/dateFilter';
 
-import { Product } from "../../types/Product";
+import { Product } from '../../types/Product';
 
 type Props = {
   onAdd: (item: Item[]) => void;
@@ -12,18 +12,18 @@ type Props = {
   categoryList: string[];
 };
 
-function ExpenseArea(props: Props) {
+function ExpenseArea (props: Props) {
   const { onAdd, databaseProducts, categoryList } = props;
 
   const [dateField, setDateField] = useState(getDate());
-  const [categoryExpenseField, setCategoryExpenseField] = useState("");
-  const [ExpenseField, setExpenseField] = useState("");
+  const [categoryExpenseField, setCategoryExpenseField] = useState('');
+  const [ExpenseField, setExpenseField] = useState('');
   const [valueField, setValueField] = useState<number | null>(null);
   const [productList, setProductList] = useState<string[]>([]);
   const [showExpenseField, setShowExpenseField] = useState(false);
 
   useEffect(() => {
-    let newProductsList: string[] = [];
+    const newProductsList: string[] = [];
 
     databaseProducts.forEach((product) => {
       if (product.category === categoryExpenseField) {
@@ -35,21 +35,21 @@ function ExpenseArea(props: Props) {
   }, [categoryExpenseField]);
 
   const handleAddExpenseToDatabase = async () => {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
-    if (categoryExpenseField === "") {
-      errors.push("Adicione uma categoria!");
+    if (categoryExpenseField === '') {
+      errors.push('Adicione uma categoria!');
     }
-    if (ExpenseField === "") {
-      errors.push("Escolha um produto!");
+    if (ExpenseField === '') {
+      errors.push('Escolha um produto!');
     }
     if (Number(valueField) <= 0 || isNaN(Number(valueField)) === true) {
-      errors.push("Valor inválido!");
+      errors.push('Valor inválido!');
     }
 
     if (errors.length > 0) {
       alert(errors[0]);
-      //alert(errors.join("\n"));
+      // alert(errors.join("\n"));
     } else {
       const tempDate = new Date(dateField);
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
@@ -72,7 +72,7 @@ function ExpenseArea(props: Props) {
         amount: 1,
         unity: true,
         price: Number(valueField),
-        expense: true,
+        expense: true
       };
 
       setShowExpenseField(false);
@@ -85,8 +85,8 @@ function ExpenseArea(props: Props) {
 
   const clearFields = () => {
     setDateField(getDate());
-    setCategoryExpenseField("");
-    setExpenseField("");
+    setCategoryExpenseField('');
+    setExpenseField('');
     setValueField(0);
   };
 
@@ -112,7 +112,7 @@ function ExpenseArea(props: Props) {
               value={categoryExpenseField}
               onChange={(e) => {
                 setCategoryExpenseField(e.target.value);
-                setExpenseField("");
+                setExpenseField('');
               }}
             >
               <>
@@ -148,7 +148,7 @@ function ExpenseArea(props: Props) {
             <C.InputTitle>Valor</C.InputTitle>
             <C.Input
               type="number"
-              value={valueField || ""}
+              value={valueField || ''}
               onChange={(e) => setValueField(Number(e.target.value))}
             />
           </C.InputLabel>

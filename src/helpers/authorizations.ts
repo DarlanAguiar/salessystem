@@ -1,5 +1,5 @@
-import { State } from "../contexts/userInfoContext";
-import { confirmAuthorization } from "../database/firebaseAuth";
+import { State } from '../contexts/userInfoContext';
+import { confirmAuthorization } from '../database/firebaseAuth';
 
 export const checkAuthorizations = async (infoUser: State): Promise<Boolean> => {
   const user = infoUser.infoUser?.email;
