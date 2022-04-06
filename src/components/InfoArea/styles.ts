@@ -41,7 +41,7 @@ export const DetailsButton = styled.button`
   color: darkblue;
   cursor: pointer;
   border: 0;
-  
+
   span {
     font-size: 16px;
   }
