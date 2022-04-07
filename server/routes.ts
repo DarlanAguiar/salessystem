@@ -4,6 +4,7 @@ import { credentials } from './serverController/helpers/salessystem-credential-f
 import admin from 'firebase-admin';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 import {
   addModelTransaction,
@@ -26,6 +27,7 @@ import {
   removeAccessDatabase
 } from './serverController/accessDatabaseConfiguration';
 import { validateToken } from './serverController/middleware/handleValidation';
+import { fetchFoto, getTitlesToLogo, setTitlesToLogo, updateTitlesToLogo } from './serverController/configLogo';
 
 const router = Router();
 
@@ -38,7 +40,8 @@ const firebaseConfig = {
   appId: '1:402827702936:web:bcee0d74934dc1cc6016ed'
 };
 
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+export const storage = getStorage(firebaseApp);
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials)
@@ -87,5 +90,15 @@ router.get('/home/authaccess/:user/:token', fetchAccessDatabase);
 router.patch('/home/authaccess', validateToken, changeAccessDatabase);
 
 router.delete('/home/authaccess', validateToken, removeAccessDatabase);
+
+// Rotas para o Logo e nome da empresa
+
+router.get('/home/photo/:user/:token/:authorizedDatabase', validateToken, fetchFoto);
+
+router.post('/home/settings', validateToken, setTitlesToLogo);
+
+router.get('/home/settings/:user/:token/:authorizedDatabase', validateToken, getTitlesToLogo);
+
+router.patch('/home/settings', validateToken, updateTitlesToLogo);
 
 export default router;

@@ -4,7 +4,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoMdSettings } from 'react-icons/io';
-import Logo from '../../logo/logo2.png';
+// import Logo from '../../logo/logo2.png';
 import { Item, ItemDataBase } from '../../types/Item';
 import {
   formatDateTimeZone,
@@ -35,6 +35,7 @@ import {
 import Settings from '../Settings';
 import { checkAccess } from '../../helpers/authorizations';
 import Footer from '../Footer';
+import Headerlogo from '../HeaderLogo';
 
 const auth = getAuth();
 
@@ -166,8 +167,6 @@ function Home () {
 
   const handleAddItem = (items: Item[]) => {
     items.forEach(async (item) => {
-      console.log(item);
-
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
       const authorizedDatabase = state.databaseAuth;
@@ -257,11 +256,7 @@ function Home () {
         <C.ButtonSettings onClick={() => handleSetShowSettings()}>
           <IoMdSettings />
         </C.ButtonSettings>
-        <C.HeaderText>
-          Trem
-          <img src={Logo} alt={'logo Trem bão'} />
-          Bão
-        </C.HeaderText>
+       <Headerlogo />
       </C.Header>
       <C.Body>
         <InfoArea

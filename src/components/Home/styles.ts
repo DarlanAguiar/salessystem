@@ -3,14 +3,18 @@ import styled from 'styled-components';
 export const Container = styled.div``;
 
 export const Header = styled.div`
-  background-image: linear-gradient(90deg, darkblue,darkblue, blue, darkblue,darkblue);
+  background-image: linear-gradient(
+    90deg,
+    darkblue,
+    darkblue,
+    blue,
+    darkblue,
+    darkblue
+  );
   height: 150px;
   color: white;
   display: flex;
   justify-content: center;
-
-  .bottonLogout {
-  }
 `;
 
 export const ButtonLogout = styled.button`
@@ -39,13 +43,11 @@ export const ButtonLogout = styled.button`
     right: 2px;
     padding: 3px;
     font-size: 27px;
-   
   }
 `;
 
 export const ButtonSettings = styled.button`
-
-position: absolute;
+  position: absolute;
   top: 8px;
   right: 60px;
   padding: 5px;
@@ -67,31 +69,10 @@ position: absolute;
 
   @media (max-width: 600px) {
     font-size: 27px;
-    top: 70px;
-    right: 40px;
+    top: 38px;
+    right: 2px;
     padding: 3px;
-   
-   
   }
-
-`;
-
-export const HeaderText = styled.h1`
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-
-  img{
-    width: 60px;
-    border-radius: 50%;
-    margin: 0 4px;
-  }
-
-  
 `;
 
 export const Body = styled.div`
