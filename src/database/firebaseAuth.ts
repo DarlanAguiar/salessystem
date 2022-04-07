@@ -26,14 +26,15 @@ export const insertAuthorizedUser = async (
 export const deleteUserAuthorized = async (
   id: string,
   user: string | null | undefined,
-  token: string | undefined
+  token: string | undefined,
+  userToRemove: string
 ) => {
   let message = {};
 
   await fetch(`${URL}auth`, {
     method: 'DELETE',
     headers: headers,
-    body: JSON.stringify({ id, user, token })
+    body: JSON.stringify({ id, user, token, userToRemove })
   })
     .then((resp) => resp.json())
     .then((resp) => {
@@ -86,4 +87,42 @@ export const confirmAuthorization = async (
     });
 
   return authorization;
+};
+
+export const checkInvitationDatabase = async (
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let invitations = [];
+
+  try {
+    const resp = await fetch(`${URL}invitation/${user}/${token}`);
+    const result = await resp.json(); // as type
+    invitations = result;
+  } catch (error) {
+    throw new Error('Problemas no servidor GET, buscando convites');
+  }
+
+  return invitations;
+};
+
+export const removeInvitation = async (
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let message = {};
+
+  await fetch(`${URL}invitation`, {
+    method: 'DELETE',
+    headers: headers,
+    body: JSON.stringify({ user, token })
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.error) {
+        message = { error: resp.error };
+      }
+    });
+
+  return message;
 };

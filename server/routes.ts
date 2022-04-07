@@ -17,6 +17,8 @@ import {
 import {
   addAuthorizedUser,
   checkAuthorizationInUserList,
+  checkInvitation,
+  deleteInvitation,
   lisAllAuthorizedUser,
   removeAuthorizedUser
 } from './serverController/authorizationRoutes';
@@ -79,6 +81,16 @@ router.delete('/home/auth', validateToken, removeAuthorizedUser);
 router.get(
   '/home/auth/:user/:token/:usertoconfirm', validateToken,
   checkAuthorizationInUserList
+);
+
+router.get(
+  '/home/invitation/:user/:token/', validateToken,
+  checkInvitation
+);
+
+router.delete(
+  '/home/invitation', validateToken,
+  deleteInvitation
 );
 
 // Rotas para banco de dado autorizado(CRUD)

@@ -16,6 +16,7 @@ import {
   updateDatabaseIWantToAccess,
   fetchAccessDatabase
 } from '../../database/firebaseAuthAccess';
+import InvitationModal from '../InvitationModal';
 
 type Props = {
   handleSetShowSettings: () => void;
@@ -58,47 +59,47 @@ function Settings (props: Props) {
 
     await insertAuthorizedUser(userWhoHasAccess, user, token);
 
-    getAllowedUsers();
-  };
-
-  const deleteUser = async (id: string) => {
-    const user = state.infoUser?.email;
-    const token = await state.infoUser?.getIdToken();
-
-    await deleteUserAuthorized(id, user, token);
+    setUserWhoHasAccess('');
 
     getAllowedUsers();
   };
 
-  const accessDataFromAnotherUser = async () => {
-    if (userIWantToAccess === '') return;
+  const deleteUser = async (id: string, userToRemove: string) => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+
+    await deleteUserAuthorized(id, user, token, userToRemove);
+
+    getAllowedUsers();
+  };
+
+  const accessDataFromAnotherUser = async (database: string) => {
+    // if (userIWantToAccess === '') return;
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    const approved = await confirmAuthorization(user, token, userIWantToAccess);
+    const approved = await confirmAuthorization(user, token, database);
 
     if (approved.authorized) {
       setMessageAuthorization(
-        `Permissão CONCEDIDA - Acessando dados ${userIWantToAccess}...`
+        `Permissão CONCEDIDA - Acessando dados ${database}...`
       );
 
-      const user = state.infoUser?.email;
-      const token = await state.infoUser?.getIdToken();
       const sharedAccessDatabase = state.databaseAuth;
       const idDatabaseCurrent = state.idDatabaseAuth;
       let newIdCurrentDatabase = '';
 
       if (sharedAccessDatabase) {
         await updateDatabaseIWantToAccess(
-          userIWantToAccess,
+          database,
           idDatabaseCurrent,
           user,
           token
         );
         newIdCurrentDatabase = idDatabaseCurrent;
       } else {
-        await saveDatabaseIWantToAccess(userIWantToAccess, user, token);
+        await saveDatabaseIWantToAccess(database, user, token);
         const accessDatabase: AccessDatabase = await fetchAccessDatabase(
           user,
           token
@@ -109,13 +110,13 @@ function Settings (props: Props) {
       setTimeout(() => {
         dispatch({
           type: FormActions.setDatabaseAuth,
-          payload: userIWantToAccess
+          payload: database
         });
         dispatch({
           type: FormActions.setIdDatabaseAuth,
           payload: newIdCurrentDatabase
         });
-      }, 5000);
+      }, 3000);
 
       // busca os dados
     } else {
@@ -155,7 +156,7 @@ function Settings (props: Props) {
             onChange={(e) => setUserIWantToAccess(e.target.value)}
           ></C.Input>
 
-          <C.ButtonConfirm onClick={accessDataFromAnotherUser}>
+          <C.ButtonConfirm onClick={() => accessDataFromAnotherUser(userIWantToAccess)}>
             Verificar Permissão
           </C.ButtonConfirm>
 
@@ -196,7 +197,7 @@ function Settings (props: Props) {
             {usersAuthorized.map((user, index) => (
               <C.DivUser key={index}>
                 <C.User>{user.user}</C.User>
-                <C.ButtonRemoveUser onClick={() => deleteUser(user.id)}>
+                <C.ButtonRemoveUser onClick={() => deleteUser(user.id, user.user)}>
                   <IoMdClose />
                 </C.ButtonRemoveUser>
               </C.DivUser>
@@ -205,6 +206,7 @@ function Settings (props: Props) {
           <hr />
         </C.DivInput>
       </C.ContainerFilds>
+      <InvitationModal accessDataFromAnotherUser={accessDataFromAnotherUser}/>
     </C.Container>
   );
 }

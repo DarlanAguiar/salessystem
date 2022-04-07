@@ -117,6 +117,7 @@ export const ButtonConfirm = styled.button`
   border: 1px solid lightblue;
   background-color: lightblue;
   margin-left: 8px;
+  margin-bottom: 5px;
   padding: 7px;
   cursor: pointer;
   font-weight: bold;
