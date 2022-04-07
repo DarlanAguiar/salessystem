@@ -7,10 +7,7 @@ import { Photo, TitleLogo, TitleLogoDatabase } from '../../types/logo';
 import { IoMdClose } from 'react-icons/io';
 import Logo from '../../img/logo.png';
 
-type Props = {};
-
-function Headerlogo (props: Props) {
-  // const {} = props;
+function Headerlogo () {
   const { state } = useInfoContext();
 
   const [textLeft, setTextLeft] = useState('Sua');

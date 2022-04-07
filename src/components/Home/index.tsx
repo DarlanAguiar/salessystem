@@ -4,7 +4,6 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import { IoMdSettings } from 'react-icons/io';
-// import Logo from '../../logo/logo2.png';
 import { Item, ItemDataBase } from '../../types/Item';
 import {
   formatDateTimeZone,

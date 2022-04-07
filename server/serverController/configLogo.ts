@@ -42,7 +42,7 @@ export const fetchFoto = async (req: Request, res: Response) => {
     res.status(StatusCodes.CREATED).json(photo);
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: 'Erro interno do servidor (POST),buscando foto.'
+      error: 'Erro interno do servidor (POST), buscando foto.'
     });
     console.error(err);
   }
@@ -61,11 +61,11 @@ export const setTitlesToLogo = async (req: Request, res: Response) => {
   try {
     await addDoc(collection(db, `${referredDatabase}.settings`), texts);
     setResponseHeader(res);
-    res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
+    res.status(StatusCodes.CREATED).json({ message: 'Inserido o nome da empesa com sucesso' });
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (POST)' });
+      .json({ error: 'Erro interno do servidor (POST),  inserindo nome da empresa' });
     console.error(err);
   }
 };
@@ -98,7 +98,7 @@ export const getTitlesToLogo = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET)' });
+      .json({ error: 'Erro interno do servidor (GET),  buscando nome da empresa' });
   }
 };
 
@@ -115,12 +115,12 @@ export const updateTitlesToLogo = async (req: Request, res: Response) => {
     await updateDoc(doc(db, `${referredDatabase}.settings`, idTexts), texts);
     res
       .status(StatusCodes.OK)
-      .json({ message: 'Atualizado o banco de dados que quero acessar' });
+      .json({ message: 'Atualizado o nome da empresa' });
   } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error:
-        'Erro interno do servidor ( ao atualizar o banco de dados que quero o acesso)'
+        'Erro interno do servidor (PATH) atualizando nome da empresa, '
     });
   }
 };

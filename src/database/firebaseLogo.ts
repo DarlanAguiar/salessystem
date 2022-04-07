@@ -13,17 +13,13 @@ export const getPhoto = async (
     url: ''
   };
 
-  await fetch(`${URL}photo/${user}/${token}/${authorizedDatabase}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      photo = resp;
-    })
-    .catch(() => {
-      throw new Error('Problemas no servidor GET, buscando logo');
-    });
+  try {
+    const resp = await fetch(`${URL}photo/${user}/${token}/${authorizedDatabase}`);
+    const result = await resp.json() as Photo;
+    photo = result;
+  } catch (error) {
+    throw new Error('Problemas no servidor GET, buscando logo');
+  }
 
   return photo;
 };
@@ -39,7 +35,9 @@ export const uploadingPhoto = async (
     referredDatabase = authorizedDatabase;
   }
 
-  if (['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+  const extensions = ['image/jpeg', 'image/jpg', 'image/png'];
+
+  if (extensions.includes(file.type)) {
     const newFile = ref(storage, `${referredDatabase}/imageLogo`);
 
     const upload = await uploadBytes(newFile, file);
@@ -59,19 +57,18 @@ export const setTitleDatabase = async (
   texts: TitleLogo
 ) => {
   let message = {};
-  console.log(texts);
 
-  await fetch(`${URL}settings`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ user, token, authorizedDatabase, texts })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    const resp = await fetch(`${URL}settings`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ user, token, authorizedDatabase, texts })
     });
+    const result = await resp.json();
+    message = result;
+  } catch (error) {
+    throw new Error('Problemas no servidor POST, inserindo nome da empresa');
+  }
   return message;
 };
 
@@ -86,16 +83,16 @@ export const getTitles = async (
     textRight: ''
   };
 
-  await fetch(`${URL}settings/${user}/${token}/${authorizedDatabase}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => resp.json())
-    .then((resp) => (titles = resp))
-    .catch(() => {
-      throw new Error('Problemas no servidor GET');
+  try {
+    const resp = await fetch(`${URL}settings/${user}/${token}/${authorizedDatabase}`, {
+      method: 'GET',
+      headers: headers
     });
-
+    const result = await resp.json();
+    titles = result;
+  } catch (error) {
+    throw new Error('Problemas no servidor GET, buscando nome da empresa');
+  }
   return titles;
 };
 
@@ -108,22 +105,22 @@ export const updateTitleDatabase = async (
 ) => {
   let message = {};
 
-  await fetch(`${URL}settings`, {
-    method: 'PATCH',
-    headers: headers,
-    body: JSON.stringify({
-      authorizedDatabase,
-      idTexts,
-      user,
-      token,
-      texts
-    })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    const resp = await fetch(`${URL}settings`, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({
+        authorizedDatabase,
+        idTexts,
+        user,
+        token,
+        texts
+      })
     });
+    const result = await resp.json();
+    message = result;
+  } catch (error) {
+    throw new Error('Problemas no servidor PATH, atualizando nome da empresa');
+  }
   return message;
 };
