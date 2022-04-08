@@ -112,25 +112,27 @@ function InfoArea (props: Props) {
           <FcViewDetails />
           <span>Detalhes</span>
         </C.DetailsButton>
-          <C.DayArea>
-            <input
-              type={'date'}
-              value={dateList}
-              onChange={(e) => {
-                setDateList(e.target.value);
-                handleFilterDataByDay(e.target.value);
-              }}
-            />
-          </C.DayArea>
-          <C.MonthArea>
-            <C.MonthArrow onClick={handlePrevMonth}>
-              <AiOutlineArrowLeft />
-            </C.MonthArrow>
-            <C.MonthTitle>{formatCurrentMonth(currentMonth)}</C.MonthTitle>
-            <C.MonthArrow onClick={handleNextMonth}>
-              <AiOutlineArrowRight />
-            </C.MonthArrow>
-          </C.MonthArea>
+        <C.DateArea>
+        <C.DayArea>
+          <input
+            type={'date'}
+            value={dateList}
+            onChange={(e) => {
+              setDateList(e.target.value);
+              handleFilterDataByDay(e.target.value);
+            }}
+          />
+        </C.DayArea>
+        <C.MonthArea>
+          <C.MonthArrow onClick={handlePrevMonth}>
+            <AiOutlineArrowLeft />
+          </C.MonthArrow>
+          <C.MonthTitle>{formatCurrentMonth(currentMonth)}</C.MonthTitle>
+          <C.MonthArrow onClick={handleNextMonth}>
+            <AiOutlineArrowRight />
+          </C.MonthArrow>
+        </C.MonthArea>
+        </C.DateArea>
         <C.ResumeArea>
           <ResumeItem title={'Receitas'} value={income} />
           <ResumeItem title={'Despesas'} value={expense} />

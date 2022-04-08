@@ -98,110 +98,113 @@ function RegisterProduct (props: Props) {
     <C.Container showRegisterProduct={showRegisterProduct}>
       <C.ContainerForm onSubmit={handleSubmit}>
         <C.FormField>
-          <C.InputDiv width={100}>
-            <C.InputLabel>Categoria:</C.InputLabel>
-            <C.Select
-              name={'category'}
-              placeholder={'Categoria'}
-              value={formValues.category || ''}
-              onChange={(e) => {
-                if (e.target.value === 'Nova categoria') {
-                  formValues.category = '';
-                  setNewCategory(true);
-                } else {
-                  handleInputChange(e);
-                }
-              }}
-            >
-              <>
-                <option></option>
-                {productCategoryList.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))}
-                <option>Nova categoria</option>
-              </>
-            </C.Select>
-          </C.InputDiv>
-
-          {newCategory && (
-            <C.InputDiv width={100}>
-              <C.InputLabel>Nova Categoria:</C.InputLabel>
-              <C.InputText
-                type={'text'}
+          <C.DivInputTop>
+            <C.InputDiv>
+              <C.InputLabel>Categoria:</C.InputLabel>
+              <C.Select
                 name={'category'}
                 placeholder={'Categoria'}
                 value={formValues.category || ''}
+                onChange={(e) => {
+                  if (e.target.value === 'Nova categoria') {
+                    formValues.category = '';
+                    setNewCategory(true);
+                  } else {
+                    handleInputChange(e);
+                  }
+                }}
+              >
+                <>
+                  <option></option>
+                  {productCategoryList.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                  <option>Nova categoria</option>
+                </>
+              </C.Select>
+            </C.InputDiv>
+
+            {newCategory && (
+              <C.InputDiv>
+                <C.InputLabel>Nova Cat:</C.InputLabel>
+                <C.InputText
+                  type={'text'}
+                  name={'category'}
+                  placeholder={'Categoria'}
+                  value={formValues.category || ''}
+                  onChange={handleInputChange}
+                />
+              </C.InputDiv>
+            )}
+
+            <C.InputDiv>
+              <C.InputLabel>Nome:</C.InputLabel>
+              <C.InputText
+                type={'text'}
+                name={'name'}
+                placeholder={'Nome do produto'}
                 onChange={handleInputChange}
+                value={formValues.name || ''}
               />
             </C.InputDiv>
-          )}
+          </C.DivInputTop>
 
-          <C.InputDiv width={100}>
-            <C.InputLabel>Nome:</C.InputLabel>
-            <C.InputText
-              type={'text'}
-              name={'name'}
-              placeholder={'Nome do produto'}
-              onChange={handleInputChange}
-              value={formValues.name || ''}
-            />
-          </C.InputDiv>
+          <C.DivInputDown>
+            <C.InputDiv>
+              <C.InputLabel>Preço:</C.InputLabel>
+              <C.InputText
+                type={'number'}
+                name={'price'}
+                placeholder={'Preço'}
+                onChange={handleInputChange}
+                value={formValues.price}
+              />
+            </C.InputDiv>
+            <C.InputDiv>
+              <C.InputLabel>Vendido por Kg?</C.InputLabel>
+              <div className="radioButtons">
+                <label>
+                  <input
+                    type="radio"
+                    value={'yes'}
+                    name={'unity'}
+                    id={'yes'}
+                    onChange={handleInputChange}
+                    checked={formValues.unity === 'yes'}
+                  />
+                  Sim
+                </label>
 
-          <C.InputDiv width={60}>
-            <C.InputLabel>Preço:</C.InputLabel>
-            <C.InputText
-              type={'number'}
-              name={'price'}
-              placeholder={'Preço'}
-              onChange={handleInputChange}
-              value={formValues.price}
-            />
-          </C.InputDiv>
+                <label>
+                  <input
+                    type="radio"
+                    value={'no'}
+                    name={'unity'}
+                    id={'no'}
+                    onChange={handleInputChange}
+                    checked={formValues.unity === 'no'}
+                  />
+                  Não
+                </label>
+              </div>
+            </C.InputDiv>
 
-          <C.InputDiv width={100}>
-            <C.InputLabel>Vendido por Kg?</C.InputLabel>
-            <div className="radioButtons">
-              <label>
-                <input
-                  type="radio"
-                  value={'yes'}
-                  name={'unity'}
-                  id={'yes'}
-                  onChange={handleInputChange}
-                  checked={formValues.unity === 'yes'}
-                />
-                Sim
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  value={'no'}
-                  name={'unity'}
-                  id={'no'}
-                  onChange={handleInputChange}
-                  checked={formValues.unity === 'no'}
-                />
-                Não
-              </label>
-            </div>
-          </C.InputDiv>
-
-          <C.DivButtons>
-            <C.ButtonSubmit type={'submit'} value={'Cadastrar'} />
-            <C.ButtonRegisterCancel
-              type="reset"
-              onClick={() => {
-                setFormValues(initialState);
-                handleShowRegisterProduct();
-                setNewCategory(true);
-              }}
-            >
-              Cancelar
-            </C.ButtonRegisterCancel>
-          </C.DivButtons>
+            <C.DivButtons>
+              <C.ButtonRegisterCancel
+                type="reset"
+                onClick={() => {
+                  setFormValues(initialState);
+                  handleShowRegisterProduct();
+                  setNewCategory(true);
+                }}
+              >
+                Cancelar
+              </C.ButtonRegisterCancel>
+              <C.ButtonSubmit type={'submit'} value={'Cadastrar'} />
+            </C.DivButtons>
+          </C.DivInputDown>
         </C.FormField>
       </C.ContainerForm>
 

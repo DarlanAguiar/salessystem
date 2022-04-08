@@ -10,6 +10,7 @@ export const Container = styled.div`
 
   @media (max-width: 600px) {
     overflow: auto;
+    background-color: rgba(173, 216, 230, 0.386);
   }
 
   @media (max-width: 600px) {
@@ -69,42 +70,57 @@ export const ContainerInput = styled.div`
   display: flex;
   align-items: center;
 
+  @media (max-width:600px){
+    flex-direction: column;
+  }
+`;
+
+export const AreaUp = styled.div`
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+
   .date {
-    width: 15%;
+    width: 20%;
     @media (max-width: 600px) {
-      width: 100px;
+      width: 20%;
     }
   }
 
   .category {
-    width: 17%;
+    width: 30%;
     @media (max-width: 600px) {
-      width: 120px;
+      width: 35%;
     }
   }
   .product {
-    width: 25%;
+    width: 50%;
     @media (max-width: 600px) {
-      width: 120px;
+      width: 45%;
     }
   }
+
+  @media (max-width:600px){
+    width: 100vw;
+  }
+`;
+
+export const AreaDown = styled.div`
+  width: 40%;
+  display: flex;
+
   .qtd {
-    width: 7%;
-    @media (max-width: 600px) {
-      width: 100px;
-    }
+    width: 25%;
   }
   .value {
-    width: 10%;
-    @media (max-width: 600px) {
-      width: 120px;
-    }
+    width: 35%;
   }
   .button {
-    width: 15%;
-    @media (max-width: 600px) {
-      width: 120px;
-    }
+    width: 44%;
+  }
+  @media (max-width:600px){
+    width: 100vw;
+    margin-top: -10px;
   }
 `;
 

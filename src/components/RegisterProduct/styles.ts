@@ -15,14 +15,6 @@ export const Container = styled.div<{ showRegisterProduct: boolean }>`
   z-index: ${(props) => (props.showRegisterProduct ? '5' : '1')};
 `;
 
-export const Select = styled.select`
-  width: 100%;
-  height: 30px;
-  padding: 0 5px;
-  border: 1px solid lightblue;
-  border-radius: 5px;
-`;
-
 export const ContainerForm = styled.form``;
 
 export const FormField = styled.div`
@@ -33,12 +25,33 @@ export const FormField = styled.div`
 
   @media (max-width: 600px) {
     overflow: scroll;
+    flex-direction: column;
+    padding: 10px 10px;
   }
 `;
 
-export const InputDiv = styled.div<{ width?: number }>`
+export const DivInputTop = styled.div`
+  display: flex;
+  @media (max-width: 600px) {
+    margin-bottom: 10px;
+  }
+`;
+
+export const DivInputDown = styled.div`
+  display: flex;
+`;
+
+export const Select = styled.select`
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  border: 1px solid lightblue;
+  border-radius: 5px;
+`;
+
+export const InputDiv = styled.div`
   margin: 0 10px;
-  width: ${(props) => props.width}%;
+  width: 100%;
 
   .radioButtons {
     display: flex;
@@ -48,6 +61,10 @@ export const InputDiv = styled.div<{ width?: number }>`
     label {
       font-size: 18px;
       font-weight: bold;
+      @media (max-width: 600px){
+    font-size: 15px;
+  }
+
     }
   }
 `;
@@ -55,6 +72,9 @@ export const InputDiv = styled.div<{ width?: number }>`
 export const InputLabel = styled.label`
   font-size: 19px;
   font-weight: bold;
+  @media (max-width: 600px){
+    font-size: 15px;
+  }
 `;
 
 export const InputText = styled.input`
@@ -65,7 +85,25 @@ export const InputText = styled.input`
   padding: 7px;
 `;
 
-export const DivButtons = styled.div``;
+export const DivButtons = styled.div`
+display: flex;
+flex-direction: column;
+`;
+
+export const ButtonRegisterCancel = styled.button`
+  display: block;
+  margin-bottom: 5px;
+  background-color: red;
+  color: var(--colorFontSecondary);
+  font-size: 18px;
+  padding: 5px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 100%;
+  @media (max-width: 600px){
+    font-size: 15px;
+  }
+`;
 
 export const ButtonSubmit = styled.input`
   background-color: var(--colorBackground);
@@ -74,18 +112,10 @@ export const ButtonSubmit = styled.input`
   padding: 5px 20px;
   border-radius: 5px;
   font-weight: bold;
-`;
-
-export const ButtonRegisterCancel = styled.button`
-  display: block;
-  margin: auto;
-  margin-top: 15px;
-  background-color: red;
-  color: var(--colorFontSecondary);
-  font-size: 18px;
-  padding: 5px 20px;
-  border-radius: 5px;
-  font-weight: bold;
+  width: 100%;
+  @media (max-width: 600px){
+    font-size: 15px;
+  }
 `;
 
 export const CloseRegisterProductButton = styled.button<{

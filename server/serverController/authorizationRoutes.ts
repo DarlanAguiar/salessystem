@@ -150,8 +150,6 @@ export const deleteInvitation = async (req: Request, res: Response) => {
   const { user } = req.body;
 
   try {
-    // await deleteDoc(doc(db, `${user}.auth`, id));
-
     const invitations = collection(db, 'invitations');
 
     const dbRefInvitations = query(invitations, where('guestUser', '==', user));

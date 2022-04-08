@@ -12,17 +12,15 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
   position: fixed;
   top: ${(props) => (props.showExpenseField ? '0' : '-170')}px;
   z-index: ${(props) => (props.showExpenseField ? '5' : '1')};
-  
+
   @media (max-width: 600px) {
     border-radius: 0 0 0 40px;
-    
   }
-  
+
   div {
     width: 100%;
     height: 100%;
     position: relative;
-    
   }
 
   .addExpenseButton {
@@ -64,9 +62,13 @@ export const ContainerInput = styled.div`
   align-items: center;
   max-width: 1000px;
   margin: auto;
+  padding-top: 40px;
 
   .date {
     width: 150px;
+    @media (max-width: 600px) {
+      width: 100px;
+    }
   }
 
   .category {
@@ -83,30 +85,40 @@ export const ContainerInput = styled.div`
     width: 150px;
   }
 
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     overflow: scroll;
-   
+    flex-direction: column;
+    padding-top: 0;
+  }
+`;
+
+export const DivInputTop = styled.div`
+  display: flex;
+  @media (max-width: 600px) {
+    margin: 10px 0 -10px;
+  }
+`;
+
+export const DivInputDown = styled.div`
+  display: flex;
+  @media (max-width: 600px) {
+    justify-content: space-between;
   }
 `;
 
 export const InputLabel = styled.label`
   margin: 10px;
+  height: fit-content;
 
   .buttonRegister {
     background-color: darkblue;
     font-weight: bold;
     color: white;
     cursor: pointer;
-    margin-bottom: 5px;
-   
 
-    @media(max-width: 600px) {
-
-      padding: 5px 10px 35px;
- 
-   
-  }
-
+    @media (max-width: 600px) {
+      padding: 5px;
+    }
   }
 
   .buttonCancel {
@@ -114,12 +126,14 @@ export const InputLabel = styled.label`
     font-weight: bold;
     color: white;
     cursor: pointer;
+    margin-bottom: 5px;
     &:hover {
       background-color: red;
       color: white;
     }
   }
 `;
+
 export const InputTitle = styled.div`
   font-weight: bold;
   margin-bottom: 5px;

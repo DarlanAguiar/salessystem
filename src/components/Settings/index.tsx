@@ -74,7 +74,7 @@ function Settings (props: Props) {
   };
 
   const accessDataFromAnotherUser = async (database: string) => {
-    // if (userIWantToAccess === '') return;
+    if (database === '') return;
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();

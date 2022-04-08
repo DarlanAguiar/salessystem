@@ -20,6 +20,9 @@ export const Container = styled.div`
 export const DivContents = styled.div`
   display: flex;
   width: 100%;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 export const Title = styled.div`
@@ -47,6 +50,14 @@ export const DetailsButton = styled.button`
   }
 `;
 
+export const DateArea = styled.div`
+  width: 40%;
+  display: flex;
+  @media (max-width: 600px){
+    width: 100%;
+  }
+`;
+
 export const DayArea = styled.div`
   input {
     width: 100%;
@@ -65,6 +76,11 @@ export const MonthArea = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  margin-left: 20px;
+  @media (max-width: 600px){
+    margin-left: 10px;
+    font-size: 15px;
+  }
 `;
 
 export const MonthArrow = styled.div`
@@ -72,6 +88,8 @@ export const MonthArrow = styled.div`
   text-align: center;
   font-size: 25px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 `;
 
 export const MonthTitle = styled.div`
@@ -82,4 +100,9 @@ export const MonthTitle = styled.div`
 export const ResumeArea = styled.div`
   flex: 2;
   display: flex;
+  @media (max-width: 600px){
+    background-color: rgba(173, 216, 230, 0.386);
+    padding-bottom: 7px;
+    border-radius: 8px;
+  }
 `;

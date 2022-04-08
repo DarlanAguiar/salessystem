@@ -49,7 +49,6 @@ function ExpenseArea (props: Props) {
 
     if (errors.length > 0) {
       alert(errors[0]);
-      // alert(errors.join("\n"));
     } else {
       const tempDate = new Date(dateField);
       tempDate.setMinutes(tempDate.getMinutes() + tempDate.getTimezoneOffset());
@@ -98,78 +97,80 @@ function ExpenseArea (props: Props) {
     <C.Container showExpenseField={showExpenseField}>
       <div>
         <C.ContainerInput>
-          <C.InputLabel className="date">
-            <C.InputTitle>Data</C.InputTitle>
-            <C.Input
-              type="date"
-              value={dateField}
-              onChange={(e) => setDateField(e.target.value)}
-            />
-          </C.InputLabel>
-          <C.InputLabel className="category">
-            <C.InputTitle>Categoria</C.InputTitle>
-            <C.Select
-              value={categoryExpenseField}
-              onChange={(e) => {
-                setCategoryExpenseField(e.target.value);
-                setExpenseField('');
-              }}
-            >
-              <>
-                <option></option>
-                {categoryList.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </>
-            </C.Select>
-          </C.InputLabel>
-          <C.InputLabel className="product">
-            <C.InputTitle>Despesa</C.InputTitle>
-            <C.Select
-              value={ExpenseField}
-              onChange={(e) => {
-                setExpenseField(e.target.value);
-              }}
-            >
-              <>
-                <option></option>
-                {productList.map((product, index) => (
-                  <option key={index} value={product}>
-                    {product}
-                  </option>
-                ))}
-              </>
-            </C.Select>
-          </C.InputLabel>
-
-          <C.InputLabel className="value">
-            <C.InputTitle>Valor</C.InputTitle>
-            <C.Input
-              type="number"
-              value={valueField || ''}
-              onChange={(e) => setValueField(Number(e.target.value))}
-            />
-          </C.InputLabel>
-          <C.InputLabel className="button">
-            <C.InputTitle>&nbsp;</C.InputTitle>
-            <C.Button
-              className="buttonRegister"
-              onClick={handleAddExpenseToDatabase}
-            >
-              Registrar despesa
-            </C.Button>
-            <C.Button
-              className="buttonCancel"
-              onClick={() => {
-                clearFields();
-                handleShowExpenseField();
-              }}
-            >
-              Cancelar
-            </C.Button>
-          </C.InputLabel>
+          <C.DivInputTop>
+            <C.InputLabel className="date">
+              <C.InputTitle>Data</C.InputTitle>
+              <C.Input
+                type="date"
+                value={dateField}
+                onChange={(e) => setDateField(e.target.value)}
+              />
+            </C.InputLabel>
+            <C.InputLabel className="category">
+              <C.InputTitle>Categoria</C.InputTitle>
+              <C.Select
+                value={categoryExpenseField}
+                onChange={(e) => {
+                  setCategoryExpenseField(e.target.value);
+                  setExpenseField('');
+                }}
+              >
+                <>
+                  <option></option>
+                  {categoryList.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </>
+              </C.Select>
+            </C.InputLabel>
+            <C.InputLabel className="product">
+              <C.InputTitle>Despesa</C.InputTitle>
+              <C.Select
+                value={ExpenseField}
+                onChange={(e) => {
+                  setExpenseField(e.target.value);
+                }}
+              >
+                <>
+                  <option></option>
+                  {productList.map((product, index) => (
+                    <option key={index} value={product}>
+                      {product}
+                    </option>
+                  ))}
+                </>
+              </C.Select>
+            </C.InputLabel>
+          </C.DivInputTop>
+          <C.DivInputDown>
+            <C.InputLabel className="value">
+              <C.InputTitle>Valor</C.InputTitle>
+              <C.Input
+                type="number"
+                value={valueField || ''}
+                onChange={(e) => setValueField(Number(e.target.value))}
+              />
+            </C.InputLabel>
+            <C.InputLabel className="button">
+              <C.Button
+                className="buttonCancel"
+                onClick={() => {
+                  clearFields();
+                  handleShowExpenseField();
+                }}
+              >
+                Cancelar
+              </C.Button>
+              <C.Button
+                className="buttonRegister"
+                onClick={handleAddExpenseToDatabase}
+              >
+                Registrar
+              </C.Button>
+            </C.InputLabel>
+          </C.DivInputDown>
         </C.ContainerInput>
         <button onClick={handleShowExpenseField} className="addExpenseButton">
           Registrar Despesa

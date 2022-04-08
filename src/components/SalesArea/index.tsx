@@ -222,78 +222,82 @@ function SalesArea (props: Props) {
         </C.Closed>
       )}
       <C.ContainerInput>
-        <C.InputLabel className="date">
-          <C.InputTitle>Data</C.InputTitle>
-          <C.Input
-            type="date"
-            value={dateField}
-            onChange={(e) => setDateField(e.target.value)}
-          />
-        </C.InputLabel>
-        <C.InputLabel className="category">
-          <C.InputTitle>Categoria</C.InputTitle>
-          <C.Select
-            value={categoryField}
-            onChange={(e) => {
-              setValueOfOneUnit(0);
-              setCategoryField(e.target.value);
-              setAmountField(1);
-              setProductField('');
-            }}
-          >
-            <>
-              <option></option>
-              {categoryList.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </>
-          </C.Select>
-        </C.InputLabel>
-        <C.InputLabel className="product">
-          <C.InputTitle>Produto</C.InputTitle>
-          <C.Select
-            value={productField}
-            onChange={(e) => {
-              setProductField(e.target.value);
-              formOfSale(e.target.value);
-            }}
-          >
-            <>
-              <option></option>
-              {productList.map((product, index) => (
-                <option key={index} value={product}>
-                  {product}
-                </option>
-              ))}
-            </>
-          </C.Select>
-        </C.InputLabel>
-        <C.InputLabel className="qtd">
-          <C.InputTitle>Qtd</C.InputTitle>
-          <C.Input
-            type="number"
-            min={1}
-            value={amountField}
-            onChange={(e) => {
-              setValueField(parseFloat(e.target.value) * valueOfOneUnit);
-              setAmountField(parseFloat(e.target.value));
-            }}
-          />
-        </C.InputLabel>
-        <C.InputLabel className="value">
-          <C.InputTitle>Valor</C.InputTitle>
-          <C.Input
-            type="number"
-            value={valueField.toFixed(2)}
-            onChange={(e) => setValueField(Number(e.target.value))}
-          />
-        </C.InputLabel>
-        <C.InputLabel className="button">
-          <C.InputTitle>&nbsp;</C.InputTitle>
-          <C.Button onClick={handleAddEvent}>Adicionar</C.Button>
-        </C.InputLabel>
+        <C.AreaUp>
+          <C.InputLabel className="date">
+            <C.InputTitle>Data</C.InputTitle>
+            <C.Input
+              type="date"
+              value={dateField}
+              onChange={(e) => setDateField(e.target.value)}
+            />
+          </C.InputLabel>
+          <C.InputLabel className="category">
+            <C.InputTitle>Categoria</C.InputTitle>
+            <C.Select
+              value={categoryField}
+              onChange={(e) => {
+                setValueOfOneUnit(0);
+                setCategoryField(e.target.value);
+                setAmountField(1);
+                setProductField('');
+              }}
+            >
+              <>
+                <option></option>
+                {categoryList.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </>
+            </C.Select>
+          </C.InputLabel>
+          <C.InputLabel className="product">
+            <C.InputTitle>Produto</C.InputTitle>
+            <C.Select
+              value={productField}
+              onChange={(e) => {
+                setProductField(e.target.value);
+                formOfSale(e.target.value);
+              }}
+            >
+              <>
+                <option></option>
+                {productList.map((product, index) => (
+                  <option key={index} value={product}>
+                    {product}
+                  </option>
+                ))}
+              </>
+            </C.Select>
+          </C.InputLabel>
+        </C.AreaUp>
+        <C.AreaDown>
+          <C.InputLabel className="qtd">
+            <C.InputTitle>Qtd</C.InputTitle>
+            <C.Input
+              type="number"
+              min={1}
+              value={amountField}
+              onChange={(e) => {
+                setValueField(parseFloat(e.target.value) * valueOfOneUnit);
+                setAmountField(parseFloat(e.target.value));
+              }}
+            />
+          </C.InputLabel>
+          <C.InputLabel className="value">
+            <C.InputTitle>Valor</C.InputTitle>
+            <C.Input
+              type="number"
+              value={valueField.toFixed(2)}
+              onChange={(e) => setValueField(Number(e.target.value))}
+            />
+          </C.InputLabel>
+          <C.InputLabel className="button">
+            <C.InputTitle>&nbsp;</C.InputTitle>
+            <C.Button onClick={handleAddEvent}>Adicionar</C.Button>
+          </C.InputLabel>
+        </C.AreaDown>
       </C.ContainerInput>
       {orderList.length > 0 && (
         <OrderList

@@ -7,8 +7,9 @@ export const Container = styled.div`
   transition: 0.3s;
 
   @media (max-width: 600px) {
-    width: 490px;
     padding: 4px;
+    font-size: 12px;
+    margin: 0 -10px;
   }
 
   .tableSummary {
@@ -18,6 +19,12 @@ export const Container = styled.div`
 export const TableSummary = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  
+  @media (max-width: 600px){
+    flex-direction: column;
+    justify-content: left;
+  }
 `;
 
 export const MoneyChange = styled.div`
@@ -27,6 +34,7 @@ export const MoneyChange = styled.div`
   font-size: 20px;
   @media (max-width: 600px) {
     font-size: 14px;
+    margin-bottom: 5px;
   }
 
   input {
@@ -35,7 +43,7 @@ export const MoneyChange = styled.div`
     padding: 7px;
     border-radius: 5px;
     @media (max-width: 600px) {
-      width: 50px;
+      
     }
   }
 
@@ -53,7 +61,7 @@ export const MoneyChange = styled.div`
       font-size: 29px;
 
       @media (max-width: 600px) {
-        font-size: 14px;
+        font-size: 20px;
       }
     }
     .lack {
@@ -61,13 +69,14 @@ export const MoneyChange = styled.div`
       font-size: 29px;
 
       @media (max-width: 600px) {
-        font-size: 14px;
+        font-size: 20px;
       }
     }
   }
 `;
 
 export const CloseSale = styled.div`
+  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -92,8 +101,9 @@ export const CloseSale = styled.div`
     @media (max-width: 600px) {
       margin: 0 5px;
 
-      font-size: 14px;
+      font-size: 28px;
     }
+
   }
 
   .completeSaleButton {
@@ -115,6 +125,7 @@ export const CloseSale = styled.div`
 
     @media (max-width: 600px) {
       width: 70px;
+      flex: 1;
     }
   }
 
@@ -139,6 +150,12 @@ export const CloseSale = styled.div`
       width: 70px;
     }
   }
+
+  @media (max-width: 600px){
+     justify-content: flex-start;
+    }
+
+
 `;
 
 export const ContainerTable = styled.table`

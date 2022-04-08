@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 1000px;
+  width: 100%;
   margin: auto;
 
   @media (max-width: 600px) {
-    width: 120vw;
+    width: 100%;
     font-size: 15px;
   }
 `;
@@ -15,7 +15,7 @@ export const DivFilterByDate = styled.div`
   display: flex;
   justify-content: center;
   font-weight: bold;
-  margin: 5px auto;
+  margin: 10px auto;
 `;
 export const LabelInitialDate = styled.label`
   margin-right: 10px;
@@ -26,6 +26,12 @@ export const LabelInitialDate = styled.label`
     padding: 0 5px;
     border: 1px solid lightblue;
     border-radius: 5px;
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
+  @media (max-width: 600px) {
+    width: 35%;
   }
 `;
 
@@ -36,6 +42,13 @@ export const LabelFinalDate = styled.label`
     padding: 0 5px;
     border: 1px solid lightblue;
     border-radius: 5px;
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    width: 35%;
   }
 `;
 
@@ -54,6 +67,11 @@ export const ButtonFilter = styled.button`
     color: #fff;
     background-color: darkblue;
   }
+
+  @media (max-width: 600px){
+    width: 30%;
+    padding: 5px;
+  }
 `;
 
 export const ContainerTables = styled.div`
@@ -66,12 +84,19 @@ export const DivTable = styled.div``;
 
 export const TitleTable = styled.h2`
   text-align: center;
+  @media (max-Width: 600px){
+    font-size: 18px;
+  }
 `;
 
 export const Table = styled.table`
   background-color: lightblue;
   padding: 15px;
   border-radius: 10px;
+  @media (max-width: 600px){
+    font-size: 12px;
+    padding: 5px;
+  }
 `;
 
 export const TableRow = styled.tr`
