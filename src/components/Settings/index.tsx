@@ -17,6 +17,7 @@ import {
   fetchAccessDatabase
 } from '../../database/firebaseAuthAccess';
 import InvitationModal from '../InvitationModal';
+import { showError } from '../../helpers/error';
 
 type Props = {
   handleSetShowSettings: () => void;
@@ -99,11 +100,20 @@ function Settings (props: Props) {
         );
         newIdCurrentDatabase = idDatabaseCurrent;
       } else {
-        await saveDatabaseIWantToAccess(database, user, token);
-        const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+        const saving = await saveDatabaseIWantToAccess(database, user, token);
+
+        if (saving instanceof Error) {
+          return showError(saving);
+        }
+        const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
           user,
           token
         );
+
+        if (accessDatabase instanceof Error) {
+          return showError(accessDatabase);
+        }
+
         newIdCurrentDatabase = accessDatabase.id;
       }
 
@@ -117,8 +127,6 @@ function Settings (props: Props) {
           payload: newIdCurrentDatabase
         });
       }, 3000);
-
-      // busca os dados
     } else {
       setMessageAuthorization('Permissão NEGADA');
     }

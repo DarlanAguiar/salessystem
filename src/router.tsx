@@ -8,6 +8,7 @@ import { useInfoContext, FormActions } from './contexts/userInfoContext';
 import { useEffect } from 'react';
 import { AccessDatabase } from './types/users';
 import { fetchAccessDatabase } from './database/firebaseAuthAccess';
+import { showError } from './helpers/error';
 
 const auth = getAuth(firebaseApp);
 function Router () {
@@ -28,10 +29,14 @@ function Router () {
         if (usuarioFirebase !== null) {
           // console.log(usuarioFirebase);
           const token = await usuarioFirebase.getIdToken();
-          const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+          const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
             usuarioFirebase.email,
             token
           );
+
+          if (accessDatabase instanceof Error) {
+            return showError(accessDatabase);
+          }
 
           dispatch({ type: FormActions.setAuthenticated, payload: true });
           dispatch({

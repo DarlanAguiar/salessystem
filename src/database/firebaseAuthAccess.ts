@@ -6,46 +6,39 @@ export const saveDatabaseIWantToAccess = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
-  let message = {};
-
-  await fetch(`${URL}authaccess`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ userIWantToAccess, user, token })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}authaccess`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ userIWantToAccess, user, token })
     });
-
-  return message;
+  } catch (error) {
+    return new Error(
+      'Problemas no servidor ao salvar um banco de dados autorizado, reinicie a aplicação ou tente novamente.'
+    );
+  }
 };
 
 export const fetchAccessDatabase = async (
   user: string | null | undefined,
   token: string | undefined
-) => {
+): Promise<AccessDatabase | Error> => {
   let accessDatabase: AccessDatabase = {
     id: '',
     nameDatabase: ''
   };
 
-  await fetch(`${URL}authaccess/${user}/${token}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      accessDatabase = resp;
-    })
-    .catch(() => {
-      throw new Error(
-        'Problemas no servidor GET, buscando banco de dado autorizado'
-      );
+  try {
+    const resp = await fetch(`${URL}authaccess/${user}/${token}`, {
+      method: 'GET',
+      headers: headers
     });
-
+    accessDatabase = await resp.json();
+  } catch (error) {
+    return new Error(
+      'Problemas no servidor ao buscar um banco de dados autorizado.'
+    );
+  }
   return accessDatabase;
 };
 

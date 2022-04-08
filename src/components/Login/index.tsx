@@ -14,6 +14,7 @@ import { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AccessDatabase } from '../../types/users';
 import { fetchAccessDatabase } from '../../database/firebaseAuthAccess';
+import { showError } from '../../helpers/error';
 
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
@@ -44,10 +45,14 @@ function Login () {
       dispatch({ type: FormActions.setAuthenticated, payload: true });
       dispatch({ type: FormActions.setInfoUser, payload: user.user });
 
-      const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+      const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
         userEmail,
         token
       );
+
+      if (accessDatabase instanceof Error) {
+        return showError(accessDatabase);
+      }
 
       if (accessDatabase.nameDatabase) {
         console.log('tem' + accessDatabase.nameDatabase);
@@ -64,7 +69,7 @@ function Login () {
 
       navigate('/');
     } catch (error) {
-      showError(error);
+      showErrorLogin(error);
     }
   };
 
@@ -81,10 +86,14 @@ function Login () {
         dispatch({ type: FormActions.setAuthenticated, payload: true });
         dispatch({ type: FormActions.setInfoUser, payload: result.user });
 
-        const accessDatabase: AccessDatabase = await fetchAccessDatabase(
+        const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
           userEmail,
           token
         );
+
+        if (accessDatabase instanceof Error) {
+          return showError(accessDatabase);
+        }
 
         if (accessDatabase.nameDatabase) {
           console.log('tem' + accessDatabase.nameDatabase);
@@ -102,7 +111,7 @@ function Login () {
         navigate('/');
       });
     } catch (error) {
-      showError(error);
+      showErrorLogin(error);
     }
   };
 
@@ -120,11 +129,11 @@ function Login () {
 
       navigate('/');
     } catch (error) {
-      showError(error);
+      showErrorLogin(error);
     }
   };
 
-  const showError = (error: unknown) => {
+  const showErrorLogin = (error: unknown) => {
     const typedError = error as ErrorWithMessage;
     let errorMessage = null;
     switch (typedError?.message) {
