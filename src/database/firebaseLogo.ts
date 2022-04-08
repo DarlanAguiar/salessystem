@@ -7,8 +7,8 @@ const storage = getStorage(firebaseApp);
 export const getPhoto = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null
-): Promise<Photo> => {
+  authorizedDatabase: string | null | Error
+): Promise<Photo | Error> => {
   let photo: Photo = {
     url: ''
   };
@@ -18,13 +18,13 @@ export const getPhoto = async (
     const result = await resp.json() as Photo;
     photo = result;
   } catch (error) {
-    throw new Error('Problemas no servidor GET, buscando logo');
+    return new Error('Problemas no servidor GET, buscando logo');
   }
 
   return photo;
 };
 
-// Não consegui enviar o arquivo para o sever.
+// Não consegui enviar o arquivo para o server.
 export const uploadingPhoto = async (
   user: string | null | undefined,
   authorizedDatabase: string | null,
@@ -46,7 +46,7 @@ export const uploadingPhoto = async (
 
     return photoUrl;
   } else {
-    return new Error('tipo de arquivo Não permitido');
+    return new Error('Tipo de arquivo Não permitido');
   }
 };
 
@@ -56,27 +56,22 @@ export const setTitleDatabase = async (
   authorizedDatabase: string | null,
   texts: TitleLogo
 ) => {
-  let message = {};
-
   try {
-    const resp = await fetch(`${URL}settings`, {
+    await fetch(`${URL}settings`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({ user, token, authorizedDatabase, texts })
     });
-    const result = await resp.json();
-    message = result;
   } catch (error) {
-    throw new Error('Problemas no servidor POST, inserindo nome da empresa');
+    return new Error('Problemas no servidor ao inser o nome da empresa, reinicie a aplicação ou tente novamente.');
   }
-  return message;
 };
 
 export const getTitles = async (
   user: string | null | undefined,
   token: string | undefined,
   authorizedDatabase: string | null
-): Promise<TitleLogoDatabase> => {
+): Promise<TitleLogoDatabase | Error> => {
   let titles: TitleLogoDatabase = {
     id: '',
     textLeft: '',
@@ -91,7 +86,7 @@ export const getTitles = async (
     const result = await resp.json();
     titles = result;
   } catch (error) {
-    throw new Error('Problemas no servidor GET, buscando nome da empresa');
+    return new Error('Problemas no servidor ao buscando nome da empresa, reinicie a aplicação ou tente novamente.');
   }
   return titles;
 };
@@ -103,10 +98,8 @@ export const updateTitleDatabase = async (
   idTexts: string,
   texts: TitleLogo
 ) => {
-  let message = {};
-
   try {
-    const resp = await fetch(`${URL}settings`, {
+    await fetch(`${URL}settings`, {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify({
@@ -117,10 +110,7 @@ export const updateTitleDatabase = async (
         texts
       })
     });
-    const result = await resp.json();
-    message = result;
   } catch (error) {
-    throw new Error('Problemas no servidor PATH, atualizando nome da empresa');
+    return new Error('Problemas no servidor ao atualizar nome da empresa, reinicie a aplicação ou tente novamente.');
   }
-  return message;
 };

@@ -6,6 +6,7 @@ import { getPhoto, getTitles, setTitleDatabase, updateTitleDatabase, uploadingPh
 import { Photo, TitleLogo, TitleLogoDatabase } from '../../types/logo';
 import { IoMdClose } from 'react-icons/io';
 import Logo from '../../img/logo.png';
+import { showError } from '../../helpers/error';
 
 function Headerlogo () {
   const { state } = useInfoContext();
@@ -35,7 +36,11 @@ function Headerlogo () {
         return;
       }
     }
-    const logo: Photo | null = await getPhoto(user, token, authorizedDatabase);
+    const logo: Photo | null | Error = await getPhoto(user, token, authorizedDatabase);
+
+    if (logo instanceof Error) {
+      return showError(logo);
+    }
     setLogo(logo.url);
   };
 
@@ -60,7 +65,7 @@ function Headerlogo () {
       handleShowFieldSendPhoto();
 
       if (result instanceof Error) {
-        alert(`${result.name} - ${result.message}`);
+        showError(result);
       } else {
         getLogo();
       }
@@ -83,7 +88,11 @@ function Headerlogo () {
       }
     }
 
-    const titles: TitleLogoDatabase = await getTitles(user, token, authorizedDatabase);
+    const titles: TitleLogoDatabase |Error = await getTitles(user, token, authorizedDatabase);
+
+    if (titles instanceof Error) {
+      return showError(titles);
+    }
 
     setIdTexts(titles.id);
     setTextLeft(titles.textLeft);
@@ -108,9 +117,17 @@ function Headerlogo () {
     }
 
     if (idTexts !== undefined) {
-      await updateTitleDatabase(user, token, authorizedDatabase, idTexts, texts);
+      const newTitle = await updateTitleDatabase(user, token, authorizedDatabase, idTexts, texts);
+
+      if (newTitle instanceof Error) {
+        return showError(newTitle);
+      }
     } else {
-      await setTitleDatabase(user, token, authorizedDatabase, texts);
+      const title = await setTitleDatabase(user, token, authorizedDatabase, texts);
+
+      if (title instanceof Error) {
+        return showError(title);
+      }
     }
     getTitlesDatabase();
   };
