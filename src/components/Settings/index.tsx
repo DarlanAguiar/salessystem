@@ -51,6 +51,10 @@ function Settings (props: Props) {
     const token = await state.infoUser?.getIdToken();
     const usersAuth = await getAllAllowedUsers(user, token);
 
+    if (usersAuth instanceof Error) {
+      return showError(usersAuth);
+    }
+
     setUsersAuthorized(usersAuth);
   };
 
@@ -58,8 +62,11 @@ function Settings (props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    await insertAuthorizedUser(userWhoHasAccess, user, token);
+    const authorizedUser = await insertAuthorizedUser(userWhoHasAccess, user, token);
 
+    if (authorizedUser instanceof Error) {
+      return showError(authorizedUser);
+    }
     setUserWhoHasAccess('');
 
     getAllowedUsers();
@@ -69,7 +76,11 @@ function Settings (props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    await deleteUserAuthorized(id, user, token, userToRemove);
+    const result = await deleteUserAuthorized(id, user, token, userToRemove);
+
+    if (result instanceof Error) {
+      return showError(result);
+    }
 
     getAllowedUsers();
   };
@@ -80,9 +91,13 @@ function Settings (props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    const approved = await confirmAuthorization(user, token, database);
+    const resp = await confirmAuthorization(user, token, database);
 
-    if (approved.authorized) {
+    if (resp instanceof Error) {
+      return showError(resp);
+    }
+
+    if (resp.authorized) {
       setMessageAuthorization(
         `Permissão CONCEDIDA - Acessando dados ${database}...`
       );
@@ -92,12 +107,17 @@ function Settings (props: Props) {
       let newIdCurrentDatabase = '';
 
       if (sharedAccessDatabase) {
-        await updateDatabaseIWantToAccess(
+        const newDatabase = await updateDatabaseIWantToAccess(
           database,
           idDatabaseCurrent,
           user,
           token
         );
+
+        if (newDatabase instanceof Error) {
+          return showError(newDatabase);
+        }
+
         newIdCurrentDatabase = idDatabaseCurrent;
       } else {
         const saving = await saveDatabaseIWantToAccess(database, user, token);
@@ -137,14 +157,18 @@ function Settings (props: Props) {
     const token = await state.infoUser?.getIdToken();
     const idDatabaseCurrent = state.idDatabaseAuth;
 
-    await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
+    const deletedDatabase = await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
+
+    if (deletedDatabase instanceof Error) {
+      return showError(deletedDatabase);
+    }
 
     setMessageAuthorization('Alterando banco de dados...');
 
     setTimeout(() => {
       dispatch({ type: FormActions.setDatabaseAuth, payload: null });
       setShowButtonAccessMyDatabase(false);
-    }, 5000);
+    }, 4000);
   };
 
   return (

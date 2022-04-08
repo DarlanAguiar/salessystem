@@ -36,7 +36,7 @@ export const fetchAccessDatabase = async (
     accessDatabase = await resp.json();
   } catch (error) {
     return new Error(
-      'Problemas no servidor ao buscar um banco de dados autorizado.'
+      'Erro ao buscar um banco de dados autorizado, reinicie a aplicação ou tente novamente..'
     );
   }
   return accessDatabase;
@@ -48,25 +48,20 @@ export const updateDatabaseIWantToAccess = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
-  let message = {};
-
-  await fetch(`${URL}authaccess`, {
-    method: 'PATCH',
-    headers: headers,
-    body: JSON.stringify({
-      databaseIWantToAccess,
-      idDatabaseAuth,
-      user,
-      token
-    })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}authaccess`, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({
+        databaseIWantToAccess,
+        idDatabaseAuth,
+        user,
+        token
+      })
     });
-  return message;
+  } catch (error) {
+    return new Error('Erro ao atualizar banco de dados, reinicie a aplicação ou tente novamente.');
+  };
 };
 
 export const deleteAccessToCurrentDatabase = async (
@@ -74,19 +69,13 @@ export const deleteAccessToCurrentDatabase = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
-  let message = {};
-
-  await fetch(`${URL}authaccess`, {
-    method: 'DELETE',
-    headers: headers,
-    body: JSON.stringify({ id, user, token })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}authaccess`, {
+      method: 'DELETE',
+      headers: headers,
+      body: JSON.stringify({ id, user, token })
     });
-
-  return message;
+  } catch (error) {
+    return new Error('Erro ao remover banco de dados atual, reinicie a aplicação ou tente novamente.');
+  }
 };

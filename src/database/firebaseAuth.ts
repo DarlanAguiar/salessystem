@@ -6,21 +6,15 @@ export const insertAuthorizedUser = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
-  let message = {};
-
-  await fetch(`${URL}auth`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ userAuthorized, user, token })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}auth`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ userAuthorized, user, token })
     });
-
-  return message;
+  } catch (error) {
+    return new Error('Erro ao enviar autorização, reinicie a aplicação ou tente novamente.');
+  }
 };
 
 export const deleteUserAuthorized = async (
@@ -29,38 +23,33 @@ export const deleteUserAuthorized = async (
   token: string | undefined,
   userToRemove: string
 ) => {
-  let message = {};
-
-  await fetch(`${URL}auth`, {
-    method: 'DELETE',
-    headers: headers,
-    body: JSON.stringify({ id, user, token, userToRemove })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}auth`, {
+      method: 'DELETE',
+      headers: headers,
+      body: JSON.stringify({ id, user, token, userToRemove })
     });
-
-  return message;
+  } catch (error) {
+    return new Error('Erro ao remover autorização, reinicie a aplicação ou tente novamente.');
+  }
 };
 
 export const getAllAllowedUsers = async (
   user: string | null | undefined,
   token: string | undefined
-) => {
+):Promise<UserAuth[] | Error> => {
   let data: UserAuth[] = [];
 
-  await fetch(`${URL}auth/${user}/${token}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => resp.json())
-    .then((resp) => (data = resp))
-    .catch(() => {
-      throw new Error('Problemas no servidor GET, buscando usuario');
+  try {
+    const resp = await fetch(`${URL}auth/${user}/${token}`, {
+      method: 'GET',
+      headers: headers
     });
+
+    data = await resp.json();
+  } catch (error) {
+    return new Error('Erro ao buscar lista de usuários autorizados, reinicie a aplicação ou tente novamente.');
+  }
 
   return data;
 };
@@ -69,22 +58,21 @@ export const confirmAuthorization = async (
   user: string | null | undefined,
   token: string | undefined,
   userToConfirm: string | null
-) => {
+): Promise<Authorized | Error> => {
   let authorization: Authorized = {
     authorized: false
   };
 
-  await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      authorization = resp;
-    })
-    .catch(() => {
-      throw new Error('Problemas no servidor GET, confirmando autorizção');
+  try {
+    const resp = await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
+      method: 'GET',
+      headers: headers
     });
+
+    authorization = await resp.json();
+  } catch (error) {
+    return new Error('Problemas no servidor GET, confirmando autorizção');
+  }
 
   return authorization;
 };
