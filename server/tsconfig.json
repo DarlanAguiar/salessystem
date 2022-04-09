@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": false,
     "outDir": "build-server",
-    "rootDir": "server"
+    "rootDir": "."
   },
-  "include": ["server"]
+  "include": ["."],
+  "exclude": ["build-server"]
 }

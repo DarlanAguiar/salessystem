@@ -129,11 +129,12 @@ export const checkInvitation = async (
     const result = await getDocs(
       query(collection(db, 'invitations'))
     );
-    const listInvitations = [];
+    const listInvitations: Array<string | undefined> = [];
 
     result.docs.forEach((data: QueryDocumentSnapshot) => {
-      if (data.data().guestUser === user) {
-        listInvitations.push(data.data().userSentInvitation);
+      const typedData: {guestUser?: string, userSentInvitation?: string} = data.data();
+      if (typedData.guestUser === user) {
+        listInvitations.push(typedData.userSentInvitation);
       }
     });
 
