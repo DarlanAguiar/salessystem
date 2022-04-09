@@ -13,7 +13,7 @@ export const saveDatabaseIWantToAccess = async (
       body: JSON.stringify({ userIWantToAccess, user, token })
     });
   } catch (error) {
-    return new Error(
+    throw new Error(
       'Problemas no servidor ao salvar um banco de dados autorizado, reinicie a aplicação ou tente novamente.'
     );
   }
@@ -22,7 +22,7 @@ export const saveDatabaseIWantToAccess = async (
 export const fetchAccessDatabase = async (
   user: string | null | undefined,
   token: string | undefined
-): Promise<AccessDatabase | Error> => {
+): Promise<AccessDatabase> => {
   let accessDatabase: AccessDatabase = {
     id: '',
     nameDatabase: ''
@@ -35,7 +35,7 @@ export const fetchAccessDatabase = async (
     });
     accessDatabase = await resp.json();
   } catch (error) {
-    return new Error(
+    throw new Error(
       'Erro ao buscar um banco de dados autorizado, reinicie a aplicação ou tente novamente..'
     );
   }
@@ -60,7 +60,7 @@ export const updateDatabaseIWantToAccess = async (
       })
     });
   } catch (error) {
-    return new Error('Erro ao atualizar banco de dados, reinicie a aplicação ou tente novamente.');
+    throw new Error('Erro ao atualizar banco de dados, reinicie a aplicação ou tente novamente.');
   };
 };
 
@@ -76,6 +76,6 @@ export const deleteAccessToCurrentDatabase = async (
       body: JSON.stringify({ id, user, token })
     });
   } catch (error) {
-    return new Error('Erro ao remover banco de dados atual, reinicie a aplicação ou tente novamente.');
+    throw new Error('Erro ao remover banco de dados atual, reinicie a aplicação ou tente novamente.');
   }
 };

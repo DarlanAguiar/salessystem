@@ -36,12 +36,14 @@ function Headerlogo () {
         return;
       }
     }
-    const logo: Photo | null | Error = await getPhoto(user, token, authorizedDatabase);
 
-    if (logo instanceof Error) {
-      return showError(logo);
+    try {
+      const logo: Photo | null = await getPhoto(user, token, authorizedDatabase);
+
+      setLogo(logo.url);
+    } catch (error) {
+      return showError(error);
     }
-    setLogo(logo.url);
   };
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,15 +62,16 @@ function Headerlogo () {
         }
       }
 
-      const result = await uploadingPhoto(user, authorizedDatabase, file);
       setUploading(false);
       handleShowFieldSendPhoto();
 
-      if (result instanceof Error) {
-        showError(result);
-      } else {
-        getLogo();
+      try {
+        await uploadingPhoto(user, authorizedDatabase, file);
+      } catch (error) {
+        return showError(error);
       }
+
+      getLogo();
     }
   };
 
@@ -88,15 +91,14 @@ function Headerlogo () {
       }
     }
 
-    const titles: TitleLogoDatabase |Error = await getTitles(user, token, authorizedDatabase);
-
-    if (titles instanceof Error) {
-      return showError(titles);
+    try {
+      const titles: TitleLogoDatabase = await getTitles(user, token, authorizedDatabase);
+      setIdTexts(titles.id);
+      setTextLeft(titles.textLeft);
+      setTextRight(titles.textRight);
+    } catch (error) {
+      return showError(error);
     }
-
-    setIdTexts(titles.id);
-    setTextLeft(titles.textLeft);
-    setTextRight(titles.textRight);
   };
 
   const insertTitleDatabase = async () => {
@@ -117,16 +119,16 @@ function Headerlogo () {
     }
 
     if (idTexts !== undefined) {
-      const newTitle = await updateTitleDatabase(user, token, authorizedDatabase, idTexts, texts);
-
-      if (newTitle instanceof Error) {
-        return showError(newTitle);
+      try {
+        await updateTitleDatabase(user, token, authorizedDatabase, idTexts, texts);
+      } catch (error) {
+        return showError(error);
       }
     } else {
-      const title = await setTitleDatabase(user, token, authorizedDatabase, texts);
-
-      if (title instanceof Error) {
-        return showError(title);
+      try {
+        await setTitleDatabase(user, token, authorizedDatabase, texts);
+      } catch (error) {
+        return showError(error);
       }
     }
     getTitlesDatabase();

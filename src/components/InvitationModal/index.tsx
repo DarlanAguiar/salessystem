@@ -3,6 +3,7 @@ import * as C from './styled';
 import { IoMdSettings, IoMdClose } from 'react-icons/io';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { checkInvitationDatabase, removeInvitation } from '../../database/firebaseAuth';
+import { showError } from '../../helpers/error';
 
 type Props = {
   accessDataFromAnotherUser: (database: string) => void
@@ -22,19 +23,19 @@ function InvitationModal (props: Props) {
     }
   }, []);
 
-  // const handleShowInvitation = () => {
-  //   setShowInvitation(!showInvitation);
-  // };
-
   const checkNewInvitation = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    const invitation = await checkInvitationDatabase(user, token);
-    setListInvitation(invitation);
-    if (invitation.length > 0) {
-      setShowInvitation(true);
-    };
+    try {
+      const invitation = await checkInvitationDatabase(user, token);
+      setListInvitation(invitation);
+      if (invitation.length > 0) {
+        setShowInvitation(true);
+      };
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   const removeInvitationDatabase = async () => {
@@ -42,7 +43,11 @@ function InvitationModal (props: Props) {
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    await removeInvitation(user, token);
+    try {
+      await removeInvitation(user, token);
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   return (
