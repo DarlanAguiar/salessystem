@@ -26,42 +26,31 @@ export const insertTransactionModelIntoDatabase = async (
   token: string | undefined,
   authorizedDatabase: string | null
 ) => {
-  let message = {};
-
-  await fetch(`${URL}modeltransaction`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ data, user, token, authorizedDatabase })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}modeltransaction`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ data, user, token, authorizedDatabase })
     });
-  return message;
+  } catch (error) {
+    throw new Error('Erro ao inserir os dados, reinicie a aplicação ou tente novamente.');
+  }
 };
-
 export const insertTransactionIntoDatabase = async (
   data: Item,
   user: string | null | undefined,
   token: string | undefined,
   authorizedDatabase: string | null
 ) => {
-  let message = {};
-
-  await fetch(`${URL}transaction`, {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify({ data, user, token, authorizedDatabase })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}transaction`, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({ data, user, token, authorizedDatabase })
     });
-  return message;
+  } catch (error) {
+    throw new Error('Erro ao inserir os dados, reinicie a aplicação ou tente novamente.');
+  };
 };
 
 export const getTransactionList = async (
@@ -73,22 +62,18 @@ export const getTransactionList = async (
 ) => {
   let data: ItemDataBase[] = [];
 
-  await fetch(
-    `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}/${authorizedDatabase}`,
-    {
-      method: 'GET',
-      headers: headers
-    }
-  )
-    .then((resp) => {
-      const parsedResp = resp.json();
-
-      return parsedResp;
-    })
-    .then((resp) => (data = resp))
-    .catch(() => {
-      throw new Error('Problemas no servidor GET');
-    });
+  try {
+    const resp = await fetch(
+      `${URL}transaction/${user}/${token}/${initialDate}/${finalDate}/${authorizedDatabase}`,
+      {
+        method: 'GET',
+        headers: headers
+      }
+    );
+    data = await resp.json();
+  } catch (error) {
+    throw new Error('Erro ao buscar as transações(vendas/despesa), reinicie a aplicação ou tente novamente.');
+  }
 
   return data;
 };
@@ -100,19 +85,16 @@ export const getModelTransactionList = async (
 ) => {
   let data: ProductDatabase[] = [];
 
-  await fetch(`${URL}modeltransaction/${user}/${token}/${authorizedDatabase}`, {
-    method: 'GET',
-    headers: headers
-  })
-    .then((resp) => {
-      const parsedResp = resp.json();
-
-      return parsedResp;
-    })
-    .then((resp) => (data = resp))
-    .catch(() => {
-      throw new Error('Problemas no servidor GET');
+  try {
+    const resp = await fetch(`${URL}modeltransaction/${user}/${token}/${authorizedDatabase}`, {
+      method: 'GET',
+      headers: headers
     });
+
+    data = await resp.json();
+  } catch (error) {
+    throw new Error('Erro ao buscar as transações(modelos), reinicie a aplicação ou tente novamente.');
+  }
 
   return data;
 };
@@ -123,20 +105,15 @@ export const deleteTransactionDatabase = async (
   token: string | undefined,
   authorizedDatabase: string | null
 ) => {
-  let message = {};
-
-  await fetch(`${URL}transaction`, {
-    method: 'DELETE',
-    headers: headers,
-    body: JSON.stringify({ id, user, token, authorizedDatabase })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}transaction`, {
+      method: 'DELETE',
+      headers: headers,
+      body: JSON.stringify({ id, user, token, authorizedDatabase })
     });
-  return message;
+  } catch (error) {
+    throw new Error('Erro ao deletar a transação(venda/despesa), reinicie a aplicação ou tente novamente.');
+  }
 };
 
 export const deleteModelDatabase = async (
@@ -145,18 +122,13 @@ export const deleteModelDatabase = async (
   token: string | undefined,
   authorizedDatabase: string | null
 ) => {
-  let message = {};
-
-  await fetch(`${URL}modeltransaction`, {
-    method: 'DELETE',
-    headers: headers,
-    body: JSON.stringify({ id, user, token, authorizedDatabase })
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      if (resp.error) {
-        message = { error: resp.error };
-      }
+  try {
+    await fetch(`${URL}modeltransaction`, {
+      method: 'DELETE',
+      headers: headers,
+      body: JSON.stringify({ id, user, token, authorizedDatabase })
     });
-  return message;
+  } catch (error) {
+    throw new Error('Erro ao deletar a transação(modelo), reinicie a aplicação ou tente novamente.');
+  }
 };

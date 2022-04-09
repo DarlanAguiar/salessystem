@@ -4,6 +4,7 @@ import { insertTransactionModelIntoDatabase } from '../../database/firebase';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import * as C from './styles';
 import { checkAccess } from '../../helpers/authorizations';
+import { showError } from '../../helpers/error';
 
 type Props = {
   handleShowRegisterExpense: () => void;
@@ -57,12 +58,16 @@ function RegisterExpense (props: Props) {
       }
     }
 
-    await insertTransactionModelIntoDatabase(
-      newExpense,
-      user,
-      token,
-      authorizedDatabase
-    );
+    try {
+      await insertTransactionModelIntoDatabase(
+        newExpense,
+        user,
+        token,
+        authorizedDatabase
+      );
+    } catch (error) {
+      return showError(error);
+    }
     getProducts();
 
     setInputCategory('');

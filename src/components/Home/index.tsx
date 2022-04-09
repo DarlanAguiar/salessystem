@@ -35,6 +35,7 @@ import Settings from '../Settings';
 import { checkAccess } from '../../helpers/authorizations';
 import Footer from '../Footer';
 import Headerlogo from '../HeaderLogo';
+import { showError } from '../../helpers/error';
 
 const auth = getAuth();
 
@@ -125,13 +126,16 @@ function Home () {
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth;
 
-    const listDataBaseProducts = await getModelTransactionList(
-      user,
-      token,
-      authorizedDatabase
-    );
-
-    setDatabaseProducts(listDataBaseProducts);
+    try {
+      const listModelDatabaseProducts = await getModelTransactionList(
+        user,
+        token,
+        authorizedDatabase
+      );
+      setDatabaseProducts(listModelDatabaseProducts);
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   const getListByDate = async (initialDate: number, finalDate: number) => {
@@ -146,14 +150,18 @@ function Home () {
       }
     }
 
-    const listDataBase = await getTransactionList(
-      user,
-      token,
-      authorizedDatabase,
-      initialDate,
-      finalDate
-    );
-    setList(listDataBase);
+    try {
+      const listDataBase = await getTransactionList(
+        user,
+        token,
+        authorizedDatabase,
+        initialDate,
+        finalDate
+      );
+      setList(listDataBase);
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   const updateTableTitle = (title: string) => {
@@ -177,12 +185,16 @@ function Home () {
         }
       }
 
-      await insertTransactionIntoDatabase(
-        item,
-        user,
-        token,
-        authorizedDatabase
-      );
+      try {
+        await insertTransactionIntoDatabase(
+          item,
+          user,
+          token,
+          authorizedDatabase
+        );
+      } catch (error) {
+        return showError(error);
+      }
     });
 
     setTitleTable(getDate().split('-').reverse().join('/'));

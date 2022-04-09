@@ -4,6 +4,7 @@ import * as C from './styles';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { insertTransactionModelIntoDatabase } from '../../database/firebase';
 import { checkAccess } from '../../helpers/authorizations';
+import { showError } from '../../helpers/error';
 
 type Props = {
   handleShowRegisterProduct: () => void;
@@ -82,12 +83,16 @@ function RegisterProduct (props: Props) {
       }
     }
 
-    await insertTransactionModelIntoDatabase(
-      newProduct,
-      user,
-      token,
-      authorizedDatabase
-    );
+    try {
+      await insertTransactionModelIntoDatabase(
+        newProduct,
+        user,
+        token,
+        authorizedDatabase
+      );
+    } catch (error) {
+      return showError(error);
+    }
 
     getProducts();
 

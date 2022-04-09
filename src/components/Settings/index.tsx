@@ -49,17 +49,24 @@ function Settings (props: Props) {
   const getAllowedUsers = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const usersAuth = await getAllAllowedUsers(user, token);
 
-    setUsersAuthorized(usersAuth);
+    try {
+      const usersAuth = await getAllAllowedUsers(user, token);
+      setUsersAuthorized(usersAuth);
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   const sendNewPermission = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    await insertAuthorizedUser(userWhoHasAccess, user, token);
-
+    try {
+      await insertAuthorizedUser(userWhoHasAccess, user, token);
+    } catch (error) {
+      return showError(error);
+    }
     setUserWhoHasAccess('');
 
     getAllowedUsers();
@@ -69,7 +76,11 @@ function Settings (props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    await deleteUserAuthorized(id, user, token, userToRemove);
+    try {
+      await deleteUserAuthorized(id, user, token, userToRemove);
+    } catch (error) {
+      return showError(error);
+    }
 
     getAllowedUsers();
   };
@@ -80,55 +91,60 @@ function Settings (props: Props) {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
 
-    const approved = await confirmAuthorization(user, token, database);
-
-    if (approved.authorized) {
-      setMessageAuthorization(
-        `Permissão CONCEDIDA - Acessando dados ${database}...`
-      );
-
-      const sharedAccessDatabase = state.databaseAuth;
-      const idDatabaseCurrent = state.idDatabaseAuth;
-      let newIdCurrentDatabase = '';
-
-      if (sharedAccessDatabase) {
-        await updateDatabaseIWantToAccess(
-          database,
-          idDatabaseCurrent,
-          user,
-          token
+    try {
+      const resp = await confirmAuthorization(user, token, database);
+      if (resp.authorized) {
+        setMessageAuthorization(
+          `Permissão CONCEDIDA - Acessando dados ${database}...`
         );
-        newIdCurrentDatabase = idDatabaseCurrent;
+
+        const sharedAccessDatabase = state.databaseAuth;
+        const idDatabaseCurrent = state.idDatabaseAuth;
+        let newIdCurrentDatabase = '';
+
+        if (sharedAccessDatabase) {
+          try {
+            await updateDatabaseIWantToAccess(
+              database,
+              idDatabaseCurrent,
+              user,
+              token
+            );
+          } catch (error) {
+            return showError(error);
+          }
+
+          newIdCurrentDatabase = idDatabaseCurrent;
+        } else {
+          try {
+            await saveDatabaseIWantToAccess(database, user, token);
+          } catch (error) {
+            return showError(error);
+          }
+
+          const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
+            user,
+            token
+          );
+
+          newIdCurrentDatabase = accessDatabase.id;
+        }
+
+        setTimeout(() => {
+          dispatch({
+            type: FormActions.setDatabaseAuth,
+            payload: database
+          });
+          dispatch({
+            type: FormActions.setIdDatabaseAuth,
+            payload: newIdCurrentDatabase
+          });
+        }, 3000);
       } else {
-        const saving = await saveDatabaseIWantToAccess(database, user, token);
-
-        if (saving instanceof Error) {
-          return showError(saving);
-        }
-        const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
-          user,
-          token
-        );
-
-        if (accessDatabase instanceof Error) {
-          return showError(accessDatabase);
-        }
-
-        newIdCurrentDatabase = accessDatabase.id;
+        setMessageAuthorization('Permissão NEGADA');
       }
-
-      setTimeout(() => {
-        dispatch({
-          type: FormActions.setDatabaseAuth,
-          payload: database
-        });
-        dispatch({
-          type: FormActions.setIdDatabaseAuth,
-          payload: newIdCurrentDatabase
-        });
-      }, 3000);
-    } else {
-      setMessageAuthorization('Permissão NEGADA');
+    } catch (error) {
+      return showError(error);
     }
   };
 
@@ -137,14 +153,18 @@ function Settings (props: Props) {
     const token = await state.infoUser?.getIdToken();
     const idDatabaseCurrent = state.idDatabaseAuth;
 
-    await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
+    try {
+      await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
+    } catch (error) {
+      return showError(error);
+    }
 
     setMessageAuthorization('Alterando banco de dados...');
 
     setTimeout(() => {
       dispatch({ type: FormActions.setDatabaseAuth, payload: null });
       setShowButtonAccessMyDatabase(false);
-    }, 5000);
+    }, 4000);
   };
 
   return (

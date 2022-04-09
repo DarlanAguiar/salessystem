@@ -8,7 +8,7 @@ export const getPhoto = async (
   user: string | null | undefined,
   token: string | undefined,
   authorizedDatabase: string | null | Error
-): Promise<Photo | Error> => {
+): Promise<Photo> => {
   let photo: Photo = {
     url: ''
   };
@@ -18,7 +18,7 @@ export const getPhoto = async (
     const result = await resp.json() as Photo;
     photo = result;
   } catch (error) {
-    return new Error('Problemas no servidor GET, buscando logo');
+    throw new Error('Erro ao buscando logo, reinicie o aplicativo');
   }
 
   return photo;
@@ -46,7 +46,7 @@ export const uploadingPhoto = async (
 
     return photoUrl;
   } else {
-    return new Error('Tipo de arquivo Não permitido');
+    throw new Error('Tipo de arquivo Não permitido');
   }
 };
 
@@ -63,7 +63,7 @@ export const setTitleDatabase = async (
       body: JSON.stringify({ user, token, authorizedDatabase, texts })
     });
   } catch (error) {
-    return new Error('Problemas no servidor ao inser o nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error('Erro ao inserir o nome da empresa, reinicie a aplicação ou tente novamente.');
   }
 };
 
@@ -71,7 +71,7 @@ export const getTitles = async (
   user: string | null | undefined,
   token: string | undefined,
   authorizedDatabase: string | null
-): Promise<TitleLogoDatabase | Error> => {
+): Promise<TitleLogoDatabase> => {
   let titles: TitleLogoDatabase = {
     id: '',
     textLeft: '',
@@ -86,7 +86,7 @@ export const getTitles = async (
     const result = await resp.json();
     titles = result;
   } catch (error) {
-    return new Error('Problemas no servidor ao buscando nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error('Erro ao buscando nome da empresa, reinicie a aplicação ou tente novamente.');
   }
   return titles;
 };
@@ -111,6 +111,6 @@ export const updateTitleDatabase = async (
       })
     });
   } catch (error) {
-    return new Error('Problemas no servidor ao atualizar nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error('Problemas no servidor ao atualizar nome da empresa, reinicie a aplicação ou tente novamente.');
   }
 };

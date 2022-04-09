@@ -1,5 +1,6 @@
 import { State } from '../contexts/userInfoContext';
 import { confirmAuthorization } from '../database/firebaseAuth';
+import { showError } from './error';
 
 export const checkAuthorizations = async (infoUser: State): Promise<Boolean> => {
   const user = infoUser.infoUser?.email;
@@ -7,6 +8,11 @@ export const checkAuthorizations = async (infoUser: State): Promise<Boolean> => 
   const userIWantToAccess = infoUser.databaseAuth;
 
   const approved = await confirmAuthorization(user, token, userIWantToAccess);
+
+  if (approved instanceof Error) {
+    showError(approved);
+    return false;
+  }
 
   return approved.authorized;
 };
