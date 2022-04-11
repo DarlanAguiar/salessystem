@@ -267,6 +267,7 @@ function Home () {
         <C.ButtonSettings onClick={() => handleSetShowSettings()}>
           <IoMdSettings />
         </C.ButtonSettings>
+        <C.Database>{state.databaseAuth ? state.databaseAuth : state.user}</C.Database>
        <Headerlogo />
       </C.Header>
       <C.Body>

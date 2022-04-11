@@ -75,6 +75,18 @@ export const ButtonSettings = styled.button`
   }
 `;
 
+export const Database = styled.p`
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  font-size: 14px;
+  @media (max-width: 600px){
+    font-size: 10px;
+    top: 98px;
+    left: 2px;
+  }
+`;
+
 export const Body = styled.div`
   margin: auto;
   max-width: 1000px;
