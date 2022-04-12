@@ -6,9 +6,14 @@ import { getPhoto, getTitles, setTitleDatabase, updateTitleDatabase, uploadingPh
 import { Photo, TitleLogo, TitleLogoDatabase } from '../../types/logo';
 import { IoMdClose } from 'react-icons/io';
 import Logo from '../../img/logo.png';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
-function Headerlogo () {
+type Props = {
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function Headerlogo (props: Props) {
+  const { setErrorMessage } = props;
   const { state } = useInfoContext();
 
   const [textLeft, setTextLeft] = useState('Sua');
@@ -44,7 +49,7 @@ function Headerlogo () {
         setLogo(logo.url);
       }
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -67,7 +72,8 @@ function Headerlogo () {
       try {
         await uploadingPhoto(user, authorizedDatabase, file);
       } catch (error) {
-        return showError(error);
+        setUploading(false);
+        return setErrorMessage(errorText(error));
       }
 
       await getLogo();
@@ -98,7 +104,7 @@ function Headerlogo () {
       setTextLeft(titles.textLeft);
       setTextRight(titles.textRight);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -123,13 +129,13 @@ function Headerlogo () {
       try {
         await updateTitleDatabase(user, token, authorizedDatabase, idTexts, texts);
       } catch (error) {
-        return showError(error);
+        return setErrorMessage(errorText(error));
       }
     } else {
       try {
         await setTitleDatabase(user, token, authorizedDatabase, texts);
       } catch (error) {
-        return showError(error);
+        return setErrorMessage(errorText(error));
       }
     }
     getTitlesDatabase();

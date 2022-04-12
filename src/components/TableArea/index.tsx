@@ -6,10 +6,11 @@ type Props = {
   filteredList: ItemDataBase[];
   titleTable: string;
   getList: () => void;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function TableArea (props: Props) {
-  const { filteredList, titleTable, getList } = props;
+  const { filteredList, titleTable, getList, setErrorMessage } = props;
 
   return (
     <C.ContainerTable>
@@ -27,7 +28,7 @@ function TableArea (props: Props) {
 
         <tbody>
           {filteredList.map((item, index) => (
-            <TableItem key={index} item={item} getList={getList} />
+            <TableItem key={index} item={item} getList={getList} setErrorMessage={setErrorMessage} />
           ))}
         </tbody>
       </C.Table>

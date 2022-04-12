@@ -3,16 +3,17 @@ import * as C from './styled';
 import { IoMdSettings, IoMdClose } from 'react-icons/io';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { checkInvitationDatabase, removeInvitation } from '../../database/firebaseAuth';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
 type Props = {
   accessDataFromAnotherUser: (database: string) => void;
   showInvitation: boolean;
-  setShowInvitation: React.Dispatch<React.SetStateAction<boolean>>
+  setShowInvitation: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function InvitationModal (props: Props) {
-  const { accessDataFromAnotherUser, showInvitation, setShowInvitation } = props;
+  const { accessDataFromAnotherUser, showInvitation, setShowInvitation, setErrorMessage } = props;
 
   const { state } = useInfoContext();
 
@@ -36,7 +37,7 @@ function InvitationModal (props: Props) {
         setShowInvitation(false);
       };
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
     setLoading(false);
   };
@@ -47,7 +48,7 @@ function InvitationModal (props: Props) {
     try {
       await removeInvitation(user, token);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 

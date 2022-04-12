@@ -4,7 +4,7 @@ import * as C from './styles';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { insertTransactionModelIntoDatabase } from '../../database/firebase';
 import { checkAccess } from '../../helpers/authorizations';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
 type Props = {
   handleShowRegisterProduct: () => void;
@@ -12,6 +12,7 @@ type Props = {
   productCategoryList: string[];
   getProducts: () => void;
   showInvitation: Boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type FormType = {
@@ -35,7 +36,8 @@ function RegisterProduct (props: Props) {
     showRegisterProduct,
     productCategoryList,
     getProducts,
-    showInvitation
+    showInvitation,
+    setErrorMessage
   } = props;
 
   const { state } = useInfoContext();
@@ -93,7 +95,7 @@ function RegisterProduct (props: Props) {
         authorizedDatabase
       );
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
 
     getProducts();
@@ -102,7 +104,10 @@ function RegisterProduct (props: Props) {
   };
 
   return (
-    <C.Container showRegisterProduct={showRegisterProduct} showInvitation={showInvitation}>
+    <C.Container
+      showRegisterProduct={showRegisterProduct}
+      showInvitation={showInvitation}
+    >
       <C.ContainerForm onSubmit={handleSubmit}>
         <C.FormField>
           <C.DivInputTop>

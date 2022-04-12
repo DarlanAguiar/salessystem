@@ -6,15 +6,16 @@ import { useInfoContext } from '../../contexts/userInfoContext';
 import { IoMdClose } from 'react-icons/io';
 import { deleteTransactionDatabase } from '../../database/firebase';
 import { checkAccess } from '../../helpers/authorizations';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
 type Props = {
   item: ItemDataBase;
   getList: () => void;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function TableItem (props: Props) {
-  const { item, getList } = props;
+  const { item, getList, setErrorMessage } = props;
 
   const { state } = useInfoContext();
 
@@ -37,7 +38,7 @@ function TableItem (props: Props) {
     try {
       await deleteTransactionDatabase(itemId, user, token, authorizedDatabase);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
     getList();
   };

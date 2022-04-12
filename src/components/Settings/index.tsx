@@ -18,17 +18,18 @@ import {
   fetchAccessDatabase
 } from '../../database/firebaseAuthAccess';
 import InvitationModal from '../InvitationModal';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
 type Props = {
   handleSetShowSettings: () => void;
   showSettings: boolean;
   showInvitation: boolean;
-  setShowInvitation: React.Dispatch<React.SetStateAction<boolean>>
+  setShowInvitation: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function Settings (props: Props) {
-  const { handleSetShowSettings, showSettings, showInvitation, setShowInvitation } = props;
+  const { handleSetShowSettings, showSettings, showInvitation, setShowInvitation, setErrorMessage } = props;
 
   const { state, dispatch } = useInfoContext();
 
@@ -58,7 +59,7 @@ function Settings (props: Props) {
       const usersAuth = await getAllAllowedUsers(user, token);
       setUsersAuthorized(usersAuth);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -69,7 +70,7 @@ function Settings (props: Props) {
     try {
       await insertAuthorizedUser(userWhoHasAccess, user, token);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
     setUserWhoHasAccess('');
 
@@ -83,7 +84,7 @@ function Settings (props: Props) {
     try {
       await deleteUserAuthorized(id, user, token, userToRemove);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
 
     getAllowedUsers();
@@ -115,7 +116,7 @@ function Settings (props: Props) {
               token
             );
           } catch (error) {
-            return showError(error);
+            return setErrorMessage(errorText(error));
           }
 
           newIdCurrentDatabase = idDatabaseCurrent;
@@ -123,7 +124,7 @@ function Settings (props: Props) {
           try {
             await saveDatabaseIWantToAccess(database, user, token);
           } catch (error) {
-            return showError(error);
+            return setErrorMessage(errorText(error));
           }
 
           const accessDatabase: AccessDatabase | Error = await fetchAccessDatabase(
@@ -146,7 +147,7 @@ function Settings (props: Props) {
         setMessageAuthorization('Permissão NEGADA');
       }
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -158,7 +159,7 @@ function Settings (props: Props) {
     try {
       await deleteAccessToCurrentDatabase(idDatabaseCurrent, user, token);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
 
     setMessageAuthorization('Alterando banco de dados...');
@@ -176,7 +177,7 @@ function Settings (props: Props) {
 
       setAllowedDatabases(databases);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -245,6 +246,7 @@ function Settings (props: Props) {
       <InvitationModal accessDataFromAnotherUser={accessDataFromAnotherUser}
       showInvitation={showInvitation}
       setShowInvitation={setShowInvitation}
+      setErrorMessage={setErrorMessage}
       />
     </C.Container>
   );

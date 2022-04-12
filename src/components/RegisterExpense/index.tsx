@@ -4,7 +4,7 @@ import { insertTransactionModelIntoDatabase } from '../../database/firebase';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import * as C from './styles';
 import { checkAccess } from '../../helpers/authorizations';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
 
 type Props = {
   handleShowRegisterExpense: () => void;
@@ -12,6 +12,7 @@ type Props = {
   expenseListCategory: string[];
   getProducts: () => void;
   showInvitation: Boolean;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 function RegisterExpense (props: Props) {
@@ -20,7 +21,8 @@ function RegisterExpense (props: Props) {
     showRegisterExpense,
     expenseListCategory,
     getProducts,
-    showInvitation
+    showInvitation,
+    setErrorMessage
   } = props;
 
   const { state } = useInfoContext();
@@ -68,7 +70,7 @@ function RegisterExpense (props: Props) {
         authorizedDatabase
       );
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
     getProducts();
 
