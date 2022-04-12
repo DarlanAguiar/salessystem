@@ -35,7 +35,8 @@ import Settings from '../Settings';
 import { checkAccess } from '../../helpers/authorizations';
 import Footer from '../Footer';
 import Headerlogo from '../HeaderLogo';
-import { showError } from '../../helpers/error';
+import { errorText } from '../../helpers/error';
+import ErrorMessage from '../ErrorMessage';
 
 const auth = getAuth();
 
@@ -62,6 +63,7 @@ function Home () {
   const [listAmountOfMoney, setlistAmountOfMoney] = useState<BestSeller[]>([]);
   const [showSettings, setShowSettings] = useState(false);
   const [showInvitation, setShowInvitation] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     setListBestSellers(orderedByBestSellers(list));
@@ -135,7 +137,7 @@ function Home () {
       );
       setDatabaseProducts(listModelDatabaseProducts);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -161,7 +163,7 @@ function Home () {
       );
       setList(listDataBase);
     } catch (error) {
-      return showError(error);
+      return setErrorMessage(errorText(error));
     }
   };
 
@@ -194,7 +196,7 @@ function Home () {
           authorizedDatabase
         );
       } catch (error) {
-        return showError(error);
+        return setErrorMessage(errorText(error));
       }
     });
 
@@ -268,8 +270,12 @@ function Home () {
         <C.ButtonSettings onClick={() => handleSetShowSettings()}>
           <IoMdSettings />
         </C.ButtonSettings>
-        <C.Database>{state.databaseAuth ? state.databaseAuth : state.user}</C.Database>
-       <Headerlogo />
+        <C.Database>
+          {state.databaseAuth ? state.databaseAuth : state.user}
+        </C.Database>
+        <Headerlogo
+          setErrorMessage={setErrorMessage}
+        />
       </C.Header>
       <C.Body>
         <InfoArea
@@ -303,6 +309,7 @@ function Home () {
           filteredList={list}
           titleTable={titleTable}
           getList={getList}
+          setErrorMessage={setErrorMessage}
         />
       </C.Body>
 
@@ -311,7 +318,8 @@ function Home () {
         showRegisterExpense={showRegisterExpense}
         expenseListCategory={expenseListCategory}
         getProducts={getProducts}
-      showInvitation={showInvitation}
+        showInvitation={showInvitation}
+        setErrorMessage={setErrorMessage}
       />
       <RegisterProduct
         handleShowRegisterProduct={handleShowRegisterProduct}
@@ -319,6 +327,7 @@ function Home () {
         productCategoryList={productCategoryList}
         getProducts={getProducts}
         showInvitation={showInvitation}
+        setErrorMessage={setErrorMessage}
       />
       <ExpenseArea
         onAdd={handleAddItem}
@@ -340,6 +349,11 @@ function Home () {
         showSettings={showSettings}
         showInvitation={showInvitation}
         setShowInvitation={setShowInvitation}
+        setErrorMessage={setErrorMessage}
+      />
+
+      <ErrorMessage
+        errorMessage={errorMessage}
       />
 
       <Footer />

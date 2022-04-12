@@ -25,6 +25,7 @@ export const getPhoto = async (
 };
 
 // Não consegui enviar o arquivo para o server.
+let n = ' ';// Mega Gambiarra
 export const uploadingPhoto = async (
   user: string | null | undefined,
   authorizedDatabase: string | null,
@@ -46,7 +47,12 @@ export const uploadingPhoto = async (
 
     return photoUrl;
   } else {
-    throw new Error('Tipo de arquivo Não permitido');
+    if (n === ' ') {
+      n = '';
+    } else {
+      n = ' ';
+    };
+    throw new Error(`Formato não aceito, permitido apenas .jpeg, .jpg e .png ${n}`);
   }
 };
 
