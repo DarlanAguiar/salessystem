@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ showRegisterExpense: boolean }>`
+export const Container = styled.div<{
+  showRegisterExpense: boolean;
+  showInvitation: Boolean;
+}>`
   width: 100vw;
   background-color: var(--colorBackground2);
   border-radius: 0 0 30px 30px;
@@ -13,6 +16,7 @@ export const Container = styled.div<{ showRegisterExpense: boolean }>`
   border: 3px solid
     ${(props) => (props.showRegisterExpense ? 'darkblue' : '#fff')};
   border-top: 0;
+  display: ${(props) => (props.showInvitation ? 'none' : 'block')};
 `;
 
 export const ContainerForm = styled.form``;
@@ -111,7 +115,9 @@ export const ButtonExpenseCancel = styled.button`
   }
 `;
 
-export const CloseExpenseButton = styled.button<{showRegisterExpense: boolean}>`
+export const CloseExpenseButton = styled.button<{
+  showRegisterExpense: boolean;
+}>`
   width: 110px;
   height: 35px;
   padding: 5px;

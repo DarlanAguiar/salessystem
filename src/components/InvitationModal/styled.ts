@@ -7,10 +7,10 @@ export const container = styled.div<{showInvitation: boolean}>`
   top: 0;
   left: 0;
   z-index: 9;
-  background-color: rgba(173, 216, 230, 0.698);
+  background-color: blue;
   display: ${(props) => props.showInvitation ? 'block' : 'none'};
 `;
-
+/* rgba(173, 216, 230, 0.698); */
 export const CardModal = styled.div`
   width: 70vw;
   margin: 100px auto;
@@ -20,6 +20,22 @@ export const CardModal = styled.div`
   border-radius: 15px;
   text-align: center;
   position: relative;
+`;
+
+export const Loading = styled.div`
+position: absolute;
+top: 0;
+left: 0;
+border-radius: 10px;
+background-color: lightblue;
+width: 100%;
+height: 100%;
+font-size: 25px;
+z-index: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+
 `;
 
 export const ButtonClose = styled.button`

@@ -8,6 +8,7 @@ type Props = {
   getProducts: () => void;
   handleSetShowRemoveModel: () => void;
   showRemoveModel: boolean;
+  showInvitation: Boolean;
 };
 
 function TableRemoveModel (props: Props) {
@@ -15,7 +16,8 @@ function TableRemoveModel (props: Props) {
     databaseProduct,
     getProducts,
     handleSetShowRemoveModel,
-    showRemoveModel
+    showRemoveModel,
+    showInvitation
   } = props;
 
   const transaction = databaseProduct.sort((element1, element2) => {
@@ -23,7 +25,7 @@ function TableRemoveModel (props: Props) {
   });
 
   return (
-    <C.Container showRemoveModel={showRemoveModel}>
+    <C.Container showRemoveModel={showRemoveModel} showInvitation={showInvitation}>
       <div>
         <C.ContainerTable>
           <div className="areaTable">

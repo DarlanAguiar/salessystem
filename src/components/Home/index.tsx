@@ -61,6 +61,7 @@ function Home () {
   const [listBestSellers, setListBestSellers] = useState<BestSeller[]>([]);
   const [listAmountOfMoney, setlistAmountOfMoney] = useState<BestSeller[]>([]);
   const [showSettings, setShowSettings] = useState(false);
+  const [showInvitation, setShowInvitation] = useState(true);
 
   useEffect(() => {
     setListBestSellers(orderedByBestSellers(list));
@@ -310,17 +311,20 @@ function Home () {
         showRegisterExpense={showRegisterExpense}
         expenseListCategory={expenseListCategory}
         getProducts={getProducts}
+      showInvitation={showInvitation}
       />
       <RegisterProduct
         handleShowRegisterProduct={handleShowRegisterProduct}
         showRegisterProduct={showRegisterProduct}
         productCategoryList={productCategoryList}
         getProducts={getProducts}
+        showInvitation={showInvitation}
       />
       <ExpenseArea
         onAdd={handleAddItem}
         databaseProducts={databaseProducts}
         categoryList={expenseListCategory}
+        showInvitation={showInvitation}
       />
 
       <TableRemoveModel
@@ -328,11 +332,14 @@ function Home () {
         getProducts={getProducts}
         handleSetShowRemoveModel={handleSetShowRemoveModel}
         showRemoveModel={showRemoveModel}
+        showInvitation={showInvitation}
       />
 
       <Settings
         handleSetShowSettings={handleSetShowSettings}
         showSettings={showSettings}
+        showInvitation={showInvitation}
+        setShowInvitation={setShowInvitation}
       />
 
       <Footer />

@@ -20,7 +20,8 @@ import {
   checkInvitation,
   deleteInvitation,
   lisAllAuthorizedUser,
-  removeAuthorizedUser
+  removeAuthorizedUser,
+  searchAuthorizedDatabase
 } from './serverController/authorizationRoutes';
 import {
   addAccessDatabase,
@@ -91,6 +92,11 @@ router.get(
 router.delete(
   '/home/invitation', validateToken,
   deleteInvitation
+);
+
+router.get(
+  '/home/alloweddb/:user/:token/', validateToken,
+  searchAuthorizedDatabase
 );
 
 // Rotas para banco de dado autorizado(CRUD)
