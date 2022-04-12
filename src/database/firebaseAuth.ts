@@ -107,3 +107,19 @@ export const removeInvitation = async (
     throw new Error('Erro ao remover convites, reinicie a aplicação');
   }
 };
+
+export const checkAuthorizedDatabase = async (
+  user: string | null | undefined,
+  token: string | undefined
+) => {
+  let authorizedDatabase = [];
+
+  try {
+    const resp = await fetch(`${URL}alloweddb/${user}/${token}`);
+    authorizedDatabase = await resp.json();
+  } catch (error) {
+    throw new Error('Problemas no servidor GET, buscando banco de dados autorizado');
+  }
+
+  return authorizedDatabase;
+};

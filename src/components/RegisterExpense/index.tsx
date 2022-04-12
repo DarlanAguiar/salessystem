@@ -11,6 +11,7 @@ type Props = {
   showRegisterExpense: boolean;
   expenseListCategory: string[];
   getProducts: () => void;
+  showInvitation: Boolean;
 };
 
 function RegisterExpense (props: Props) {
@@ -18,7 +19,8 @@ function RegisterExpense (props: Props) {
     handleShowRegisterExpense,
     showRegisterExpense,
     expenseListCategory,
-    getProducts
+    getProducts,
+    showInvitation
   } = props;
 
   const { state } = useInfoContext();
@@ -75,7 +77,7 @@ function RegisterExpense (props: Props) {
   };
 
   return (
-    <C.Container showRegisterExpense={showRegisterExpense}>
+    <C.Container showRegisterExpense={showRegisterExpense} showInvitation={showInvitation}>
       <C.ContainerForm onSubmit={handleSubmit}>
         <C.FormField>
           <C.DivInputTop>

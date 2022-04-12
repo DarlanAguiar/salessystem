@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ showExpenseField: boolean }>`
+export const Container = styled.div<{ showExpenseField: boolean, showInvitation: Boolean }>`
   transition: 0.5s;
   width: 100vw;
   background-color: lightblue;
@@ -12,6 +12,7 @@ export const Container = styled.div<{ showExpenseField: boolean }>`
   position: fixed;
   top: ${(props) => (props.showExpenseField ? '0' : '-170')}px;
   z-index: ${(props) => (props.showExpenseField ? '5' : '1')};
+  display: ${(props) => (props.showInvitation ? 'none' : 'block')};
 
   @media (max-width: 600px) {
     border-radius: 0 0 0 40px;

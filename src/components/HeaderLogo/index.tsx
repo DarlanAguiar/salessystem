@@ -40,7 +40,9 @@ function Headerlogo () {
     try {
       const logo: Photo | null = await getPhoto(user, token, authorizedDatabase);
 
-      setLogo(logo.url);
+      if (logo !== null) {
+        setLogo(logo.url);
+      }
     } catch (error) {
       return showError(error);
     }
@@ -62,16 +64,15 @@ function Headerlogo () {
         }
       }
 
-      setUploading(false);
-      handleShowFieldSendPhoto();
-
       try {
         await uploadingPhoto(user, authorizedDatabase, file);
       } catch (error) {
         return showError(error);
       }
 
-      getLogo();
+      await getLogo();
+      setUploading(false);
+      handleShowFieldSendPhoto();
     }
   };
 

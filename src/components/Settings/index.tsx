@@ -6,7 +6,8 @@ import {
   insertAuthorizedUser,
   getAllAllowedUsers,
   deleteUserAuthorized,
-  confirmAuthorization
+  confirmAuthorization,
+  checkAuthorizedDatabase
 } from '../../database/firebaseAuth';
 import { AccessDatabase, UserAuth } from '../../types/users';
 import { IoMdClose } from 'react-icons/io';
@@ -22,23 +23,26 @@ import { showError } from '../../helpers/error';
 type Props = {
   handleSetShowSettings: () => void;
   showSettings: boolean;
+  showInvitation: boolean;
+  setShowInvitation: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 function Settings (props: Props) {
-  const { handleSetShowSettings, showSettings } = props;
+  const { handleSetShowSettings, showSettings, showInvitation, setShowInvitation } = props;
 
   const { state, dispatch } = useInfoContext();
 
   const [userWhoHasAccess, setUserWhoHasAccess] = useState('');
-  const [userIWantToAccess, setUserIWantToAccess] = useState('');
   const [usersAuthorized, setUsersAuthorized] = useState<UserAuth[]>([]);
   const [messageAuthorization, setMessageAuthorization] = useState('');
   const [showButtonAccessMyDatabase, setShowButtonAccessMyDatabase] =
     useState(false);
+  const [allowedDatabases, setAllowedDatabases] = useState<string[]>([]);
 
   useEffect(() => {
     if (state.infoUser?.email) {
       getAllowedUsers();
+      fetchAllowedDatabase();
 
       if (state.databaseAuth) {
         setShowButtonAccessMyDatabase(true);
@@ -130,16 +134,14 @@ function Settings (props: Props) {
           newIdCurrentDatabase = accessDatabase.id;
         }
 
-        setTimeout(() => {
-          dispatch({
-            type: FormActions.setDatabaseAuth,
-            payload: database
-          });
-          dispatch({
-            type: FormActions.setIdDatabaseAuth,
-            payload: newIdCurrentDatabase
-          });
-        }, 3000);
+        dispatch({
+          type: FormActions.setDatabaseAuth,
+          payload: database
+        });
+        dispatch({
+          type: FormActions.setIdDatabaseAuth,
+          payload: newIdCurrentDatabase
+        });
       } else {
         setMessageAuthorization('Permissão NEGADA');
       }
@@ -161,10 +163,21 @@ function Settings (props: Props) {
 
     setMessageAuthorization('Alterando banco de dados...');
 
-    setTimeout(() => {
-      dispatch({ type: FormActions.setDatabaseAuth, payload: null });
-      setShowButtonAccessMyDatabase(false);
-    }, 4000);
+    dispatch({ type: FormActions.setDatabaseAuth, payload: null });
+    setShowButtonAccessMyDatabase(false);
+  };
+
+  const fetchAllowedDatabase = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+
+    try {
+      const databases = await checkAuthorizedDatabase(user, token);
+
+      setAllowedDatabases(databases);
+    } catch (error) {
+      return showError(error);
+    }
   };
 
   return (
@@ -175,18 +188,13 @@ function Settings (props: Props) {
         </C.ButtonCloseSettings>
         <C.Title>Configurações</C.Title>
         <C.DivInput>
-          <C.TitleUser>Acessar dados de outro usuário</C.TitleUser>
-          <C.Label>E-mail do usuário:</C.Label>
-          <C.Input
-            type={'email'}
-            placeholder={'E-mail do usuário'}
-            value={userIWantToAccess}
-            onChange={(e) => setUserIWantToAccess(e.target.value)}
-          ></C.Input>
+          <C.TitleUser>Banco{allowedDatabases.length > 1 ? 's' : ''} de dados permitido{allowedDatabases.length > 1 ? 's' : ''}</C.TitleUser>
 
-          <C.ButtonConfirm onClick={() => accessDataFromAnotherUser(userIWantToAccess)}>
-            Verificar Permissão
-          </C.ButtonConfirm>
+          {allowedDatabases.map((database, index) => (
+          <C.ButtonDatabases key={index} onClick={() => accessDataFromAnotherUser(database)} invisible={database === state.databaseAuth }>{database}</C.ButtonDatabases>
+          ))
+
+          }
 
           <C.StatusAuthorization>{messageAuthorization}</C.StatusAuthorization>
         </C.DivInput>
@@ -234,7 +242,10 @@ function Settings (props: Props) {
           <hr />
         </C.DivInput>
       </C.ContainerFilds>
-      <InvitationModal accessDataFromAnotherUser={accessDataFromAnotherUser}/>
+      <InvitationModal accessDataFromAnotherUser={accessDataFromAnotherUser}
+      showInvitation={showInvitation}
+      setShowInvitation={setShowInvitation}
+      />
     </C.Container>
   );
 }

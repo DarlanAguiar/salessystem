@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ showRegisterProduct: boolean }>`
+export const Container = styled.div<{ showRegisterProduct: boolean, showInvitation: Boolean }>`
   width: 100vw;
   background-color: var(--colorBackground2);
   border-radius: 0 0 30px 5px;
@@ -13,6 +13,7 @@ export const Container = styled.div<{ showRegisterProduct: boolean }>`
   top: ${(props) => (props.showRegisterProduct ? '0' : '-170px')};
   left: 0;
   z-index: ${(props) => (props.showRegisterProduct ? '5' : '1')};
+  display: ${(props) => (props.showInvitation ? 'none' : 'block')};
 `;
 
 export const ContainerForm = styled.form``;

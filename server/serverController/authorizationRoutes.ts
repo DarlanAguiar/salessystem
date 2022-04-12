@@ -26,11 +26,19 @@ export const addAuthorizedUser = async (req: Request, res: Response) => {
     userSentInvitation: user
   };
 
+  const authorizations = {
+    user: userAuthorized,
+    allowedDatabase: user
+  };
+
   try {
     await addDoc(collection(db, `${user}.auth`), userValid);
     setResponseHeader(res);
 
     await addDoc(collection(db, 'invitations'), invitationCard);
+    setResponseHeader(res);
+
+    await addDoc(collection(db, 'accessPermissions'), authorizations);
     setResponseHeader(res);
 
     res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
@@ -71,13 +79,17 @@ export const removeAuthorizedUser = async (req: Request, res: Response) => {
     await deleteDoc(doc(db, `${user}.auth`, id));
 
     const invitations = collection(db, 'invitations');
-
     const dbRefInvitations = query(invitations, where('guestUser', '==', userToRemove), where('userSentInvitation', '==', user));
-
-    const querySnapshot = await getDocs(dbRefInvitations);
-
-    querySnapshot.forEach(async (docInvitations) => {
+    const querySnapshotInvitations = await getDocs(dbRefInvitations);
+    querySnapshotInvitations.forEach(async (docInvitations) => {
       await deleteDoc(doc(db, 'invitations', docInvitations.id));
+    });
+
+    const accessPermissions = collection(db, 'accessPermissions');
+    const RefaccessPermissions = query(accessPermissions, where('user', '==', userToRemove), where('allowedDatabase', '==', user));
+    const querySnapshotPermission = await getDocs(RefaccessPermissions);
+    querySnapshotPermission.forEach(async (docPermissions) => {
+      await deleteDoc(doc(db, 'accessPermissions', docPermissions.id));
     });
 
     res
@@ -152,9 +164,7 @@ export const deleteInvitation = async (req: Request, res: Response) => {
 
   try {
     const invitations = collection(db, 'invitations');
-
     const dbRefInvitations = query(invitations, where('guestUser', '==', user));
-
     const querySnapshot = await getDocs(dbRefInvitations);
 
     querySnapshot.forEach(async (docInvitations) => {
@@ -169,5 +179,44 @@ export const deleteInvitation = async (req: Request, res: Response) => {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Erro do seridor (Deletar convites)' });
+  }
+};
+
+export const searchAuthorizedDatabase = async (
+  req: Request,
+  res: Response
+) => {
+  const user = req.params.user;
+
+  try {
+    const listAuthorizedDatabase: Array<string | undefined> = [];
+
+    const result = collection(db, 'accessPermissions');
+    const dbRefPermission = query(result, where('user', '==', user));
+    const querySnapshot = await getDocs(dbRefPermission);
+
+    querySnapshot.forEach(async (data: QueryDocumentSnapshot) => {
+      const typedData: {allowedDatabase?: string} = data.data();
+      listAuthorizedDatabase.push(typedData.allowedDatabase);
+    });
+
+    // const result = await getDocs(
+    //   query(collection(db, 'invitations'))
+    // );
+    // const listAuthorizedDatabase: Array<string | undefined> = [];
+
+    // result.docs.forEach((data: QueryDocumentSnapshot) => {
+    //   const typedData: {user?: string, allowedDatabase?: string} = data.data();
+    //   if (typedData.user === user) {
+    //     listAuthorizedDatabase.push(typedData.userSentInvitation);
+    //   }
+    // });
+
+    return res.status(StatusCodes.OK).json(listAuthorizedDatabase);
+  } catch (err) {
+    console.error('Erro do serverRoutes: ', err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };

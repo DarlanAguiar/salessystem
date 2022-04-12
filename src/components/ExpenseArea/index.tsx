@@ -10,10 +10,11 @@ type Props = {
   onAdd: (item: Item[]) => void;
   databaseProducts: Product[];
   categoryList: string[];
+  showInvitation: Boolean;
 };
 
 function ExpenseArea (props: Props) {
-  const { onAdd, databaseProducts, categoryList } = props;
+  const { onAdd, databaseProducts, categoryList, showInvitation } = props;
 
   const [dateField, setDateField] = useState(getDate());
   const [categoryExpenseField, setCategoryExpenseField] = useState('');
@@ -94,7 +95,7 @@ function ExpenseArea (props: Props) {
   };
 
   return (
-    <C.Container showExpenseField={showExpenseField}>
+    <C.Container showExpenseField={showExpenseField} showInvitation={showInvitation}>
       <div>
         <C.ContainerInput>
           <C.DivInputTop>

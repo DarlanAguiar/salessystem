@@ -11,6 +11,7 @@ type Props = {
   showRegisterProduct: boolean;
   productCategoryList: string[];
   getProducts: () => void;
+  showInvitation: Boolean;
 };
 
 type FormType = {
@@ -33,7 +34,8 @@ function RegisterProduct (props: Props) {
     handleShowRegisterProduct,
     showRegisterProduct,
     productCategoryList,
-    getProducts
+    getProducts,
+    showInvitation
   } = props;
 
   const { state } = useInfoContext();
@@ -100,7 +102,7 @@ function RegisterProduct (props: Props) {
   };
 
   return (
-    <C.Container showRegisterProduct={showRegisterProduct}>
+    <C.Container showRegisterProduct={showRegisterProduct} showInvitation={showInvitation}>
       <C.ContainerForm onSubmit={handleSubmit}>
         <C.FormField>
           <C.DivInputTop>

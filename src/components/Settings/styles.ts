@@ -78,6 +78,17 @@ export const ButtonAccessMyDatabase = styled.button`
   margin-bottom: 10px;
 `;
 
+export const ButtonDatabases = styled.button<{invisible: boolean}>`
+cursor: pointer;
+display: ${(props) => props.invisible ? 'none' : 'block'};
+background-color: darkblue;
+padding: 5px;
+color: #fff;
+font-weight: bold;
+border-radius: 5px;
+margin-bottom: 5px;
+`;
+
 export const DivInputAuth = styled.div``;
 
 export const DivUsersAuth = styled.div``;

@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ showRemoveModel: boolean }>`
+export const Container = styled.div<{
+  showRemoveModel: boolean;
+  showInvitation: Boolean;
+}>`
   width: 100%;
   background-color: lightblue;
   height: 350px;
@@ -11,6 +14,7 @@ export const Container = styled.div<{ showRemoveModel: boolean }>`
   z-index: ${(props) => (props.showRemoveModel ? '5' : '1')};
   border: 3px solid ${(props) => (props.showRemoveModel ? 'darkblue' : '#fff')};
   border-top: 0;
+  display: ${(props) => (props.showInvitation ? 'none' : 'block')};
 
   @media (max-width: 600px) {
     width: 100vw;
