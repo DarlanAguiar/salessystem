@@ -71,6 +71,7 @@ export const getTransactionList = async (
       }
     );
     data = await resp.json();
+    console.log(data);
   } catch (error) {
     throw new Error('Erro ao buscar as transações(vendas/despesa), reinicie a aplicação ou tente novamente.');
   }

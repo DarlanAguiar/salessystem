@@ -98,7 +98,7 @@ export const getTransaction = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET)' });
+      .json(err);
   }
 };
 
