@@ -134,6 +134,7 @@ function Login () {
   };
 
   const showErrorLogin = (error: unknown) => {
+    console.log(error);
     const typedError = error as ErrorWithMessage;
     let errorMessage = null;
     switch (typedError?.message) {
