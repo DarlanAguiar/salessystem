@@ -144,7 +144,8 @@ function Home () {
   const getListByDate = async (initialDate: number, finalDate: number) => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
+    const authorizedDatabase = state.databaseAuth || user;
+    console.log(authorizedDatabase);
 
     if (authorizedDatabase) {
       const accessAuthorized = await checkAccess(state);

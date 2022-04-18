@@ -60,15 +60,9 @@ export const addTransaction = async (req: Request, res: Response) => {
 };
 
 export const getTransaction = async (req: Request, res: Response) => {
-  const user = req.params.user;
-  const authorizedDatabase = req.params.authorizedDatabase;
+  const referredDatabase = req.params.authorizedDatabase;
   const initialDate = new Date(Number(req.params.initialdate));
   const finalDate = new Date(Number(req.params.finaldate));
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== 'null') {
-    referredDatabase = authorizedDatabase;
-  }
 
   const arrayData: DataTransaction[] = [];
 
@@ -98,7 +92,7 @@ export const getTransaction = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json(err);
+      .json({ error: 'Erro interno do servidor (GET)' });
   }
 };
 
