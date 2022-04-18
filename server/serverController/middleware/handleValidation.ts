@@ -8,7 +8,7 @@ export const validateToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  let validToken = true;
+  let validToken = false;
 
   let { user, token } = req.body;
   if (user === undefined) {
@@ -20,8 +20,8 @@ export const validateToken = async (
     .verifyIdToken(token)
     .then((decodedToken: DecodedIdToken) => {
       const uid = decodedToken;
-      if (uid.email !== user) {
-        validToken = false;
+      if (uid.email === user) {
+        validToken = true;
       }
     })
     .catch((error: object) => {

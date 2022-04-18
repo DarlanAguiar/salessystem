@@ -19,7 +19,7 @@ import { setResponseHeader } from './helpers/responseHeader';
 
 export const addAuthorizedUser = async (req: Request, res: Response) => {
   const { userAuthorized, user } = req.body;
-  const userValid = { user: userAuthorized };
+  // const userValid = { user: userAuthorized };
 
   const invitationCard = {
     guestUser: userAuthorized,
@@ -32,11 +32,7 @@ export const addAuthorizedUser = async (req: Request, res: Response) => {
   };
 
   try {
-    await addDoc(collection(db, `${user}.auth`), userValid);
-    setResponseHeader(res);
-
     await addDoc(collection(db, 'invitations'), invitationCard);
-    setResponseHeader(res);
 
     await addDoc(collection(db, 'accessPermissions'), authorizations);
     setResponseHeader(res);
@@ -54,15 +50,17 @@ export const lisAllAuthorizedUser = async (req: Request, res: Response) => {
   const user = req.params.user;
 
   try {
-    const result = await getDocs(query(collection(db, `${user}.auth`)));
     const arrayData: DataUserAuthorized[] = [];
 
-    result.docs.forEach((data: QueryDocumentSnapshot) => {
+    const result = await query(collection(db, 'accessPermissions'), where('allowedDatabase', '==', user));
+    const querySnapshot = await getDocs(result);
+    querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
       arrayData.push({
-        id: data.id,
-        user: data.data().user
+        id: doc.id,
+        user: doc.data().user
       });
     });
+
     res.status(StatusCodes.OK).json(arrayData);
   } catch (err) {
     console.error('Erro do serverRoutes: ', err);
@@ -76,8 +74,6 @@ export const removeAuthorizedUser = async (req: Request, res: Response) => {
   const { id, user, userToRemove } = req.body;
 
   try {
-    await deleteDoc(doc(db, `${user}.auth`, id));
-
     const invitations = collection(db, 'invitations');
     const dbRefInvitations = query(invitations, where('guestUser', '==', userToRemove), where('userSentInvitation', '==', user));
     const querySnapshotInvitations = await getDocs(dbRefInvitations);
@@ -85,12 +81,7 @@ export const removeAuthorizedUser = async (req: Request, res: Response) => {
       await deleteDoc(doc(db, 'invitations', docInvitations.id));
     });
 
-    const accessPermissions = collection(db, 'accessPermissions');
-    const RefaccessPermissions = query(accessPermissions, where('user', '==', userToRemove), where('allowedDatabase', '==', user));
-    const querySnapshotPermission = await getDocs(RefaccessPermissions);
-    querySnapshotPermission.forEach(async (docPermissions) => {
-      await deleteDoc(doc(db, 'accessPermissions', docPermissions.id));
-    });
+    await deleteDoc(doc(db, 'accessPermissions', id));
 
     res
       .status(StatusCodes.OK)
@@ -108,18 +99,16 @@ export const checkAuthorizationInUserList = async (
   res: Response
 ) => {
   const user = req.params.user;
-  const usertoconfirm = req.params.usertoconfirm;
+  const dbToConfirm = req.params.usertoconfirm;
 
   try {
-    const result = await getDocs(
-      query(collection(db, `${usertoconfirm}.auth`))
-    );
     let authorized = false;
 
-    result.docs.forEach((data: QueryDocumentSnapshot) => {
-      if (data.data().user === user) {
-        authorized = true;
-      }
+    const result = await query(collection(db, 'accessPermissions'), where('allowedDatabase', '==', dbToConfirm), where('user', '==', user));
+    const querySnapshot = await getDocs(result);
+
+    querySnapshot.forEach((doc: QueryDocumentSnapshot) => {
+      authorized = true;
     });
 
     return res.status(StatusCodes.OK).json({ authorized: authorized });

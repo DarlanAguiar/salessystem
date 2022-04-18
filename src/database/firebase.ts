@@ -56,7 +56,7 @@ export const insertTransactionIntoDatabase = async (
 export const getTransactionList = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null,
+  authorizedDatabase: string | null | undefined,
   initialDate: number,
   finalDate: number
 ) => {
@@ -71,7 +71,6 @@ export const getTransactionList = async (
       }
     );
     data = await resp.json();
-    console.log(data);
   } catch (error) {
     throw new Error('Erro ao buscar as transações(vendas/despesa), reinicie a aplicação ou tente novamente.');
   }

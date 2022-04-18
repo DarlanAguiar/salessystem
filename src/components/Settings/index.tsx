@@ -214,11 +214,11 @@ function Settings (props: Props) {
 
         <C.DivInput>
           <C.DivInputAuth>
-            <C.TitleUser>Permitir acesso ao meus dados</C.TitleUser>
+            <C.TitleUser>Permitir acesso aos meus dados</C.TitleUser>
             <C.Label>Autorizar usuário a acessar meus dados</C.Label>
             <C.Input
               type={'email'}
-              placeholder={'E-mail autorizado'}
+              placeholder={'Usuário autorizado'}
               value={userWhoHasAccess}
               onChange={(e) => setUserWhoHasAccess(e.target.value)}
             ></C.Input>
