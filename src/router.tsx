@@ -27,7 +27,6 @@ function Router () {
       }
       onAuthStateChanged(auth, async (usuarioFirebase) => {
         if (usuarioFirebase !== null) {
-          // console.log(usuarioFirebase);
           const token = await usuarioFirebase.getIdToken();
 
           dispatch({ type: FormActions.setAuthenticated, payload: true });

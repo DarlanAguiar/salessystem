@@ -5,5 +5,5 @@ export const errorText = (error: unknown): string => {
 
 export const showError = (error: unknown) => {
   const err = error as Error;
-  alert(`${err.name} - ${err}`);
+  alert(`${err.name} - ${err.message}`);
 };

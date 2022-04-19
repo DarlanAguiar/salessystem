@@ -11,6 +11,8 @@ function ErrorMessage (props: Props) {
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
+    console.log(errorMessage);
+
     if (errorMessage !== '') {
       setShowError(true);
       setTimeout(() => {
