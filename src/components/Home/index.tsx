@@ -32,7 +32,6 @@ import {
   orderedByBestSellers
 } from '../../helpers/filterByProducts';
 import Settings from '../Settings';
-import { checkAccess } from '../../helpers/authorizations';
 import Footer from '../Footer';
 import Headerlogo from '../HeaderLogo';
 import { errorText } from '../../helpers/error';
@@ -127,7 +126,7 @@ function Home () {
   const getProducts = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       const listModelDatabaseProducts = await getModelTransactionList(
@@ -145,14 +144,6 @@ function Home () {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
     const authorizedDatabase = state.databaseAuth || user;
-    console.log(authorizedDatabase);
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
 
     try {
       const listDataBase = await getTransactionList(
@@ -180,14 +171,7 @@ function Home () {
     items.forEach(async (item) => {
       const user = state.infoUser?.email;
       const token = await state.infoUser?.getIdToken();
-      const authorizedDatabase = state.databaseAuth;
-
-      if (authorizedDatabase) {
-        const accessAuthorized = await checkAccess(state);
-        if (!accessAuthorized) {
-          return;
-        }
-      }
+      const authorizedDatabase = state.databaseAuth || user;
 
       try {
         await insertTransactionIntoDatabase(
@@ -355,6 +339,7 @@ function Home () {
 
       <ErrorMessage
         errorMessage={errorMessage}
+        setErrorMessage={setErrorMessage}
       />
 
       <Footer />

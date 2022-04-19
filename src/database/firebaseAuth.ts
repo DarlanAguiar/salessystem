@@ -6,14 +6,22 @@ export const insertAuthorizedUser = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
+  let errorMessage = '';
+
   try {
-    await fetch(`${URL}auth`, {
+    const resp = await fetch(`${URL}auth`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({ userAuthorized, user, token })
     });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(err.message);
+    }
   } catch (error) {
-    throw new Error('Erro ao enviar autorização, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 };
 
@@ -23,14 +31,22 @@ export const deleteUserAuthorized = async (
   token: string | undefined,
   userToRemove: string
 ) => {
+  let errorMessage = '';
+
   try {
-    await fetch(`${URL}auth`, {
+    const resp = await fetch(`${URL}auth`, {
       method: 'DELETE',
       headers: headers,
       body: JSON.stringify({ id, user, token, userToRemove })
     });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao remover autorização, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 };
 
@@ -39,6 +55,7 @@ export const getAllAllowedUsers = async (
   token: string | undefined
 ):Promise<UserAuth[]> => {
   let data: UserAuth[] = [];
+  let errorMessage = '';
 
   try {
     const resp = await fetch(`${URL}auth/${user}/${token}`, {
@@ -46,14 +63,21 @@ export const getAllAllowedUsers = async (
       headers: headers
     });
 
-    data = await resp.json();
+    if (resp.ok) {
+      data = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao buscar lista de usuários autorizados, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 
   return data;
 };
 
+// mudar para middleware
 export const confirmAuthorization = async (
   user: string | null | undefined,
   token: string | undefined,
@@ -62,16 +86,22 @@ export const confirmAuthorization = async (
   let authorization: Authorized = {
     authorized: false
   };
+  let errorMessage = '';
 
   try {
     const resp = await fetch(`${URL}auth/${user}/${token}/${userToConfirm}`, {
       method: 'GET',
       headers: headers
     });
-
-    authorization = await resp.json();
+    if (resp.ok) {
+      authorization = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao confirmar autorizção, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 
   return authorization;
@@ -82,12 +112,20 @@ export const checkInvitationDatabase = async (
   token: string | undefined
 ) => {
   let invitations = [];
+  let errorMessage = '';
 
   try {
     const resp = await fetch(`${URL}invitation/${user}/${token}`);
-    invitations = await resp.json();
+
+    if (resp.ok) {
+      invitations = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Problemas no servidor GET, buscando convites');
+    throw new Error(errorMessage);
   }
 
   return invitations;
@@ -97,14 +135,21 @@ export const removeInvitation = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
+  let errorMessage = '';
+
   try {
-    await fetch(`${URL}invitation`, {
+    const resp = await fetch(`${URL}invitation`, {
       method: 'DELETE',
       headers: headers,
       body: JSON.stringify({ user, token })
     });
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao remover convites, reinicie a aplicação');
+    throw new Error(errorMessage);
   }
 };
 
@@ -113,12 +158,20 @@ export const checkAuthorizedDatabase = async (
   token: string | undefined
 ) => {
   let authorizedDatabase = [];
+  let errorMessage = '';
 
   try {
     const resp = await fetch(`${URL}alloweddb/${user}/${token}`);
-    authorizedDatabase = await resp.json();
+
+    if (resp.ok) {
+      authorizedDatabase = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Problemas no servidor GET, buscando banco de dados autorizado');
+    throw new Error(errorMessage);
   }
 
   return authorizedDatabase;

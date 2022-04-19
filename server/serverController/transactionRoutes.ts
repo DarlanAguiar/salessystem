@@ -18,12 +18,8 @@ import { db } from '../routes';
 import { setResponseHeader } from './helpers/responseHeader';
 
 export const addModelTransaction = async (req: Request, res: Response) => {
-  const { data, user, authorizedDatabase } = req.body;
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== null) {
-    referredDatabase = authorizedDatabase;
-  }
+  const { data, authorizedDatabase } = req.body;
+  const referredDatabase = authorizedDatabase;
 
   try {
     await addDoc(collection(db, `${referredDatabase}.modeltransaction`), data);
@@ -32,18 +28,14 @@ export const addModelTransaction = async (req: Request, res: Response) => {
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (POST)' });
+      .json({ message: 'Erro ao inserir os dados, reinicie a aplicação ou tente novamente.' });
     console.error(err);
   }
 };
 
 export const addTransaction = async (req: Request, res: Response) => {
-  const { data, user, authorizedDatabase } = req.body;
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== null) {
-    referredDatabase = authorizedDatabase;
-  }
+  const { data, authorizedDatabase } = req.body;
+  const referredDatabase = authorizedDatabase;
 
   data.date = new Date(data.date);
 
@@ -54,7 +46,7 @@ export const addTransaction = async (req: Request, res: Response) => {
   } catch (err) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (POST)' });
+      .json({ message: 'Erro ao inserir os dados, reinicie a aplicação ou tente novamente.' });
     console.error(err);
   }
 };
@@ -89,21 +81,15 @@ export const getTransaction = async (req: Request, res: Response) => {
 
     res.status(StatusCodes.OK).json(arrayData);
   } catch (err) {
-    console.error('Erro do serverRoutes: ', err);
+    console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET)' });
+      .json({ message: 'Erro ao buscar as transações(vendas/despesa), reinicie a aplicação ou tente novamente.' });
   }
 };
 
 export const getModelTransaction = async (req: Request, res: Response) => {
-  const user = req.params.user;
-  const authorizedDatabase = req.params.authorizedDatabase;
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== 'null') {
-    referredDatabase = authorizedDatabase;
-  }
+  const referredDatabase = req.params.authorizedDatabase;
 
   try {
     const result = await getDocs(
@@ -127,17 +113,13 @@ export const getModelTransaction = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET)' });
+      .json({ message: 'Erro ao buscar as transações(modelos), reinicie a aplicação ou tente novamente.' });
   }
 };
 
 export const deleteTransaction = async (req: Request, res: Response) => {
-  const { id, user, authorizedDatabase } = req.body;
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== null) {
-    referredDatabase = authorizedDatabase;
-  }
+  const { id, authorizedDatabase } = req.body;
+  const referredDatabase = authorizedDatabase;
 
   try {
     await deleteDoc(doc(db, referredDatabase, id));
@@ -146,17 +128,13 @@ export const deleteTransaction = async (req: Request, res: Response) => {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (DELETE)' });
+      .json({ message: 'Erro ao deletar a transação(venda/despesa), reinicie a aplicação ou tente novamente.' });
   }
 };
 
 export const deleteModelTransaction = async (req: Request, res: Response) => {
-  const { id, user, authorizedDatabase } = req.body;
-  let referredDatabase = user;
-
-  if (authorizedDatabase !== null) {
-    referredDatabase = authorizedDatabase;
-  }
+  const { id, authorizedDatabase } = req.body;
+  const referredDatabase = authorizedDatabase;
 
   try {
     await deleteDoc(doc(db, `${referredDatabase}.modeltransaction`, id));
@@ -165,6 +143,6 @@ export const deleteModelTransaction = async (req: Request, res: Response) => {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (DELETE)' });
+      .json({ message: 'Erro ao deletar a transação(Modelo), reinicie a aplicação ou tente novamente.' });
   }
 };

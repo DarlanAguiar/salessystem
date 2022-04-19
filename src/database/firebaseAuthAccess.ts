@@ -6,16 +6,20 @@ export const saveDatabaseIWantToAccess = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
+  let errorMessage = '';
   try {
-    await fetch(`${URL}authaccess`, {
+    const resp = await fetch(`${URL}authaccess`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({ userIWantToAccess, user, token })
     });
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error(
-      'Problemas no servidor ao salvar um banco de dados autorizado, reinicie a aplicação ou tente novamente.'
-    );
+    throw new Error(errorMessage);
   }
 };
 
@@ -27,18 +31,23 @@ export const fetchAccessDatabase = async (
     id: '',
     nameDatabase: ''
   };
-
+  let errorMessage = '';
   try {
     const resp = await fetch(`${URL}authaccess/${user}/${token}`, {
       method: 'GET',
       headers: headers
     });
-    accessDatabase = await resp.json();
+    if (resp.ok) {
+      accessDatabase = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error(
-      'Erro ao buscar um banco de dados autorizado, reinicie a aplicação ou tente novamente..'
-    );
+    throw new Error(errorMessage);
   }
+
   return accessDatabase;
 };
 
@@ -48,8 +57,10 @@ export const updateDatabaseIWantToAccess = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
+  let errorMessage = '';
+
   try {
-    await fetch(`${URL}authaccess`, {
+    const resp = await fetch(`${URL}authaccess`, {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify({
@@ -59,9 +70,14 @@ export const updateDatabaseIWantToAccess = async (
         token
       })
     });
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao atualizar banco de dados, reinicie a aplicação ou tente novamente.');
-  };
+    throw new Error(errorMessage);
+  }
 };
 
 export const deleteAccessToCurrentDatabase = async (
@@ -69,13 +85,19 @@ export const deleteAccessToCurrentDatabase = async (
   user: string | null | undefined,
   token: string | undefined
 ) => {
+  let errorMessage = '';
   try {
-    await fetch(`${URL}authaccess`, {
+    const resp = await fetch(`${URL}authaccess`, {
       method: 'DELETE',
       headers: headers,
       body: JSON.stringify({ id, user, token })
     });
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao remover banco de dados atual, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 };

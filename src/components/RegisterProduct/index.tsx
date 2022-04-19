@@ -3,7 +3,6 @@ import { FaWineBottle } from 'react-icons/fa';
 import * as C from './styles';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { insertTransactionModelIntoDatabase } from '../../database/firebase';
-import { checkAccess } from '../../helpers/authorizations';
 import { errorText } from '../../helpers/error';
 
 type Props = {
@@ -78,14 +77,7 @@ function RegisterProduct (props: Props) {
 
     const token = await state.infoUser?.getIdToken();
     const user = state.infoUser?.email;
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       await insertTransactionModelIntoDatabase(

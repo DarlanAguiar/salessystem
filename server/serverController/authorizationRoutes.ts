@@ -19,7 +19,6 @@ import { setResponseHeader } from './helpers/responseHeader';
 
 export const addAuthorizedUser = async (req: Request, res: Response) => {
   const { userAuthorized, user } = req.body;
-  // const userValid = { user: userAuthorized };
 
   const invitationCard = {
     guestUser: userAuthorized,
@@ -40,7 +39,7 @@ export const addAuthorizedUser = async (req: Request, res: Response) => {
     res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: 'Erro interno do servidor (POST), postando um usuario autorizado.'
+      message: 'Erro ao enviar autorização, reinicie a aplicação ou tente novamente.'
     });
     console.error(err);
   }
@@ -66,7 +65,7 @@ export const lisAllAuthorizedUser = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
+      .json({ message: 'Erro ao buscar lista de usuários autorizados, reinicie a aplicação ou tente novamente.' });
   }
 };
 
@@ -90,7 +89,7 @@ export const removeAuthorizedUser = async (req: Request, res: Response) => {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro do seridor (Deletar usuário)' });
+      .json({ message: 'Erro ao deletar um usuário autorizado' });
   }
 };
 
@@ -116,7 +115,7 @@ export const checkAuthorizationInUserList = async (
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
+      .json({ message: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };
 
@@ -144,7 +143,7 @@ export const checkInvitation = async (
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
+      .json({ message: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };
 
@@ -167,7 +166,7 @@ export const deleteInvitation = async (req: Request, res: Response) => {
     console.error(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro do seridor (Deletar convites)' });
+      .json({ message: 'Erro ao remover convites, reinicie a aplicação' });
   }
 };
 
@@ -189,23 +188,11 @@ export const searchAuthorizedDatabase = async (
       listAuthorizedDatabase.push(typedData.allowedDatabase);
     });
 
-    // const result = await getDocs(
-    //   query(collection(db, 'invitations'))
-    // );
-    // const listAuthorizedDatabase: Array<string | undefined> = [];
-
-    // result.docs.forEach((data: QueryDocumentSnapshot) => {
-    //   const typedData: {user?: string, allowedDatabase?: string} = data.data();
-    //   if (typedData.user === user) {
-    //     listAuthorizedDatabase.push(typedData.userSentInvitation);
-    //   }
-    // });
-
     return res.status(StatusCodes.OK).json(listAuthorizedDatabase);
   } catch (err) {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
+      .json({ message: 'Erro interno do servidor (GET), buscando usuario' });
   }
 };

@@ -25,7 +25,7 @@ export const addAccessDatabase = async (req: Request, res: Response) => {
     res.status(StatusCodes.CREATED).json({ message: 'Iserido com sucesso' });
   } catch (err) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: 'Erro interno do servidor (POST), postando um usuario autorizado.'
+      message: 'Erro ao salvar um banco de dados autorizado, reinicie a aplicação ou tente novamente.'
     });
     console.error(err);
   }
@@ -52,7 +52,7 @@ export const fetchAccessDatabase = async (req: Request, res: Response) => {
     console.error('Erro do serverRoutes: ', err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Erro interno do servidor (GET), buscando usuario' });
+      .json({ message: 'Erro ao buscar um banco de dados autorizado, reinicie a aplicação ou tente novamente.' });
   }
 };
 
@@ -69,7 +69,7 @@ export const changeAccessDatabase = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error:
+      message:
         'Erro interno do servidor ( ao atualizar o banco de dados que quero o acesso)'
     });
   }
@@ -84,7 +84,7 @@ export const removeAccessDatabase = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: 'Erro interno do servidor (deletar acesso ao banco de dados)'
+      message: 'Erro interno do servidor (deletar acesso ao banco de dados)'
     });
   }
 };

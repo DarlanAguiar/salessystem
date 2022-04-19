@@ -1,7 +1,6 @@
 import * as C from './styles';
 import { useState, useEffect, FormEvent } from 'react';
 import { useInfoContext } from '../../contexts/userInfoContext';
-import { checkAccess } from '../../helpers/authorizations';
 import { getPhoto, getTitles, setTitleDatabase, updateTitleDatabase, uploadingPhoto } from '../../database/firebaseLogo';
 import { Photo, TitleLogo, TitleLogoDatabase } from '../../types/logo';
 import { IoMdClose } from 'react-icons/io';
@@ -33,14 +32,7 @@ function Headerlogo (props: Props) {
   const getLogo = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       const logo: Photo | null = await getPhoto(user, token, authorizedDatabase);
@@ -62,13 +54,6 @@ function Headerlogo (props: Props) {
       const user = state.infoUser?.email;
       const authorizedDatabase = state.databaseAuth;
 
-      if (authorizedDatabase) {
-        const accessAuthorized = await checkAccess(state);
-        if (!accessAuthorized) {
-          return;
-        }
-      }
-
       try {
         await uploadingPhoto(user, authorizedDatabase, file);
       } catch (error) {
@@ -89,14 +74,7 @@ function Headerlogo (props: Props) {
   const getTitlesDatabase = async () => {
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       const titles: TitleLogoDatabase = await getTitles(user, token, authorizedDatabase);
@@ -116,14 +94,7 @@ function Headerlogo (props: Props) {
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     if (idTexts !== undefined) {
       try {

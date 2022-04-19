@@ -5,7 +5,6 @@ import * as C from './styles';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import { IoMdClose } from 'react-icons/io';
 import { deleteTransactionDatabase } from '../../database/firebase';
-import { checkAccess } from '../../helpers/authorizations';
 import { errorText } from '../../helpers/error';
 
 type Props = {
@@ -26,14 +25,7 @@ function TableItem (props: Props) {
 
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       await deleteTransactionDatabase(itemId, user, token, authorizedDatabase);
