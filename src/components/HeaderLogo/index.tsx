@@ -28,12 +28,14 @@ function Headerlogo (props: Props) {
       if (state.infoUser?.email) {
         const titles = await getTitlesDatabase() as TitleLogoDatabase;
         const logo = await getLogo() as string;
-        if (isMounted) {
-          setIdTexts(titles.id);
-          setTextLeft(titles.textLeft);
-          setTextRight(titles.textRight);
-          setLogo(logo);
-        };
+        if (titles && logo) {
+          if (isMounted) {
+            setIdTexts(titles.id);
+            setTextLeft(titles.textLeft);
+            setTextRight(titles.textRight);
+            setLogo(logo);
+          };
+        }
       }
     };
     getInfoHeader();

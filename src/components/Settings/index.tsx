@@ -46,12 +46,14 @@ function Settings (props: Props) {
       if (state.infoUser?.email) {
         const usersAuth = await getAllowedUsers() as UserAuth[];
         const databases = await fetchAllowedDatabase();
-        if (isMounted) {
-          setUsersAuthorized(usersAuth);
-          setAllowedDatabases(databases);
+        if (usersAuth && databases) {
+          if (isMounted) {
+            setUsersAuthorized(usersAuth);
+            setAllowedDatabases(databases);
 
-          if (state.databaseAuth) {
-            setShowButtonAccessMyDatabase(true);
+            if (state.databaseAuth) {
+              setShowButtonAccessMyDatabase(true);
+            }
           }
         }
       };
