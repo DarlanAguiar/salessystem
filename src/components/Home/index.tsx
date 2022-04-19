@@ -65,19 +65,67 @@ function Home () {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    setListBestSellers(orderedByBestSellers(list));
-    setlistAmountOfMoney(orderedAmountOfMoney(list));
-  }, [list]);
+    let isMounted = true;
+    const getListAndProducts = async () => {
+      if (state.infoUser?.email) {
+        const modelProducts = await getProductsDatabase() as ProductDatabase[];
+        const listProducts = await getListDatabase() as ItemDataBase[];
+        if (modelProducts && listProducts) {
+          if (isMounted) {
+            setList(listProducts);
+            setDatabaseProducts(modelProducts);
+            setTitleTable(getDate().split('-').reverse().join('/'));
+          }
+        };
+      }
+    };
 
-  useEffect(() => {
-    if (state.infoUser?.email) {
-      getList();
-      getProducts();
-      setTitleTable(getDate().split('-').reverse().join('/'));
-    }
+    getListAndProducts();
+    return () => { isMounted = false; };
   }, []);
 
+  const getProductsDatabase = async () => {
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth || user;
+
+    try {
+      const listModelDatabaseProducts = await getModelTransactionList(
+        user,
+        token,
+        authorizedDatabase
+      );
+      return listModelDatabaseProducts;
+    } catch (error) {
+      return setErrorMessage(errorText(error));
+    }
+  };
+
+  const getListDatabase = async () => {
+    const initialDate = formatDateTimeZone(getDate());
+    const finalDate = formatDateTimeZone(formatFinalDate(getDate()));
+    const user = state.infoUser?.email;
+    const token = await state.infoUser?.getIdToken();
+    const authorizedDatabase = state.databaseAuth || user;
+
+    try {
+      const listDataBase = await getTransactionList(
+        user,
+        token,
+        authorizedDatabase,
+        initialDate,
+        finalDate
+      );
+      return listDataBase;
+    } catch (error) {
+      return setErrorMessage(errorText(error));
+    };
+  };
+
   useEffect(() => {
+    setListBestSellers(orderedByBestSellers(list));
+    setlistAmountOfMoney(orderedAmountOfMoney(list));
+
     let newIncome = 0;
     let newExpense = 0;
 
@@ -94,26 +142,23 @@ function Home () {
   }, [list]);
 
   useEffect(() => {
-    const assemblesCategoryOptions = () => {
-      const listCategory: string[] = [];
-      const listCategoryExpense: string[] = [];
+    const listCategory: string[] = [];
+    const listCategoryExpense: string[] = [];
 
-      databaseProducts.forEach((product) => {
-        if (!listCategory.includes(product.category) && !product.expense) {
-          listCategory.push(product.category);
-        }
-        if (
-          !listCategoryExpense.includes(product.category) &&
+    databaseProducts.forEach((product) => {
+      if (!listCategory.includes(product.category) && !product.expense) {
+        listCategory.push(product.category);
+      }
+      if (
+        !listCategoryExpense.includes(product.category) &&
           product.expense
-        ) {
-          listCategoryExpense.push(product.category);
-        }
-      });
+      ) {
+        listCategoryExpense.push(product.category);
+      }
+    });
 
-      setProductCategoryList(listCategory.sort());
-      setExpenseListCategory(listCategoryExpense.sort());
-    };
-    assemblesCategoryOptions();
+    setProductCategoryList(listCategory.sort());
+    setExpenseListCategory(listCategoryExpense.sort());
   }, [databaseProducts]);
 
   const getList = async () => {

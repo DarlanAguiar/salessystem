@@ -41,14 +41,23 @@ function Settings (props: Props) {
   const [allowedDatabases, setAllowedDatabases] = useState<string[]>([]);
 
   useEffect(() => {
-    if (state.infoUser?.email) {
-      getAllowedUsers();
-      fetchAllowedDatabase();
+    let isMounted = true;
+    const getUsersAndDatabases = async () => {
+      if (state.infoUser?.email) {
+        const usersAuth = await getAllowedUsers() as UserAuth[];
+        const databases = await fetchAllowedDatabase();
+        if (isMounted) {
+          setUsersAuthorized(usersAuth);
+          setAllowedDatabases(databases);
 
-      if (state.databaseAuth) {
-        setShowButtonAccessMyDatabase(true);
-      }
-    }
+          if (state.databaseAuth) {
+            setShowButtonAccessMyDatabase(true);
+          }
+        }
+      };
+    };
+    getUsersAndDatabases();
+    return () => { isMounted = false; };
   }, []);
 
   const getAllowedUsers = async () => {
@@ -57,7 +66,7 @@ function Settings (props: Props) {
 
     try {
       const usersAuth = await getAllAllowedUsers(user, token);
-      setUsersAuthorized(usersAuth);
+      return usersAuth;
     } catch (error) {
       return setErrorMessage(errorText(error));
     }
@@ -74,7 +83,8 @@ function Settings (props: Props) {
     }
     setUserWhoHasAccess('');
 
-    getAllowedUsers();
+    const usersAuth = await getAllowedUsers() as UserAuth[];
+    setUsersAuthorized(usersAuth);
   };
 
   const deleteUser = async (id: string, userToRemove: string) => {
@@ -87,7 +97,8 @@ function Settings (props: Props) {
       return setErrorMessage(errorText(error));
     }
 
-    getAllowedUsers();
+    const usersAuth = await getAllowedUsers() as UserAuth[];
+    setUsersAuthorized(usersAuth);
   };
 
   const accessDataFromAnotherUser = async (database: string) => {
@@ -174,8 +185,7 @@ function Settings (props: Props) {
 
     try {
       const databases = await checkAuthorizedDatabase(user, token);
-
-      setAllowedDatabases(databases);
+      return databases;
     } catch (error) {
       return setErrorMessage(errorText(error));
     }

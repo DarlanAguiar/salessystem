@@ -21,26 +21,29 @@ function InvitationModal (props: Props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (state.infoUser?.email) {
-      checkNewInvitation();
-    }
-  }, []);
+    let isMounted = true;
+    const checkNewInvitation = async () => {
+      if (state.infoUser?.email) {
+        const user = state.infoUser?.email;
+        const token = await state.infoUser?.getIdToken();
 
-  const checkNewInvitation = async () => {
-    const user = state.infoUser?.email;
-    const token = await state.infoUser?.getIdToken();
+        try {
+          const invitation = await checkInvitationDatabase(user, token);
+          if (isMounted) setListInvitation(invitation);
 
-    try {
-      const invitation = await checkInvitationDatabase(user, token);
-      setListInvitation(invitation);
-      if (invitation.length === 0) {
-        setShowInvitation(false);
+          if (invitation.length === 0) {
+            if (isMounted) setShowInvitation(false);
+          };
+        } catch (error) {
+          return setErrorMessage(errorText(error));
+        }
+        if (isMounted) setLoading(false);
       };
-    } catch (error) {
-      return setErrorMessage(errorText(error));
-    }
-    setLoading(false);
-  };
+    };
+
+    checkNewInvitation();
+    return () => { isMounted = false; };
+  }, []);
 
   const removeInvitationDatabase = async () => {
     const user = state.infoUser?.email;
