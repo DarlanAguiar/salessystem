@@ -7,34 +7,40 @@ const storage = getStorage(firebaseApp);
 export const getPhoto = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null | Error
+  authorizedDatabase: string | null | undefined
 ): Promise<Photo> => {
   let photo: Photo = {
     url: ''
   };
+  let errorMessage = '';
 
   try {
-    const resp = await fetch(`${URL}photo/${user}/${token}/${authorizedDatabase}`);
-    const result = await resp.json() as Photo;
-    photo = result;
+    const resp = await fetch(`${URL}photo/${user}/${token}/${authorizedDatabase}`, {
+      method: 'GET',
+      headers: headers
+    });
+
+    if (resp.ok) {
+      photo = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao buscando logo, reinicie o aplicativo');
+    throw new Error(errorMessage);
   }
 
   return photo;
 };
 
 // Não consegui enviar o arquivo para o server.
-let n = ' ';// Mega Gambiarra
 export const uploadingPhoto = async (
   user: string | null | undefined,
   authorizedDatabase: string | null,
   file: File
 ) => {
-  let referredDatabase = user;
-  if (authorizedDatabase !== null) {
-    referredDatabase = authorizedDatabase;
-  }
+  const referredDatabase = authorizedDatabase;
 
   const extensions = ['image/jpeg', 'image/jpg', 'image/png'];
 
@@ -47,36 +53,38 @@ export const uploadingPhoto = async (
 
     return photoUrl;
   } else {
-    if (n === ' ') {
-      n = '';
-    } else {
-      n = ' ';
-    };
-    throw new Error(`Formato não aceito, permitido apenas .jpeg, .jpg e .png ${n}`);
+    throw new Error('Formato não aceito, permitido apenas .jpeg, .jpg e .png');
   }
 };
 
 export const setTitleDatabase = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null,
+  authorizedDatabase: string | null | undefined,
   texts: TitleLogo
 ) => {
+  let errorMessage = '';
+
   try {
-    await fetch(`${URL}settings`, {
+    const resp = await fetch(`${URL}settings`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({ user, token, authorizedDatabase, texts })
     });
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao inserir o nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 };
 
 export const getTitles = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null
+  authorizedDatabase: string | null | undefined
 ): Promise<TitleLogoDatabase> => {
   let titles: TitleLogoDatabase = {
     id: '',
@@ -84,15 +92,22 @@ export const getTitles = async (
     textRight: ''
   };
 
+  let errorMessage = '';
+
   try {
     const resp = await fetch(`${URL}settings/${user}/${token}/${authorizedDatabase}`, {
       method: 'GET',
       headers: headers
     });
-    const result = await resp.json();
-    titles = result;
+    if (resp.ok) {
+      titles = await resp.json();
+    } else {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Erro ao buscando nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
   return titles;
 };
@@ -100,12 +115,13 @@ export const getTitles = async (
 export const updateTitleDatabase = async (
   user: string | null | undefined,
   token: string | undefined,
-  authorizedDatabase: string | null,
+  authorizedDatabase: string | null | undefined,
   idTexts: string,
   texts: TitleLogo
 ) => {
+  let errorMessage = '';
   try {
-    await fetch(`${URL}settings`, {
+    const resp = await fetch(`${URL}settings`, {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify({
@@ -116,7 +132,13 @@ export const updateTitleDatabase = async (
         texts
       })
     });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      errorMessage = err.message;
+      throw new Error(errorMessage);
+    }
   } catch (error) {
-    throw new Error('Problemas no servidor ao atualizar nome da empresa, reinicie a aplicação ou tente novamente.');
+    throw new Error(errorMessage);
   }
 };

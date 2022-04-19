@@ -29,7 +29,7 @@ import {
   changeAccessDatabase,
   removeAccessDatabase
 } from './serverController/accessDatabaseConfiguration';
-import { validateToken } from './serverController/middleware/handleValidation';
+import { validateDatabaseAccess, validateToken } from './serverController/middleware/handleValidation';
 import { fetchFoto, getTitlesToLogo, setTitlesToLogo, updateTitlesToLogo } from './serverController/configLogo';
 
 const router = Router();
@@ -53,23 +53,23 @@ export const db = getFirestore();
 
 // Rotas de Transações
 
-router.post('/home/modeltransaction', validateToken, addModelTransaction);
+router.post('/home/modeltransaction', validateToken, validateDatabaseAccess, addModelTransaction);
 
-router.post('/home/transaction', validateToken, addTransaction);
+router.post('/home/transaction', validateToken, validateDatabaseAccess, addTransaction);
 
 router.get(
-  '/home/transaction/:user/:token/:initialdate/:finaldate/:authorizedDatabase', validateToken,
+  '/home/transaction/:user/:token/:initialdate/:finaldate/:authorizedDatabase', validateToken, validateDatabaseAccess,
   getTransaction
 );
 
 router.get(
-  '/home/modeltransaction/:user/:token/:authorizedDatabase', validateToken,
+  '/home/modeltransaction/:user/:token/:authorizedDatabase', validateToken, validateDatabaseAccess,
   getModelTransaction
 );
 
-router.delete('/home/transaction', validateToken, deleteTransaction);
+router.delete('/home/transaction', validateToken, validateDatabaseAccess, deleteTransaction);
 
-router.delete('/home/modeltransaction', validateToken, deleteModelTransaction);
+router.delete('/home/modeltransaction', validateToken, validateDatabaseAccess, deleteModelTransaction);
 
 // Rotas de autorizações
 
@@ -111,12 +111,12 @@ router.delete('/home/authaccess', validateToken, removeAccessDatabase);
 
 // Rotas para o Logo e nome da empresa
 
-router.get('/home/photo/:user/:token/:authorizedDatabase', validateToken, fetchFoto);
+router.get('/home/photo/:user/:token/:authorizedDatabase', validateToken, validateDatabaseAccess, fetchFoto);
 
-router.post('/home/settings', validateToken, setTitlesToLogo);
+router.post('/home/settings', validateToken, validateDatabaseAccess, setTitlesToLogo);
 
-router.get('/home/settings/:user/:token/:authorizedDatabase', validateToken, getTitlesToLogo);
+router.get('/home/settings/:user/:token/:authorizedDatabase', validateToken, validateDatabaseAccess, getTitlesToLogo);
 
-router.patch('/home/settings', validateToken, updateTitlesToLogo);
+router.patch('/home/settings', validateToken, validateDatabaseAccess, updateTitlesToLogo);
 
 export default router;

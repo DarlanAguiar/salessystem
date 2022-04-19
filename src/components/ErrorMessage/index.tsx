@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   errorMessage: string
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
 function ErrorMessage (props: Props) {
-  const { errorMessage } = props;
+  const { errorMessage, setErrorMessage } = props;
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
@@ -14,7 +15,8 @@ function ErrorMessage (props: Props) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
-      }, 5000);
+        setErrorMessage('');
+      }, 10000);
     }
   }, [errorMessage]);
 

@@ -3,7 +3,6 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { insertTransactionModelIntoDatabase } from '../../database/firebase';
 import { useInfoContext } from '../../contexts/userInfoContext';
 import * as C from './styles';
-import { checkAccess } from '../../helpers/authorizations';
 import { errorText } from '../../helpers/error';
 
 type Props = {
@@ -53,14 +52,7 @@ function RegisterExpense (props: Props) {
     handleShowRegisterExpense();
     const user = state.infoUser?.email;
     const token = await state.infoUser?.getIdToken();
-    const authorizedDatabase = state.databaseAuth;
-
-    if (authorizedDatabase) {
-      const accessAuthorized = await checkAccess(state);
-      if (!accessAuthorized) {
-        return;
-      }
-    }
+    const authorizedDatabase = state.databaseAuth || user;
 
     try {
       await insertTransactionModelIntoDatabase(

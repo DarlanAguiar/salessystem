@@ -50,6 +50,7 @@ function InvitationModal (props: Props) {
     } catch (error) {
       return setErrorMessage(errorText(error));
     }
+    setShowInvitation(false);
   };
 
   return (
