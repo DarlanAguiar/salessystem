@@ -116,6 +116,8 @@ export const getModelTransactionList = async (
       method: 'GET',
       headers: headers
     });
+    console.log(resp);
+
     if (resp.ok) {
       data = await resp.json();
     } else {
