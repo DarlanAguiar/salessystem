@@ -23,10 +23,21 @@ function Headerlogo (props: Props) {
   const [showFieldSendPhoto, setShowFieldSendPhoto] = useState(false);
 
   useEffect(() => {
-    if (state.infoUser?.email) {
-      getTitlesDatabase();
-      getLogo();
-    }
+    let isMounted = true;
+    const getInfoHeader = async () => {
+      if (state.infoUser?.email) {
+        const titles = await getTitlesDatabase() as TitleLogoDatabase;
+        const logo = await getLogo() as string;
+        if (isMounted) {
+          setIdTexts(titles.id);
+          setTextLeft(titles.textLeft);
+          setTextRight(titles.textRight);
+          setLogo(logo);
+        };
+      }
+    };
+    getInfoHeader();
+    return () => { isMounted = false; };
   }, []);
 
   const getLogo = async () => {
@@ -38,7 +49,7 @@ function Headerlogo (props: Props) {
       const logo: Photo | null = await getPhoto(user, token, authorizedDatabase);
 
       if (logo !== null) {
-        setLogo(logo.url);
+        return logo.url;
       }
     } catch (error) {
       return setErrorMessage(errorText(error));
@@ -52,7 +63,7 @@ function Headerlogo (props: Props) {
     if (file && file.size > 0) {
       setUploading(true);
       const user = state.infoUser?.email;
-      const authorizedDatabase = state.databaseAuth;
+      const authorizedDatabase = state.databaseAuth || user;
 
       try {
         await uploadingPhoto(user, authorizedDatabase, file);
@@ -60,8 +71,8 @@ function Headerlogo (props: Props) {
         setUploading(false);
         return setErrorMessage(errorText(error));
       }
-
-      await getLogo();
+      const logo = await getLogo() as string;
+      setLogo(logo);
       setUploading(false);
       handleShowFieldSendPhoto();
     }
@@ -78,9 +89,7 @@ function Headerlogo (props: Props) {
 
     try {
       const titles: TitleLogoDatabase = await getTitles(user, token, authorizedDatabase);
-      setIdTexts(titles.id);
-      setTextLeft(titles.textLeft);
-      setTextRight(titles.textRight);
+      return titles;
     } catch (error) {
       return setErrorMessage(errorText(error));
     }

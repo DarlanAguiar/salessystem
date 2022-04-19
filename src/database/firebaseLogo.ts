@@ -37,7 +37,7 @@ export const getPhoto = async (
 // Não consegui enviar o arquivo para o server.
 export const uploadingPhoto = async (
   user: string | null | undefined,
-  authorizedDatabase: string | null,
+  authorizedDatabase: string | null | undefined,
   file: File
 ) => {
   const referredDatabase = authorizedDatabase;
