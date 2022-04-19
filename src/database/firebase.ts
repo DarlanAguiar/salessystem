@@ -92,6 +92,8 @@ export const getTransactionList = async (
     } else {
       const err = await resp.json();
       errorMessage = err.message;
+      console.log(errorMessage);
+
       throw new Error(err.message);
     };
   } catch (error) {
@@ -119,6 +121,7 @@ export const getModelTransactionList = async (
     } else {
       const err = await resp.json();
       errorMessage = err.message;
+      console.log(errorMessage);
       throw new Error(err.message);
     };
   } catch (error) {
