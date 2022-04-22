@@ -46,8 +46,6 @@ export const setTitlesToLogo = async (req: Request, res: Response) => {
   const { authorizedDatabase, texts } = req.body;
   const referredDatabase = authorizedDatabase;
 
-  console.log(texts);
-
   try {
     await addDoc(collection(db, `${referredDatabase}.settings`), texts);
     setResponseHeader(res);

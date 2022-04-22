@@ -55,8 +55,6 @@ function Login () {
       }
 
       if (accessDatabase.nameDatabase) {
-        console.log('tem' + accessDatabase.nameDatabase);
-
         dispatch({
           type: FormActions.setDatabaseAuth,
           payload: accessDatabase.nameDatabase
@@ -96,8 +94,6 @@ function Login () {
         }
 
         if (accessDatabase.nameDatabase) {
-          console.log('tem' + accessDatabase.nameDatabase);
-
           dispatch({
             type: FormActions.setDatabaseAuth,
             payload: accessDatabase.nameDatabase
