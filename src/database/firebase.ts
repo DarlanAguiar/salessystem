@@ -92,8 +92,6 @@ export const getTransactionList = async (
     } else {
       const err = await resp.json();
       errorMessage = err.message;
-      console.log(errorMessage);
-
       throw new Error(err.message);
     };
   } catch (error) {
@@ -116,14 +114,11 @@ export const getModelTransactionList = async (
       method: 'GET',
       headers: headers
     });
-    console.log(resp);
-
     if (resp.ok) {
       data = await resp.json();
     } else {
       const err = await resp.json();
       errorMessage = err.message;
-      console.log(errorMessage);
       throw new Error(err.message);
     };
   } catch (error) {
