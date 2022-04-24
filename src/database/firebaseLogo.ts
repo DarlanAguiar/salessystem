@@ -33,6 +33,7 @@ export const getPhoto = async (
 
   return photo;
 };
+console.log('oi');
 
 // Não consegui enviar o arquivo para o server.
 export const uploadingPhoto = async (
