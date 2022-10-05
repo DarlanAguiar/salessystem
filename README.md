@@ -1,12 +1,12 @@
 
-# sales system
+# Sales system
 
 ![ui](https://user-images.githubusercontent.com/91347380/193968242-5dc652ab-6330-4a8d-8983-b5fb6ab380bc.png)
 
 ---
 
 
-sales control project with reports
+Sales control project with reports.
 
  functionalities:
 
