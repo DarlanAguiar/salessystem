@@ -2,6 +2,7 @@
 # Sales system
 
 ![ui](https://user-images.githubusercontent.com/91347380/193968242-5dc652ab-6330-4a8d-8983-b5fb6ab380bc.png)
+![Captura de tela de 2022-10-05 08-44-08](https://user-images.githubusercontent.com/91347380/194063185-2b1536b4-636a-4185-884d-0291cd2238a3.png)
 
 ---
 
